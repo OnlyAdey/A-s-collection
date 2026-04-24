@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="Images/image6.jpg">
+    <title>A's Collection</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            width: 100%;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        
+    .navbar{
+        position: relative;
+        top: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        width: 75vw;
+        transform: translateX(-50%);
+        backdrop-filter: blur(15px);
+        padding: 15px 5%;
+        border-radius:50px;
+        box-shadow: 0 10px 30px #00000044;
+        z-index: 1000;
+        animation: anime 0.5s ease forwards;
+    }
+    @keyframes anime{
+        from{
+            opacity: 0;
+            transform: translate(-50%, -40px);
+        }
+        to{
+            opacity: 1;
+            transform: translate(0);
+        }
+    }
+    .nav-links{
+        display:flex;
+        align-items: center;
+        list-style: none;
+        gap: 10px;
+    }
+    .nav-links a {
+            text-decoration: none;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: 0.3s;
+        }
+    .nav-links a svg{
+        width: 24px;
+        height: 24px;
+    }
+    .nav-links a:hover{
+        transform: scale(1);
+        color:#8a7350;
+        transform: rotate(-6deg);
+    }
+    @media (max-width: 600px) {
+        .navbar{
+            flex-direction: column;
+            gap: 10px;
+        }
+        .nav-links{
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        .nav-links a{
+            margin: 0 10px;
+            font-size: 12px;
+        }
+        .gallery-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+    .main-layout {
+        flex-direction: column;
+    }
+}
+    
+    .wrapper{
+       margin-top: 50px;
+        display: flex;
+        grid-auto-flow: column;
+        grid-auto-columns: 12rem;
+        width: 100%;
+        overflow: hidden;
+        gap: 2rem;
+        position: relative;
+        background-color: antiquewhite;
+
+    }
+    .scroll-track {
+    display: flex;
+    width: max-content; 
+    animation: scroll 20s linear infinite;
+}
+
+@keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); } 
+}
+
+.scroll-track img {
+    width: 250px; 
+    height: 180px;
+    object-fit: cover;
+    margin: 0 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+    .scroll-track:hover{
+        animation-play-state: paused;
+    }
+    .scroll-track img:hover{
+        transform: scale(1.1);
+    }
+    .button-center{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin-top: 50px;
+        margin-bottom: 60px;
+    }
+    .gradient-btn {
+  position: relative;
+  padding: 12px 24px;
+  border: none;
+  color: white;
+  background: linear-gradient(to right, #8a7350, #d4af37); 
+  z-index: 1;
+  cursor: pointer;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.gradient-btn::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(to right, #4a3f35, #8a7350);
+  z-index: -1;
+  opacity: 0; 
+  transition: opacity 0.5s ease; 
+}
+.gradient-btn:hover::before {
+  opacity: 1; 
+}
+    
+    @keyframes animate{
+        to{
+            transform: translateX(calc(-5* (12rem + 1rem)));
+        }
+    }
+    section{
+        padding: 80px 10%;
+        width: 100%;
+    }
+    .hero-section{
+        text-align: center;
+        margin-top: 40px;
+        margin-bottom: 40px;
+        min-height: 20vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-radius: 50px 50px 50px 50px;
+        width:80vw;
+        background: linear-gradient(to right, #494bac, #4c0b72);
+        color: white;
+        box-shadow: black;
+        cursor: pointer;
+        transition: all 0.5s ease;
+    }
+    .hero-section:hover{
+        box-shadow: 0 0 30px #0f1046;
+        transform: translateY(-5px);
+    }
+    .gallery-section{
+        display: grid;
+        background: linear-gradient(to right, #e2b879, #494bac);
+        margin-bottom: 30px;
+        border-radius: 50px;
+        width: 80vw;
+        
+    }
+    .gallery-grid{
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+    .gallery-items{
+        text-align: center;
+        background: white;
+        padding: 15px;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0 0 0 0.1);
+        transition: transform 0.3s ease;
+        cursor: pointer;
+    }
+    .gallery-items img {
+    width: 100%;       
+    height: 300px;     
+    object-fit: cover; 
+    display: block;
+    border-radius: 10px;
+}
+
+.gallery-items p {
+    margin-top: 15px;
+    font-weight: bold;
+    color: #333;
+}
+
+.gallery-items span {
+    color: #8a7350; 
+    font-size: 0.9rem;
+}
+
+.gallery-items:hover {
+    transform: scale(1.05);
+}
+    .services-section{
+        background:linear-gradient(to left, #0d1b2a, #5787bb ) ;
+        color: white;
+        width: 80vw;
+        border-radius: 50px 50px 50px 50px;
+        cursor: pointer;
+        transition: all 0.5s ease;
+        margin-bottom: 80px;
+        text-align: justify;
+    }
+    .about-us{
+        display: flex;
+        justify-content: center;
+         margin-bottom: 20px;
+    }
+    .about-us img{
+        display: block;
+        width: 250px;       
+        height: 70px;
+        object-fit: cover;
+        border-radius: 30px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+    }
+    html {
+    scroll-behavior: smooth;
+}
+    .services-section:hover{
+        box-shadow: 0 0 30px #0f1046;
+        transform: translateY(-5px);
+    }
+    
+    .site-footer {
+    background-color: #333;
+    color: white;
+    padding: 10px ;
+    text-align: center;
+}
+
+.footer{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.social-link svg {
+    width: 28px;
+    height: 28px;
+    transition: transform 0.3s ease, color 0.3s ease;
+    fill: #8a7350; 
+}
+
+.social-link:hover svg {
+    transform: scale(1.2);
+    fill: #ffffff; 
+}
+</style>
+</head>
+    <nav class="navbar">
+        <div class="logo">A's Collection</div>
+        <ul class="nav-links">
+            <li><a href="#about"> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"> <path d="M20 19v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle></svg>About us</a></li>
+            <li><a href="#cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+  <line x1="3" y1="6" x2="21" y2="6"></line>
+  <path d="M16 10a4 4 0 0 1-8 0"></path>
+</svg>Cart</a></li>
+            <li><a href="https://mail.google.com/mail/u/0/:ascollection348@gmail.com" target="_blank"> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+</svg>Contact us</a></li>
+        </ul>
+    </nav>
+
+<body>
+    <div class="container">
+<div class="wrapper">
+    <div class="scroll-track">
+    <img src="./Images/image1.jpg" alt="Tom Ford">
+    <img src="./Images/image2.jpg" alt="grand">
+    <img src="./Images/image3.jpg" alt="perfume">
+    <img src="./Images/image4.jpg" alt="Coco Mademoiselle">
+    <img src="./Images/image5.jpg" alt="perfume">
+
+    <img src="./Images/image1.jpg" alt="Tom Ford">
+    <img src="./Images/image2.jpg" alt="grand">
+    <img src="./Images/image3.jpg" alt="perfume">
+    <img src="./Images/image4.jpg" alt="Coco Mademoiselle">
+    <img src="./Images/image5.jpg" alt="perfume">
+
+    <img src="./Images/image1.jpg" alt="Tom Ford">
+    <img src="./Images/image2.jpg" alt="grand">
+    <img src="./Images/image3.jpg" alt="perfume">
+    <img src="./Images/image4.jpg" alt="Coco Mademoiselle">
+    <img src="./Images/image5.jpg" alt="perfume">
+</div>
+</div>
+    </div>
+    
+    <section class="hero-section" id="hero">
+        <div class="content-wrapper">
+            <h1>A's Collection</h1>
+            <p>Discover the luxury of quality fragrances that speaks before you do. Our perfumes are carefully crafted to capture moments, emotions, and identity in every spray. Whether you prefer something bold and unforgettable or soft and intimate, each fragrance is designed to leave a lasting impression</p>
+            <div class="button-center">
+                <a href="https://wa.me/c/2348057867908"><button class="gradient-btn">Explore Scents</button></a>
+            </div>
+        </div>
+    </section>
+
+<div class="main-layout">
+<div class="content-area">
+    <section class="gallery-section">
+        <h2>Featured Collection</h2>
+        <div class="gallery-grid">
+            <div class="gallery-items">
+                <img src="./Images/image8.jpeg" alt="Khamrah">
+                <p>Khamrah - 100ml</p>
+                <span>₦45,000</span>
+            </div>
+                <div class="gallery-items">
+                    <img src="./Images/image9.jpg" alt="Asad Elixir">
+                    <p>Asad Elixir - 100ml</p>
+                <span>₦35,000</span>
+                </div>
+                <div class="gallery-items">
+                    <img src="./Images/image10.jpg" alt="Oud Al Layl">
+                <p>Oud Al Layl - 100ml</p>
+                <span>₦17,000</span>
+                </div>
+                <div class="gallery-items">
+                    <img src="./Images/image11.jpg" alt="Club de nuit intense man">
+                <p>Club de Nuit Intense Man- 100ml</p>
+                <span>₦60,000</span>
+                </div>
+                <div class="gallery-items">
+                    <img src="./Images/image12.jpg" alt="Club de nuit Iconic">
+                <p>Club de Nuit Iconic - 100ml</p>
+                <span>₦55,000</span>
+                </div>
+                <div class="gallery-items">
+                    <img src="./Images/image13.jpg" alt="Kaly">
+                <p>Kaly - 50ml</p>
+                <span>₦11,000</span>
+                </div>
+                <div class="gallery-items">
+                    <img src="./Images/image14.jpg" alt="Victoria Secret body mist">
+                <p>Victoria Secret body mist - 250ml</p>
+                <span>₦4,500</span>
+                </div>
+                <div class="gallery-items">
+                    <img src="./Images/image15.jpg" alt="Lasigidi body mist">
+                <p>Lasigidi body mist - 100ml</p>
+                <span>₦3,500</span>
+                </div>
+            
+        </div>
+    </section>
+
+
+    <section class="services-section" id="about">
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="about-us"><img  src="./Images/image16.jpg" alt="about us"></div>
+                <p>Abuja, get ready to level up your scent game! A's collection officially dropped in October 2024, and since then, we've been the ultimate plug for fire fragrances straight from the heart of Naija's capital. No more settling for less we're talking premium Arabian perfumes that hit like a desert storm, designer perfumes channeling big-name vibes on a real and friendly budget, airy body mists and sprays for that instant glow-up, sweat-proof antiperspirants with killer scents, slick roll-ons for quick fixes, and mini perfumes that travel lighter than your ex's drama.
+
+Why us? Because we're Abuja born and bred, we know the hustle: hot weather demanding all-day freshness, cultural vibes calling for bold ouds and florals, and that need for scents that last from morning traffic to evening owambe. Our Arabian collection? Pure magic, think velvety taifs, spicy musks, and rose explosions that turn heads at every aso-ebi event. Designer picks give you Chanel-level class without the passport stress. Mists and sprays? Hydrating heroes for daily slay. Antiperspirants keep you dry and drippin'. Roll-ons and minis? Your purse MVPs for spontaneous freshness.
+
+We're all about fast shipping across Nigeria, wallet-friendly prices, and banging deals: snag 10% off your first purchase and unlock up to 15% off as an existing customer. Join the squad that's redefining how Abuja smells. Shop at A's collection now and own the air!</p>
+<div class="about-btn-wrapper">
+    <a href="#hero">
+        <button class="gradient-btn">Shop Now</button>
+    </a>
+</div>
+            </div>
+        </div>
+    </section></div>
+
+</div>
+    <footer class="site-footer">
+        <div class="footer">
+            <p>© 2026 Ade. All rights reserved</p>
+            <div class="social-icons">
+            <a href="https://wa.me/08057867908" class="social-link">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-2.32 0-4.591 1.399-4.591 4.582 0 1.25.438 2.383 1.156 3.25l-.844 3.094 3.172-.828c.812.438 1.734.688 2.703.688 3.328 0 5.25-2.203 5.25-4.812.016-2.906-2.141-5.974-6.846-5.974zm-.016 1.015c4.016 0 5.828 2.594 5.828 4.969 0 2.219-1.578 3.828-4.281 3.828-.844 0-1.641-.219-2.328-.594l-.188-.109-1.938.5.516-1.891-.125-.188c-.641-.953-1.016-2.063-1.016-3.266 0-2.609 1.859-3.25 3.532-3.25z"/></svg>
+            </a>
+
+            <a href="https://instagram.com/ascol_lection33" class="social-link">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            
+            <a href="https://facebook.com/yourpage" class="social-link">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/></svg>
+            </a>
+        </div>
+    </div>
+    </div>
+    </footer>
+    
+</body>
+
+</html>

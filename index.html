@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="Images/image6.jpg">
+    <link rel="icon" type="image/x-icon" href="images/image6.jpg">
     <title>A's Collection</title>
     <style>
         body{
@@ -15,55 +15,59 @@
             font-family: 'Times New Roman', Times, serif;
         }
         
-    .navbar{
-        position: relative;
-        top: 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 10px;
-        width: 75vw;
-        transform: translateX(-50%);
-        backdrop-filter: blur(15px);
-        padding: 15px 5%;
-        border-radius:50px;
-        box-shadow: 0 10px 30px #00000044;
-        z-index: 1000;
-        animation: anime 0.5s ease forwards;
-    }
-    @keyframes anime{
-        from{
-            opacity: 0;
-            transform: translate(-50%, -40px);
+        .navbar{
+            position: sticky;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 15px 5%;
+            box-sizing: border-box;
+            backdrop-filter: blur(15px);
+            background: rgba(255,255,255,0.95);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 1000;
         }
-        to{
-            opacity: 1;
-            transform: translate(0);
+        
+        .navbar .logo{
+            font-weight: bold;
+            color: #8a7350;
+            font-size: 18px;
         }
-    }
-    .nav-links{
-        display:flex;
-        align-items: center;
-        list-style: none;
-        gap: 10px;
-    }
-    .nav-links a {
+        
+        .nav-links{
+            display: flex;
+            align-items: center;
+            list-style: none;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-links a, .nav-links button {
             text-decoration: none;
             color: #333;
             display: flex;
             align-items: center;
             gap: 5px;
             transition: 0.3s;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 0;
         }
-    .nav-links a svg{
-        width: 24px;
-        height: 24px;
-    }
-    .nav-links a:hover{
-        transform: scale(1);
-        color:#8a7350;
-        transform: rotate(-6deg);
-    }
+        
+        .nav-links a svg, .nav-links button svg{
+            width: 24px;
+            height: 24px;
+        }
+        
+        .nav-links a:hover, .nav-links button:hover{
+            color: #8a7350;
+            transform: rotate(-6deg);
+        }
     @media (max-width: 600px) {
         .navbar{
             flex-direction: column;
@@ -133,16 +137,158 @@
         margin-bottom: 60px;
     }
     .gradient-btn {
-  position: relative;
-  padding: 12px 24px;
-  border: none;
-  color: white;
-  background: linear-gradient(to right, #8a7350, #d4af37); 
-  z-index: 1;
-  cursor: pointer;
-  border-radius: 8px;
-  overflow: hidden;
-}
+      position: relative;
+      padding: 12px 24px;
+      border: none;
+      color: white;
+      background: linear-gradient(to right, #8a7350, #d4af37); 
+      z-index: 1;
+      cursor: pointer;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    
+    .modal-content {
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .close-modal {
+      float: right;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #666;
+      margin-bottom: 10px;
+    }
+    
+    .close-modal:hover { color: #000; }
+    
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #999;
+      border-bottom: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+    
+    .tab-btn.active {
+      color: #8a7350;
+      border-bottom-color: #8a7350;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    #loginForm, #registerForm, #paymentForm {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    #loginForm input, #registerForm input, #paymentForm input {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    
+    #loginForm input:focus, #registerForm input:focus, #paymentForm input:focus {
+      outline: none;
+      border-color: #8a7350;
+      box-shadow: 0 0 5px rgba(138, 115, 80, 0.3);
+    }
+    
+    .account-box {
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      margin: 15px 0;
+    }
+    
+    .account-box p {
+      margin: 8px 0;
+      font-size: 14px;
+    }
+    
+    .copy-btn {
+      background: #8a7350;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    
+    .copy-btn:hover { background: #6d5a40; }
+    
+    #cartItems {
+      margin: 15px 0;
+    }
+    
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+    }
+    
+    .cart-item:last-child { border-bottom: none; }
+    
+    .cart-total {
+      padding: 15px;
+      background: #f9f9f9;
+      text-align: right;
+      font-weight: bold;
+      border-top: 2px solid #ddd;
+      margin-top: 10px;
+    }
+    
+    #paymentOrderSummary {
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+      font-size: 14px;
+      line-height: 1.6;
+    }
 
 .gradient-btn::before {
   content: "";
@@ -300,41 +446,32 @@
         <ul class="nav-links">
             <li><a href="#about"> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"> <path d="M20 19v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle></svg>About us</a></li>
-            <li><a href="#cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <li><button id="cartNavBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
   <line x1="3" y1="6" x2="21" y2="6"></line>
   <path d="M16 10a4 4 0 0 1-8 0"></path>
-</svg>Cart</a></li>
+</svg><span id="cartBadge">0</span> Cart</button></li>
             <li><a href="https://mail.google.com/mail/u/0/:ascollection348@gmail.com" target="_blank"> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <rect width="20" height="16" x="2" y="4" rx="2"></rect>
   <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
 </svg>Contact us</a></li>
+            <li><button id="authNavBtn" style="color: #8a7350; font-weight: bold;">Login</button></li>
         </ul>
     </nav>
 
-<body>
-    <div class="container">
-<div class="wrapper">
-    <div class="scroll-track">
-    <img src="./Images/image1.jpg" alt="Tom Ford">
-    <img src="./Images/image2.jpg" alt="grand">
-    <img src="./Images/image3.jpg" alt="perfume">
-    <img src="./Images/image4.jpg" alt="Coco Mademoiselle">
-    <img src="./Images/image5.jpg" alt="perfume">
-
-    <img src="./Images/image1.jpg" alt="Tom Ford">
-    <img src="./Images/image2.jpg" alt="grand">
-    <img src="./Images/image3.jpg" alt="perfume">
-    <img src="./Images/image4.jpg" alt="Coco Mademoiselle">
-    <img src="./Images/image5.jpg" alt="perfume">
-
-    <img src="./Images/image1.jpg" alt="Tom Ford">
-    <img src="./Images/image2.jpg" alt="grand">
-    <img src="./Images/image3.jpg" alt="perfume">
-    <img src="./Images/image4.jpg" alt="Coco Mademoiselle">
-    <img src="./Images/image5.jpg" alt="perfume">
-</div>
-</div>
+    <div class="wrapper">
+        <div class="scroll-track">
+            <img src="images/image1.jpg" alt="Perfume 1">
+            <img src="images/image2.jpg" alt="Perfume 2">
+            <img src="images/image3.jpg" alt="Perfume 3">
+            <img src="images/image4.jpg" alt="Perfume 4">
+            <img src="images/image5.jpg" alt="Perfume 5">
+            <img src="images/image1.jpg" alt="Perfume 1">
+            <img src="images/image2.jpg" alt="Perfume 2">
+            <img src="images/image3.jpg" alt="Perfume 3">
+            <img src="images/image4.jpg" alt="Perfume 4">
+            <img src="images/image5.jpg" alt="Perfume 5">
+        </div>
     </div>
     
     <section class="hero-section" id="hero">
@@ -342,7 +479,7 @@
             <h1>A's Collection</h1>
             <p>Discover the luxury of quality fragrances that speaks before you do. Our perfumes are carefully crafted to capture moments, emotions, and identity in every spray. Whether you prefer something bold and unforgettable or soft and intimate, each fragrance is designed to leave a lasting impression</p>
             <div class="button-center">
-                <a href="https://wa.me/c/2348057867908"><button class="gradient-btn">Explore Scents</button></a>
+                    <a href="https://wa.me/c/2348057867908"><button class="gradient-btn">Contact Us on WhatsApp</button></a>
             </div>
         </div>
     </section>
@@ -351,47 +488,9 @@
 <div class="content-area">
     <section class="gallery-section">
         <h2>Featured Collection</h2>
-        <div class="gallery-grid">
-            <div class="gallery-items">
-                <img src="./Images/image8.jpeg" alt="Khamrah">
-                <p>Khamrah - 100ml</p>
-                <span>₦45,000</span>
-            </div>
-                <div class="gallery-items">
-                    <img src="./Images/image9.jpg" alt="Asad Elixir">
-                    <p>Asad Elixir - 100ml</p>
-                <span>₦35,000</span>
-                </div>
-                <div class="gallery-items">
-                    <img src="./Images/image10.jpg" alt="Oud Al Layl">
-                <p>Oud Al Layl - 100ml</p>
-                <span>₦17,000</span>
-                </div>
-                <div class="gallery-items">
-                    <img src="./Images/image11.jpg" alt="Club de nuit intense man">
-                <p>Club de Nuit Intense Man- 100ml</p>
-                <span>₦60,000</span>
-                </div>
-                <div class="gallery-items">
-                    <img src="./Images/image12.jpg" alt="Club de nuit Iconic">
-                <p>Club de Nuit Iconic - 100ml</p>
-                <span>₦55,000</span>
-                </div>
-                <div class="gallery-items">
-                    <img src="./Images/image13.jpg" alt="Kaly">
-                <p>Kaly - 50ml</p>
-                <span>₦11,000</span>
-                </div>
-                <div class="gallery-items">
-                    <img src="./Images/image14.jpg" alt="Victoria Secret body mist">
-                <p>Victoria Secret body mist - 250ml</p>
-                <span>₦4,500</span>
-                </div>
-                <div class="gallery-items">
-                    <img src="./Images/image15.jpg" alt="Lasigidi body mist">
-                <p>Lasigidi body mist - 100ml</p>
-                <span>₦3,500</span>
-                </div>
+        <div id="productGrid" class="gallery-grid">
+            <!-- Products will be populated dynamically -->
+        </div>
             
         </div>
     </section>
@@ -400,7 +499,7 @@
     <section class="services-section" id="about">
         <div class="services-grid">
             <div class="service-card">
-                <div class="about-us"><img  src="./Images/image16.jpg" alt="about us"></div>
+                <div class="about-us"><img  src="images/image16.jpg" alt="about us"></div>
                 <p>Abuja, get ready to level up your scent game! A's collection officially dropped in October 2024, and since then, we've been the ultimate plug for fire fragrances straight from the heart of Naija's capital. No more settling for less we're talking premium Arabian perfumes that hit like a desert storm, designer perfumes channeling big-name vibes on a real and friendly budget, airy body mists and sprays for that instant glow-up, sweat-proof antiperspirants with killer scents, slick roll-ons for quick fixes, and mini perfumes that travel lighter than your ex's drama.
 
 Why us? Because we're Abuja born and bred, we know the hustle: hot weather demanding all-day freshness, cultural vibes calling for bold ouds and florals, and that need for scents that last from morning traffic to evening owambe. Our Arabian collection? Pure magic, think velvety taifs, spicy musks, and rose explosions that turn heads at every aso-ebi event. Designer picks give you Chanel-level class without the passport stress. Mists and sprays? Hydrating heroes for daily slay. Antiperspirants keep you dry and drippin'. Roll-ons and minis? Your purse MVPs for spontaneous freshness.
@@ -414,6 +513,81 @@ We're all about fast shipping across Nigeria, wallet-friendly prices, and bangin
             </div>
         </div>
     </section></div>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('cartModal')">✕</button>
+            <h3>Your Cart</h3>
+            <div id="cartItems" style="max-height: 400px; overflow-y: auto;">
+                <!-- Cart items populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Modal (Login/Register) -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('authModal')">✕</button>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('login', this)">Login</button>
+                <button class="tab-btn" onclick="switchTab('register', this)">Register</button>
+            </div>
+
+            <!-- Login Tab -->
+            <div id="login" class="tab-content active">
+                <h3>Login</h3>
+                <form id="loginForm">
+                    <input type="email" id="loginEmail" placeholder="Email" required>
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                    <button type="submit" class="gradient-btn" style="width: 100%; margin-top: 15px;">Login</button>
+                </form>
+            </div>
+
+            <!-- Register Tab -->
+            <div id="register" class="tab-content">
+                <h3>Create Account</h3>
+                <form id="registerForm">
+                    <input id="r_name" placeholder="Full name" required>
+                    <input id="r_email" placeholder="Email" type="email" required>
+                    <input id="r_password" placeholder="Password" type="password" required>
+                    <input id="r_phone" placeholder="Phone number" required>
+                    <input id="r_address" placeholder="Address" required>
+                    <button type="submit" class="gradient-btn" style="width: 100%; margin-top: 15px;">Register & Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('paymentModal')">✕</button>
+            <h3>Complete Your Payment</h3>
+            
+            <div id="paymentOrderSummary" style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                <!-- Order summary here -->
+            </div>
+
+            <h4 style="color: #8a7350; margin-top: 20px;">Bank Transfer Details</h4>
+            <div class="account-box">
+                <p><strong>Bank:</strong> Fidelity Bank</p>
+                <p><strong>Account Name:</strong> A's Collection</p>
+                <p><strong>Account Number:</strong> <span id="accNum">1234567890</span>
+                    <button type="button" class="copy-btn" onclick="copyAccountNumber()">Copy</button>
+                </p>
+            </div>
+
+            <p style="font-size: 13px; color: #666; margin: 15px 0;">After payment, enter your transaction reference below:</p>
+            
+            <form id="paymentForm">
+                <input type="text" id="txnRef" placeholder="Transaction Reference (e.g., FBN123456789)" required>
+                <button type="submit" class="gradient-btn" style="width: 100%; margin-top: 15px;">Confirm Payment</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/shop.js"></script>
 
 </div>
     <footer class="site-footer">

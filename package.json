@@ -1,0 +1,7 @@
+{
+  "name": "as-collection-shop",
+  "version": "1.0.0",
+  "scripts": {
+    "test-flow": "node scripts/test_flow.js"
+  }
+}

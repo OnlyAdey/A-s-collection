@@ -6,6 +6,17 @@
     <link rel="icon" type="image/x-icon" href="images/image6.jpg">
     <title>A's Collection</title>
     <style>
+        :root {
+            --page-ink: #241b2f;
+            --page-muted: #665d72;
+            --surface: rgba(255, 255, 255, 0.78);
+            --surface-strong: rgba(255, 255, 255, 0.92);
+            --line: rgba(255, 255, 255, 0.62);
+            --accent: #9a6b3f;
+            --accent-light: #d4af37;
+            --page-gradient: linear-gradient(135deg, #fff8ef 0%, #f6efff 48%, #eaf7f5 100%);
+        }
+
         body{
             margin: 0;
             padding: 0;
@@ -13,6 +24,34 @@
             overflow-x: hidden;
             width: 100%;
             font-family: 'Times New Roman', Times, serif;
+            color: var(--page-ink);
+            background: var(--page-gradient);
+            background-attachment: fixed;
+            position: relative;
+        }
+
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        body::before {
+            background:
+                radial-gradient(circle at 8% 12%, rgba(212, 175, 55, 0.2), transparent 28%),
+                radial-gradient(circle at 92% 34%, rgba(116, 184, 180, 0.2), transparent 30%),
+                radial-gradient(circle at 48% 100%, rgba(154, 107, 63, 0.14), transparent 34%);
+            filter: blur(18px);
+        }
+
+        body::after {
+            background-image: linear-gradient(rgba(255,255,255,0.22) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.22) 1px, transparent 1px);
+            background-size: 42px 42px;
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,0.35), transparent 70%);
         }
         
         .navbar{
@@ -25,15 +64,55 @@
             padding: 15px 5%;
             box-sizing: border-box;
             backdrop-filter: blur(15px);
-            background: rgba(255,255,255,0.95);
+            -webkit-backdrop-filter: blur(15px);
+            background: rgba(255,255,255,0.72);
+            border-bottom: 1px solid var(--line);
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             z-index: 1000;
+            gap: 20px;
+        }
+        
+        .logo-section{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+        
+        .logo-img{
+            height: 40px;
+            width: auto;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo-img:hover{
+            transform: scale(1.05);
         }
         
         .navbar .logo{
             font-weight: bold;
             color: #8a7350;
             font-size: 18px;
+        }
+        
+        .search-container{
+            flex: 1;
+            max-width: 300px;
+        }
+        
+        .search-input{
+            width: 100%;
+            padding: 8px 15px !important;
+            border: 1px solid #ddd !important;
+            border-radius: 20px !important;
+            font-size: 14px !important;
+            outline: none !important;
+            transition: all 0.3s !important;
+        }
+        
+        .search-input:focus{
+            border-color: #8a7350 !important;
+            box-shadow: 0 0 8px rgba(138, 115, 80, 0.2) !important;
         }
         
         .nav-links{
@@ -68,6 +147,11 @@
             color: #8a7350;
             transform: rotate(-6deg);
         }
+    @media (max-width: 900px) {
+        .search-container{
+            display: none;
+        }
+    }
     @media (max-width: 600px) {
         .navbar{
             flex-direction: column;
@@ -83,6 +167,12 @@
             font-size: 12px;
         }
         .gallery-grid { grid-template-columns: 1fr 1fr; }
+        .search-container{
+            display: block;
+            max-width: 100%;
+            width: 100%;
+            margin: 10px 0;
+        }
     }
     @media (max-width: 768px) {
     .main-layout {
@@ -334,7 +424,11 @@
     }
     .gallery-section{
         display: grid;
-        background: linear-gradient(to right, #e2b879, #494bac);
+        background: linear-gradient(135deg, rgba(255,255,255,0.68), rgba(238,225,255,0.58));
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border: 1px solid var(--line);
+        box-shadow: 0 20px 60px rgba(67, 46, 88, 0.14);
         margin-bottom: 30px;
         border-radius: 50px;
         width: 80vw;
@@ -348,12 +442,16 @@
     }
     .gallery-items{
         text-align: center;
-        background: white;
+        background: var(--surface-strong);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255,255,255,0.8);
         padding: 15px;
         border-radius: 15px;
         box-shadow: 0 4px 10px rgba(0 0 0 0.1);
         transition: transform 0.3s ease;
         cursor: pointer;
+        box-shadow: 0 12px 28px rgba(67, 46, 88, 0.12);
     }
     .gallery-items img {
     width: 100%;       
@@ -442,10 +540,22 @@
 </style>
 </head>
     <nav class="navbar">
-        <div class="logo">A's Collection</div>
+        <div class="logo-section">
+            <img src="images/logo.png" alt="A's Collection" class="logo-img" style="height: 40px; width: auto; margin-right: 10px;">
+            <span class="logo">A's Collection</span>
+        </div>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search perfumes..." class="search-input">
+        </div>
         <ul class="nav-links">
             <li><a href="#about"> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"> <path d="M20 19v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle></svg>About us</a></li>
+            <li style="position: relative;">
+                <button id="categoryMenuBtn" style="background: none; border: none; cursor: pointer; font-size: 20px; color: #333; padding: 0; display: flex; align-items: center;" title="Categories">⋯</button>
+                <div id="categoryMenu" style="display: none; position: absolute; top: 100%; right: 0; background: white; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 1001; min-width: 180px;">
+                    <ul id="categoryDropdown" style="list-style: none; margin: 0; padding: 0;"></ul>
+                </div>
+            </li>
             <li><button id="cartNavBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
   <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -461,16 +571,16 @@
 
     <div class="wrapper">
         <div class="scroll-track">
-            <img src="a's collection/images/image1.jpg" alt="Perfume 1">
-            <img src="a's collection/images/image2.jpg" alt="Perfume 2">
-            <img src="a's collection/images/image3.jpg" alt="Perfume 3">
-            <img src="a's collection/images/image4.jpg" alt="Perfume 4">
-            <img src="a's collection/images/image5.jpg" alt="Perfume 5">
-            <img src="a's collection/images/image6.jpg" alt="Perfume 1">
-            <img src="a's collection/images/image8.jpeg" alt="Perfume 2">
-            <img src="a's collection/images/image10.jpg" alt="Perfume 3">
-            <img src="a's collection/images/image11.jpg" alt="Perfume 4">
-            <img src="a's collection/images/image12.jpg" alt="Perfume 5">
+            <img src="images/wrapper1.jpg" alt="Featured 1" onerror="this.src='images/image1.jpg'">
+            <img src="images/wrapper2.jpg" alt="Featured 2" onerror="this.src='images/image2.jpg'">
+            <img src="images/wrapper3.jpg" alt="Featured 3" onerror="this.src='images/image3.jpg'">
+            <img src="images/wrapper4.jpg" alt="Featured 4" onerror="this.src='images/image4.jpg'">
+            <img src="images/wrapper5.jpg" alt="Featured 5" onerror="this.src='images/image5.jpg'">
+            <img src="images/wrapper1.jpg" alt="Featured 1" onerror="this.src='images/image1.jpg'">
+            <img src="images/wrapper2.jpg" alt="Featured 2" onerror="this.src='images/image2.jpg'">
+            <img src="images/wrapper3.jpg" alt="Featured 3" onerror="this.src='images/image3.jpg'">
+            <img src="images/wrapper4.jpg" alt="Featured 4" onerror="this.src='images/image4.jpg'">
+            <img src="images/wrapper5.jpg" alt="Featured 5" onerror="this.src='images/image5.jpg'">
         </div>
     </div>
     
@@ -499,7 +609,7 @@
     <section class="services-section" id="about">
         <div class="services-grid">
             <div class="service-card">
-                <div class="about-us"><img  src="a's collection/image16.jpg" alt="about us"></div>
+                <div class="about-us"><img  src="a's collection\images\image16.jpg" alt="about us"></div>
                 <p>Abuja, get ready to level up your scent game! A's collection officially dropped in October 2024, and since then, we've been the ultimate plug for fire fragrances straight from the heart of Naija's capital. No more settling for less we're talking premium Arabian perfumes that hit like a desert storm, designer perfumes channeling big-name vibes on a real and friendly budget, airy body mists and sprays for that instant glow-up, sweat-proof antiperspirants with killer scents, slick roll-ons for quick fixes, and mini perfumes that travel lighter than your ex's drama.
 
 Why us? Because we're Abuja born and bred, we know the hustle: hot weather demanding all-day freshness, cultural vibes calling for bold ouds and florals, and that need for scents that last from morning traffic to evening owambe. Our Arabian collection? Pure magic, think velvety taifs, spicy musks, and rose explosions that turn heads at every aso-ebi event. Designer picks give you Chanel-level class without the passport stress. Mists and sprays? Hydrating heroes for daily slay. Antiperspirants keep you dry and drippin'. Roll-ons and minis? Your purse MVPs for spontaneous freshness.
@@ -559,6 +669,15 @@ We're all about fast shipping across Nigeria, wallet-friendly prices, and bangin
         </div>
     </div>
 
+    <!-- Product Modal -->
+    <div id="productModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div id="productModalContent">
+                <!-- Product details populated here -->
+            </div>
+        </div>
+    </div>
+
     <!-- Payment Modal -->
     <div id="paymentModal" class="modal">
         <div class="modal-content">
@@ -569,25 +688,40 @@ We're all about fast shipping across Nigeria, wallet-friendly prices, and bangin
                 <!-- Order summary here -->
             </div>
 
-            <h4 style="color: #8a7350; margin-top: 20px;">Bank Transfer Details</h4>
-            <div class="account-box">
-                <p><strong>Bank:</strong> Fidelity Bank</p>
-                <p><strong>Account Name:</strong> A's Collection</p>
-                <p><strong>Account Number:</strong> <span id="accNum">1234567890</span>
-                    <button type="button" class="copy-btn" onclick="copyAccountNumber()">Copy</button>
-                </p>
-            </div>
+            <h4 style="color: #8a7350; margin-top: 20px;">Delivery Destination</h4>
+            <select id="deliveryDestination" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; margin-bottom: 15px;">
+                <option value="" data-fee="0">Select delivery location...</option>
+                <option value="Pick up" data-fee="0">Pick up</option>
+                <option value="Abuja Central" data-fee="2000">Abuja Central - ₦2,000</option>
+                <option value="Abuja Satellite Towns" data-fee="2500">Abuja Satellite Towns - ₦2,500</option>
+                <option value="Lagos" data-fee="5000">Lagos - ₦5,000</option>
+                <option value="Interstate Shipping" data-fee="8000">Interstate Shipping - ₦8,000</option>
+            </select>
 
-            <p style="font-size: 13px; color: #666; margin: 15px 0;">After payment, enter your transaction reference below:</p>
+            <h4 style="color: #8a7350; margin-top: 20px;">Payment Method</h4>
+            <p style="font-size: 14px; color: #666; margin: 10px 0;">Click the button below to proceed with secure Paystack payment:</p>
             
-            <form id="paymentForm">
-                <input type="text" id="txnRef" placeholder="Transaction Reference (e.g., FBN123456789)" required>
-                <button type="submit" class="gradient-btn" style="width: 100%; margin-top: 15px;">Confirm Payment</button>
+            <form id="paymentForm" style="margin-top: 15px;">
+                <button type="submit" class="gradient-btn" style="width: 100%; margin-top: 15px;">Pay with Paystack</button>
             </form>
+
+            <p style="font-size: 12px; color: #999; margin-top: 15px; text-align: center;">
+                Your payment is secured and encrypted. No card details are stored.
+            </p>
         </div>
     </div>
 
-    <script src="js/shop.js"></script>
+    <!-- Receipt Modal -->
+    <div id="receiptModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div id="receiptContent">
+                <!-- Receipt details populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script src="js/shop-new.js"></script>
 
 </div>
     <footer class="site-footer">

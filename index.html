@@ -1,749 +1,808 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="images/image6.jpg">
-    <title>A's Collection</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A's Collection | Luxury Fragrances</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Paystack Inline JS -->
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              cream: '#FAFAFA',
+              burgundy: '#2A1215',
+              gold: '#D4AF37',
+              plum: '#5A2D82',
+              midnight: '#0E0812',
+            },
+            boxShadow: {
+              luxe: '0 18px 50px rgba(42, 18, 21, 0.18)',
+            },
+            fontFamily: {
+              display: ['Georgia', 'serif'],
+            },
+          },
+        },
+      };
+    </script>
     <style>
-        :root {
-            --page-ink: #241b2f;
-            --page-muted: #665d72;
-            --surface: rgba(255, 255, 255, 0.78);
-            --surface-strong: rgba(255, 255, 255, 0.92);
-            --line: rgba(255, 255, 255, 0.62);
-            --accent: #9a6b3f;
-            --accent-light: #d4af37;
-            --page-gradient: linear-gradient(135deg, #fff8ef 0%, #f6efff 48%, #eaf7f5 100%);
-        }
-
-        body{
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            overflow-x: hidden;
-            width: 100%;
-            font-family: 'Times New Roman', Times, serif;
-            color: var(--page-ink);
-            background: var(--page-gradient);
-            background-attachment: fixed;
-            position: relative;
-        }
-
-        body::before,
-        body::after {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        body::before {
-            background:
-                radial-gradient(circle at 8% 12%, rgba(212, 175, 55, 0.2), transparent 28%),
-                radial-gradient(circle at 92% 34%, rgba(116, 184, 180, 0.2), transparent 30%),
-                radial-gradient(circle at 48% 100%, rgba(154, 107, 63, 0.14), transparent 34%);
-            filter: blur(18px);
-        }
-
-        body::after {
-            background-image: linear-gradient(rgba(255,255,255,0.22) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(255,255,255,0.22) 1px, transparent 1px);
-            background-size: 42px 42px;
-            mask-image: linear-gradient(to bottom, rgba(0,0,0,0.35), transparent 70%);
-        }
-        
-        .navbar{
-            position: sticky;
-            top: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            padding: 15px 5%;
-            box-sizing: border-box;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            background: rgba(255,255,255,0.72);
-            border-bottom: 1px solid var(--line);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            z-index: 1000;
-            gap: 20px;
-        }
-        
-        .logo-section{
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-shrink: 0;
-        }
-        
-        .logo-img{
-            height: 40px;
-            width: auto;
-            transition: transform 0.3s ease;
-        }
-        
-        .logo-img:hover{
-            transform: scale(1.05);
-        }
-        
-        .navbar .logo{
-            font-weight: bold;
-            color: #8a7350;
-            font-size: 18px;
-        }
-        
-        .search-container{
-            flex: 1;
-            max-width: 300px;
-        }
-        
-        .search-input{
-            width: 100%;
-            padding: 8px 15px !important;
-            border: 1px solid #ddd !important;
-            border-radius: 20px !important;
-            font-size: 14px !important;
-            outline: none !important;
-            transition: all 0.3s !important;
-        }
-        
-        .search-input:focus{
-            border-color: #8a7350 !important;
-            box-shadow: 0 0 8px rgba(138, 115, 80, 0.2) !important;
-        }
-        
-        .nav-links{
-            display: flex;
-            align-items: center;
-            list-style: none;
-            gap: 20px;
-            margin: 0;
-            padding: 0;
-        }
-        
-        .nav-links a, .nav-links button {
-            text-decoration: none;
-            color: #333;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            transition: 0.3s;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            padding: 0;
-        }
-        
-        .nav-links a svg, .nav-links button svg{
-            width: 24px;
-            height: 24px;
-        }
-        
-        .nav-links a:hover, .nav-links button:hover{
-            color: #8a7350;
-            transform: rotate(-6deg);
-        }
-    @media (max-width: 900px) {
-        .search-container{
-            display: none;
-        }
-    }
-    @media (max-width: 600px) {
-        .navbar{
-            flex-direction: column;
-            gap: 10px;
-        }
-        .nav-links{
-            display: flex;
-            justify-content: center;
-            width: 100%;
-        }
-        .nav-links a{
-            margin: 0 10px;
-            font-size: 12px;
-        }
-        .gallery-grid { grid-template-columns: 1fr 1fr; }
-        .search-container{
-            display: block;
-            max-width: 100%;
-            width: 100%;
-            margin: 10px 0;
-        }
-    }
-    @media (max-width: 768px) {
-    .main-layout {
-        flex-direction: column;
-    }
-}
-    
-    .wrapper{
-       margin-top: 50px;
-        display: flex;
-        grid-auto-flow: column;
-        grid-auto-columns: 12rem;
-        width: 100%;
-        overflow: hidden;
-        gap: 2rem;
-        position: relative;
-        background-color: antiquewhite;
-
-    }
-    .scroll-track {
-    display: flex;
-    width: max-content; 
-    animation: scroll 20s linear infinite;
-}
-
-@keyframes scroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); } 
-}
-
-.scroll-track img {
-    width: 250px; 
-    height: 180px;
-    object-fit: cover;
-    margin: 0 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    flex-shrink: 0;
-}
-    .scroll-track:hover{
-        animation-play-state: paused;
-    }
-    .scroll-track img:hover{
-        transform: scale(1.1);
-    }
-    .button-center{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        margin-top: 50px;
-        margin-bottom: 60px;
-    }
-    .gradient-btn {
-      position: relative;
-      padding: 12px 24px;
-      border: none;
-      color: white;
-      background: linear-gradient(to right, #8a7350, #d4af37); 
-      z-index: 1;
-      cursor: pointer;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.6);
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-    }
-    
-    .modal-content {
-      background: #fff;
-      padding: 25px;
-      border-radius: 12px;
-      max-width: 500px;
-      width: 90%;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    }
-    
-    .close-modal {
-      float: right;
-      background: none;
-      border: none;
-      font-size: 24px;
-      cursor: pointer;
-      color: #666;
-      margin-bottom: 10px;
-    }
-    
-    .close-modal:hover { color: #000; }
-    
-    .tabs {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-      border-bottom: 1px solid #eee;
-    }
-    
-    .tab-btn {
-      background: none;
-      border: none;
-      padding: 10px 15px;
-      cursor: pointer;
-      font-size: 14px;
-      color: #999;
-      border-bottom: 2px solid transparent;
-      transition: all 0.3s ease;
-    }
-    
-    .tab-btn.active {
-      color: #8a7350;
-      border-bottom-color: #8a7350;
-    }
-    
-    .tab-content {
-      display: none;
-    }
-    
-    .tab-content.active {
-      display: block;
-    }
-    
-    #loginForm, #registerForm, #paymentForm {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    
-    #loginForm input, #registerForm input, #paymentForm input {
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      font-size: 14px;
-    }
-    
-    #loginForm input:focus, #registerForm input:focus, #paymentForm input:focus {
-      outline: none;
-      border-color: #8a7350;
-      box-shadow: 0 0 5px rgba(138, 115, 80, 0.3);
-    }
-    
-    .account-box {
-      background: #f9f9f9;
-      padding: 15px;
-      border-radius: 8px;
-      border: 1px solid #e0e0e0;
-      margin: 15px 0;
-    }
-    
-    .account-box p {
-      margin: 8px 0;
-      font-size: 14px;
-    }
-    
-    .copy-btn {
-      background: #8a7350;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 4px;
-      font-size: 12px;
-      cursor: pointer;
-      margin-left: 10px;
-    }
-    
-    .copy-btn:hover { background: #6d5a40; }
-    
-    #cartItems {
-      margin: 15px 0;
-    }
-    
-    .cart-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px;
-      border-bottom: 1px solid #eee;
-      font-size: 14px;
-    }
-    
-    .cart-item:last-child { border-bottom: none; }
-    
-    .cart-total {
-      padding: 15px;
-      background: #f9f9f9;
-      text-align: right;
-      font-weight: bold;
-      border-top: 2px solid #ddd;
-      margin-top: 10px;
-    }
-    
-    #paymentOrderSummary {
-      background: #f9f9f9;
-      padding: 15px;
-      border-radius: 8px;
-      margin: 15px 0;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-.gradient-btn::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(to right, #4a3f35, #8a7350);
-  z-index: -1;
-  opacity: 0; 
-  transition: opacity 0.5s ease; 
-}
-.gradient-btn:hover::before {
-  opacity: 1; 
-}
-    
-    @keyframes animate{
-        to{
-            transform: translateX(calc(-5* (12rem + 1rem)));
-        }
-    }
-    section{
-        padding: 80px 10%;
-        width: 100%;
-    }
-    .hero-section{
-        text-align: center;
-        margin-top: 40px;
-        margin-bottom: 40px;
-        min-height: 20vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        border-radius: 50px 50px 50px 50px;
-        width:80vw;
-        background: linear-gradient(to right, #494bac, #4c0b72);
-        color: white;
-        box-shadow: black;
-        cursor: pointer;
-        transition: all 0.5s ease;
-    }
-    .hero-section:hover{
-        box-shadow: 0 0 30px #0f1046;
-        transform: translateY(-5px);
-    }
-    .gallery-section{
-        display: grid;
-        background: linear-gradient(135deg, rgba(255,255,255,0.68), rgba(238,225,255,0.58));
-        backdrop-filter: blur(18px);
-        -webkit-backdrop-filter: blur(18px);
-        border: 1px solid var(--line);
-        box-shadow: 0 20px 60px rgba(67, 46, 88, 0.14);
-        margin-bottom: 30px;
-        border-radius: 50px;
-        width: 80vw;
-        
-    }
-    .gallery-grid{
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 20px;
-        padding: 20px;
-    }
-    .gallery-items{
-        text-align: center;
-        background: var(--surface-strong);
+      html { scroll-behavior: smooth; }
+      body {
+        font-family: 'Segoe UI', sans-serif;
+        background: #fafafa;
+        color: #2a1215;
+      }
+      .glass {
+        background: rgba(255,255,255,0.18);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255,255,255,0.8);
-        padding: 15px;
-        border-radius: 15px;
-        box-shadow: 0 4px 10px rgba(0 0 0 0.1);
-        transition: transform 0.3s ease;
-        cursor: pointer;
-        box-shadow: 0 12px 28px rgba(67, 46, 88, 0.12);
-    }
-    .gallery-items img {
-    width: 100%;       
-    height: 300px;     
-    object-fit: cover; 
-    display: block;
-    border-radius: 10px;
-}
-
-.gallery-items p {
-    margin-top: 15px;
-    font-weight: bold;
-    color: #333;
-}
-
-.gallery-items span {
-    color: #8a7350; 
-    font-size: 0.9rem;
-}
-
-.gallery-items:hover {
-    transform: scale(1.05);
-}
-    .services-section{
-        background:linear-gradient(to left, #0d1b2a, #5787bb ) ;
-        color: white;
-        width: 80vw;
-        border-radius: 50px 50px 50px 50px;
-        cursor: pointer;
-        transition: all 0.5s ease;
-        margin-bottom: 80px;
-        text-align: justify;
-    }
-    .about-us{
-        display: flex;
-        justify-content: center;
-         margin-bottom: 20px;
-    }
-    .about-us img{
-        display: block;
-        width: 250px;       
-        height: 70px;
-        object-fit: cover;
-        border-radius: 30px;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-    }
-    html {
-    scroll-behavior: smooth;
-}
-    .services-section:hover{
-        box-shadow: 0 0 30px #0f1046;
-        transform: translateY(-5px);
-    }
+      }
+      .floating-bottle { animation: floatBottle 4.5s ease-in-out infinite; }
+      .ticker { overflow: hidden; white-space: nowrap; }
+      .ticker-track { display: inline-flex; min-width: max-content; animation: tickerMove 18s linear infinite; }
+      @keyframes floatBottle { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-16px); } }
+      @keyframes tickerMove { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+      .modal-backdrop { background: rgba(14, 8, 18, 0.72); }
+      .btn-gold { background: linear-gradient(135deg, #d4af37, #c99d2d); color: #2a1215; }
+      .product-card img { object-fit: cover; }
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+  </head>
+  <body class="min-h-screen bg-[#FAFAFA] text-[#2A1215]">
     
-    .site-footer {
-    background-color: #333;
-    color: white;
-    padding: 10px ;
-    text-align: center;
-}
-
-.footer{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-}
-
-.social-icons {
-    display: flex;
-    gap: 15px;
-}
-
-.social-link svg {
-    width: 28px;
-    height: 28px;
-    transition: transform 0.3s ease, color 0.3s ease;
-    fill: #8a7350; 
-}
-
-.social-link:hover svg {
-    transform: scale(1.2);
-    fill: #ffffff; 
-}
-</style>
-</head>
-    <nav class="navbar">
-        <div class="logo-section">
-            <img src="images/logo.png" alt="A's Collection" class="logo-img" style="height: 40px; width: auto; margin-right: 10px;">
-            <span class="logo">A's Collection</span>
+    <!-- HEADER -->
+    <header class="sticky top-0 z-40 border-b border-[#e9dfd4] bg-[#FAFAFA]/90 backdrop-blur-lg">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+        <div class="flex items-center gap-3">
+          <div class="flex h-11 w-11 items-center justify-center rounded-full bg-[#2A1215] text-lg font-bold text-[#D4AF37] shadow">A</div>
+          <div>
+            <div class="font-display text-2xl font-bold tracking-wide">A's Collection</div>
+            <div class="text-[10px] uppercase tracking-[0.3em] text-[#7c6a63]">Luxury Fragrance House</div>
+          </div>
         </div>
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Search perfumes..." class="search-input">
-        </div>
-        <ul class="nav-links">
-            <li><a href="#about"> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"> <path d="M20 19v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle></svg>About us</a></li>
-            <li style="position: relative;">
-                <button id="categoryMenuBtn" style="background: none; border: none; cursor: pointer; font-size: 20px; color: #333; padding: 0; display: flex; align-items: center;" title="Categories">⋯</button>
-                <div id="categoryMenu" style="display: none; position: absolute; top: 100%; right: 0; background: white; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 1001; min-width: 180px;">
-                    <ul id="categoryDropdown" style="list-style: none; margin: 0; padding: 0;"></ul>
-                </div>
-            </li>
-            <li><button id="cartNavBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
-  <line x1="3" y1="6" x2="21" y2="6"></line>
-  <path d="M16 10a4 4 0 0 1-8 0"></path>
-</svg><span id="cartBadge">0</span> Cart</button></li>
-            <li><a href="https://mail.google.com/mail/u/0/:ascollection348@gmail.com" target="_blank"> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-</svg>Contact us</a></li>
-            <li><button id="authNavBtn" style="color: #8a7350; font-weight: bold;">Login</button></li>
-        </ul>
-    </nav>
 
-    <div class="wrapper">
-        <div class="scroll-track">
-            <img src="images/wrapper1.jpg" alt="Featured 1" onerror="this.src='images/image1.jpg'">
-            <img src="images/wrapper2.jpg" alt="Featured 2" onerror="this.src='images/image2.jpg'">
-            <img src="images/wrapper3.jpg" alt="Featured 3" onerror="this.src='images/image3.jpg'">
-            <img src="images/wrapper4.jpg" alt="Featured 4" onerror="this.src='images/image4.jpg'">
-            <img src="images/wrapper5.jpg" alt="Featured 5" onerror="this.src='images/image5.jpg'">
-            <img src="images/wrapper1.jpg" alt="Featured 1" onerror="this.src='images/image1.jpg'">
-            <img src="images/wrapper2.jpg" alt="Featured 2" onerror="this.src='images/image2.jpg'">
-            <img src="images/wrapper3.jpg" alt="Featured 3" onerror="this.src='images/image3.jpg'">
-            <img src="images/wrapper4.jpg" alt="Featured 4" onerror="this.src='images/image4.jpg'">
-            <img src="images/wrapper5.jpg" alt="Featured 5" onerror="this.src='images/image5.jpg'">
+        <nav class="hidden items-center gap-7 text-sm font-medium md:flex">
+          <a href="#bestsellers" class="transition hover:text-[#D4AF37]">Bestsellers</a>
+          <a href="#discover" class="transition hover:text-[#D4AF37]">Collections</a>
+          <a href="#builder" class="transition hover:text-[#D4AF37]">Build a Set</a>
+          <a href="#checkout" class="transition hover:text-[#D4AF37]">Checkout</a>
+        </nav>
+
+        <div class="flex items-center gap-3">
+          <!-- Countdown Timer Widget -->
+          <div id="saleTimer" class="hidden sm:flex flex-col items-end rounded-xl border border-[#D4AF37]/30 bg-[#2A1215] px-3 py-1.5 text-white">
+            <span class="text-[9px] uppercase tracking-wider text-[#D4AF37]" id="timerLabel">Sales Start In</span>
+            <span id="countdownDisplay" class="font-mono text-xs font-bold">00d 00h 00m 00s</span>
+          </div>
+
+          <button id="cartBtn" class="relative rounded-full border border-[#e3d5c6] bg-white px-4 py-2 text-sm font-medium shadow-sm transition hover:border-[#D4AF37] hover:text-[#D4AF37]">
+            Cart <span id="cartCount" class="ml-2 inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-[#2A1215] px-1 text-[10px] text-white">0</span>
+          </button>
+          <button id="openCheckoutBtn" class="btn-gold rounded-full px-4 py-2 text-sm font-semibold shadow-md transition hover:scale-[1.02]">
+            Buy Now
+          </button>
         </div>
-    </div>
-    
-    <section class="hero-section" id="hero">
-        <div class="content-wrapper">
-            <h1>A's Collection</h1>
-            <p>Discover the luxury of quality fragrances that speaks before you do. Our perfumes are carefully crafted to capture moments, emotions, and identity in every spray. Whether you prefer something bold and unforgettable or soft and intimate, each fragrance is designed to leave a lasting impression</p>
-            <div class="button-center">
-                    <a href="https://wa.me/c/2348057867908"><button class="gradient-btn">Contact Us on WhatsApp</button></a>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <!-- HERO -->
+      <section class="mb-8 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+        <div class="relative overflow-hidden rounded-[32px] bg-[#2A1215] p-8 text-white shadow-luxe">
+          <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(212,175,55,0.32),_transparent_24%),radial-gradient(circle_at_bottom_left,_rgba(145,117,233,0.18),_transparent_30%)]"></div>
+          <div class="relative z-10">
+            <div class="mb-4 inline-flex items-center rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.25em] text-[#f9e5a6]">Sept 21–26 Promotional Event</div>
+            <h1 class="max-w-md font-display text-5xl leading-none tracking-tight">Own every moment in scent.</h1>
+            <p class="mt-5 max-w-lg text-sm leading-7 text-white/75">Enjoy 10% off all perfumes from Sept 21-26, or 15% off orders above ₦15,000.</p>
+            <div class="mt-8 flex flex-wrap gap-4">
+              <a href="#bestsellers" class="btn-gold rounded-full px-6 py-3 text-sm font-semibold shadow-lg transition hover:scale-[1.02]">Shop Bestsellers</a>
+              <a href="#discover" class="rounded-full border border-white/20 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10">Explore Gifts</a>
             </div>
+          </div>
         </div>
-    </section>
 
-<div class="main-layout">
-<div class="content-area">
-    <section class="gallery-section">
-        <h2>Featured Collection</h2>
-        <div id="productGrid" class="gallery-grid">
-            <!-- Products will be populated dynamically -->
-        </div>
-            
-        </div>
-    </section>
-
-
-    <section class="services-section" id="about">
-        <div class="services-grid">
-            <div class="service-card">
-                <div class="about-us"><img  src="a's collection\images\image16.jpg" alt="about us"></div>
-                <p>Abuja, get ready to level up your scent game! A's collection officially dropped in October 2024, and since then, we've been the ultimate plug for fire fragrances straight from the heart of Naija's capital. No more settling for less we're talking premium Arabian perfumes that hit like a desert storm, designer perfumes channeling big-name vibes on a real and friendly budget, airy body mists and sprays for that instant glow-up, sweat-proof antiperspirants with killer scents, slick roll-ons for quick fixes, and mini perfumes that travel lighter than your ex's drama.
-
-Why us? Because we're Abuja born and bred, we know the hustle: hot weather demanding all-day freshness, cultural vibes calling for bold ouds and florals, and that need for scents that last from morning traffic to evening owambe. Our Arabian collection? Pure magic, think velvety taifs, spicy musks, and rose explosions that turn heads at every aso-ebi event. Designer picks give you Chanel-level class without the passport stress. Mists and sprays? Hydrating heroes for daily slay. Antiperspirants keep you dry and drippin'. Roll-ons and minis? Your purse MVPs for spontaneous freshness.
-
-We're all about fast shipping across Nigeria, wallet-friendly prices, and banging deals: snag 10% off your first purchase and unlock up to 15% off as an existing customer. Join the squad that's redefining how Abuja smells. Shop at A's collection now and own the air!</p>
-<div class="about-btn-wrapper">
-    <a href="#hero">
-        <button class="gradient-btn">Shop Now</button>
-    </a>
-</div>
+        <div class="grid gap-4">
+          <div class="glass overflow-hidden rounded-[28px] border border-[#e9dfd4] p-4">
+            <div class="mb-3 flex items-center justify-between">
+              <div>
+                <div class="text-xs uppercase tracking-[0.2em] text-[#7a6e66]">Signature</div>
+                <div class="font-display text-3xl text-[#2A1215]">Velvet Bloom</div>
+              </div>
+              <div class="rounded-full bg-[#2A1215] px-3 py-1 text-xs font-semibold text-[#f7d87f]">Best seller</div>
             </div>
-        </div>
-    </section></div>
-
-    <!-- Cart Modal -->
-    <div id="cartModal" class="modal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="closeModal('cartModal')">✕</button>
-            <h3>Your Cart</h3>
-            <div id="cartItems" style="max-height: 400px; overflow-y: auto;">
-                <!-- Cart items populated here -->
+            <div class="relative overflow-hidden rounded-[22px] bg-gradient-to-br from-[#fef9f2] to-[#f4e8d7] p-4">
+              <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=80" alt="Luxury perfume bottle" class="h-64 w-full rounded-[18px] object-cover" />
             </div>
-        </div>
-    </div>
-
-    <!-- Auth Modal (Login/Register) -->
-    <div id="authModal" class="modal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="closeModal('authModal')">✕</button>
-            <div class="tabs">
-                <button class="tab-btn active" onclick="switchTab('login', this)">Login</button>
-                <button class="tab-btn" onclick="switchTab('register', this)">Register</button>
+            <div class="mt-4 flex items-center justify-between">
+              <div>
+                <div class="text-xs uppercase tracking-[0.2em] text-[#8e7a6f]">From</div>
+                <div class="text-2xl font-bold text-[#2A1215]">₦18,000</div>
+              </div>
+              <button class="rounded-full border border-[#D4AF37] bg-[#fffaf0] px-4 py-2 text-sm font-semibold text-[#2A1215] transition hover:bg-[#f9e9ba]" onclick="quickAdd(1)">Add to cart</button>
             </div>
-
-            <!-- Login Tab -->
-            <div id="login" class="tab-content active">
-                <h3>Login</h3>
-                <form id="loginForm">
-                    <input type="email" id="loginEmail" placeholder="Email" required>
-                    <input type="password" id="loginPassword" placeholder="Password" required>
-                    <button type="submit" class="gradient-btn" style="width: 100%; margin-top: 15px;">Login</button>
-                </form>
-            </div>
-
-            <!-- Register Tab -->
-            <div id="register" class="tab-content">
-                <h3>Create Account</h3>
-                <form id="registerForm">
-                    <input id="r_name" placeholder="Full name" required>
-                    <input id="r_email" placeholder="Email" type="email" required>
-                    <input id="r_password" placeholder="Password" type="password" required>
-                    <input id="r_phone" placeholder="Phone number" required>
-                    <input id="r_address" placeholder="Address" required>
-                    <button type="submit" class="gradient-btn" style="width: 100%; margin-top: 15px;">Register & Login</button>
-                </form>
-            </div>
+          </div>
         </div>
-    </div>
+      </section>
 
-    <!-- Product Modal -->
-    <div id="productModal" class="modal">
-        <div class="modal-content" style="max-width: 600px;">
-            <div id="productModalContent">
-                <!-- Product details populated here -->
+      <!-- TICKER -->
+      <section class="mb-8 rounded-[30px] bg-[#2A1215] p-5 text-white shadow-luxe">
+        <div class="ticker">
+          <div class="ticker-track gap-8 text-sm font-medium">
+            <span>Velvet Bloom — ₦18,000</span>
+            <span>Golden Oud — ₦22,000</span>
+            <span>Khamrah by Lattafa — ₦45,000</span>
+            <span>Noir Reserve — ₦26,000</span>
+            <span>Velvet Bloom — ₦18,000</span>
+            <span>Golden Oud — ₦22,000</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- CATEGORIES DISCOVER -->
+      <section id="discover" class="mb-10">
+        <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.25em] text-[#8e7a6f]">Curated categories</p>
+            <h2 class="font-display text-4xl text-[#2A1215]">Find your signature mood</h2>
+          </div>
+        </div>
+
+        <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+          <article class="group relative overflow-hidden rounded-[28px] bg-cover bg-center min-h-[260px] shadow-luxe" style="background-image: linear-gradient(rgba(0,0,0,0.48), rgba(0,0,0,0.48)), url('https://images.unsplash.com/photo-1528740561666-dc2479dc08ab?auto=format&fit=crop&w=900&q=80');">
+            <div class="flex h-full flex-col justify-end p-6">
+              <div class="text-xs uppercase tracking-[0.3em] text-[#f4e5a7]">Arabian Perfumes</div>
+              <h3 class="mt-3 font-display text-3xl text-white">Rich & Exotic</h3>
             </div>
-        </div>
-    </div>
-
-    <!-- Payment Modal -->
-    <div id="paymentModal" class="modal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="closeModal('paymentModal')">✕</button>
-            <h3>Complete Your Payment</h3>
-            
-            <div id="paymentOrderSummary" style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin: 15px 0;">
-                <!-- Order summary here -->
+          </article>
+          <article class="group relative overflow-hidden rounded-[28px] bg-cover bg-center min-h-[260px] shadow-luxe" style="background-image: linear-gradient(rgba(0,0,0,0.48), rgba(0,0,0,0.48)), url('https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=900&q=80');">
+            <div class="flex h-full flex-col justify-end p-6">
+              <div class="text-xs uppercase tracking-[0.3em] text-[#f4e5a7]">Designer Perfumes</div>
+              <h3 class="mt-3 font-display text-3xl text-white">Couture Elegance</h3>
             </div>
-
-            <h4 style="color: #8a7350; margin-top: 20px;">Delivery Destination</h4>
-            <select id="deliveryDestination" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; margin-bottom: 15px;">
-                <option value="" data-fee="0">Select delivery location...</option>
-                <option value="Pick up" data-fee="0">Pick up</option>
-                <option value="Abuja Central" data-fee="2000">Abuja Central - ₦2,000</option>
-                <option value="Abuja Satellite Towns" data-fee="2500">Abuja Satellite Towns - ₦2,500</option>
-                <option value="Lagos" data-fee="5000">Lagos - ₦5,000</option>
-                <option value="Interstate Shipping" data-fee="8000">Interstate Shipping - ₦8,000</option>
-            </select>
-
-            <h4 style="color: #8a7350; margin-top: 20px;">Payment Method</h4>
-            <p style="font-size: 14px; color: #666; margin: 10px 0;">Click the button below to proceed with secure Paystack payment:</p>
-            
-            <form id="paymentForm" style="margin-top: 15px;">
-                <button type="submit" class="gradient-btn" style="width: 100%; margin-top: 15px;">Pay with Paystack</button>
-            </form>
-
-            <p style="font-size: 12px; color: #999; margin-top: 15px; text-align: center;">
-                Your payment is secured and encrypted. No card details are stored.
-            </p>
-        </div>
-    </div>
-
-    <!-- Receipt Modal -->
-    <div id="receiptModal" class="modal">
-        <div class="modal-content" style="max-width: 600px;">
-            <div id="receiptContent">
-                <!-- Receipt details populated here -->
+          </article>
+          <article class="group relative overflow-hidden rounded-[28px] bg-cover bg-center min-h-[260px] shadow-luxe" style="background-image: linear-gradient(rgba(0,0,0,0.48), rgba(0,0,0,0.48)), url('https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&w=900&q=80');">
+            <div class="flex h-full flex-col justify-end p-6">
+              <div class="text-xs uppercase tracking-[0.3em] text-[#f4e5a7]">Oil Perfume</div>
+              <h3 class="mt-3 font-display text-3xl text-white">Pure & Concentrated</h3>
             </div>
+          </article>
+          <article class="group relative overflow-hidden rounded-[28px] bg-cover bg-center min-h-[260px] shadow-luxe" style="background-image: linear-gradient(rgba(0,0,0,0.48), rgba(0,0,0,0.48)), url('https://images.unsplash.com/photo-1585386959984-a4155224a1ad?auto=format&fit=crop&w=900&q=80');">
+            <div class="flex h-full flex-col justify-end p-6">
+              <div class="text-xs uppercase tracking-[0.3em] text-[#f4e5a7]">Giftset / Box</div>
+              <h3 class="mt-3 font-display text-3xl text-white">Luxury Bundles</h3>
+            </div>
+          </article>
         </div>
-    </div>
+      </section>
 
-    <script src="https://js.paystack.co/v1/inline.js"></script>
-    <script src="js/shop-new.js"></script>
+      <!-- CATALOG / BESTSELLERS -->
+      <section id="bestsellers" class="mb-10">
+        <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.25em] text-[#8e7a6f]">Loved by thousands</p>
+            <h2 class="font-display text-4xl text-[#2A1215]">Our Catalog</h2>
+          </div>
 
-</div>
-    <footer class="site-footer">
-        <div class="footer">
-            <p>© 2026 Ade. All rights reserved</p>
-            <div class="social-icons">
-            <a href="https://wa.me/08057867908" class="social-link">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-2.32 0-4.591 1.399-4.591 4.582 0 1.25.438 2.383 1.156 3.25l-.844 3.094 3.172-.828c.812.438 1.734.688 2.703.688 3.328 0 5.25-2.203 5.25-4.812.016-2.906-2.141-5.974-6.846-5.974zm-.016 1.015c4.016 0 5.828 2.594 5.828 4.969 0 2.219-1.578 3.828-4.281 3.828-.844 0-1.641-.219-2.328-.594l-.188-.109-1.938.5.516-1.891-.125-.188c-.641-.953-1.016-2.063-1.016-3.266 0-2.609 1.859-3.25 3.532-3.25z"/></svg>
-            </a>
-
-            <a href="https://instagram.com/ascol_lection33" class="social-link">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-            </a>
-            
-            <a href="https://facebook.com/yourpage" class="social-link">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/></svg>
-            </a>
+          <div class="flex flex-wrap gap-2">
+            <button class="filter-btn active rounded-full border border-[#2A1215]/10 bg-[#2A1215] px-3 py-2 text-xs font-semibold text-white" data-category="all">All</button>
+            <button class="filter-btn rounded-full border border-[#2A1215]/10 bg-white px-3 py-2 text-xs font-semibold text-[#2A1215]" data-category="Arabian perfumes">Arabian perfumes</button>
+            <button class="filter-btn rounded-full border border-[#2A1215]/10 bg-white px-3 py-2 text-xs font-semibold text-[#2A1215]" data-category="Designer perfumes">Designer perfumes</button>
+            <button class="filter-btn rounded-full border border-[#2A1215]/10 bg-white px-3 py-2 text-xs font-semibold text-[#2A1215]" data-category="Oil perfume">Oil perfume</button>
+            <button class="filter-btn rounded-full border border-[#2A1215]/10 bg-white px-3 py-2 text-xs font-semibold text-[#2A1215]" data-category="Body mists/spray">Body mists/spray</button>
+            <button class="filter-btn rounded-full border border-[#2A1215]/10 bg-white px-3 py-2 text-xs font-semibold text-[#2A1215]" data-category="Giftset/box">Giftset/box</button>
+          </div>
         </div>
-    </div>
-    </div>
+
+        <div id="productGrid" class="grid gap-6 md:grid-cols-2 xl:grid-cols-4"></div>
+      </section>
+
+      <!-- BUDGET BUILDER -->
+      <section id="builder" class="mb-10 rounded-[32px] border border-[#efe3d4] bg-white p-6 shadow-luxe lg:p-8">
+        <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.25em] text-[#8e7a6f]">Budget builder</p>
+            <h2 class="font-display text-4xl text-[#2A1215]">Create your combo</h2>
+          </div>
+          <div class="flex items-center gap-2 rounded-full border border-[#e7d8c7] bg-[#fffaf5] px-3 py-2">
+            <span class="text-xs uppercase tracking-[0.2em] text-[#8b7b6d]">Total</span>
+            <span id="builderTotal" class="text-lg font-bold text-[#2A1215]">₦0</span>
+          </div>
+        </div>
+
+        <div id="comboItems" class="grid gap-4 sm:grid-cols-2"></div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-[#e9dfd4] bg-[#2A1215] py-12 text-white">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="grid gap-8 md:grid-cols-4">
+          <div>
+            <div class="flex items-center gap-3">
+              <div class="flex h-9 w-9 items-center justify-center rounded-full bg-[#D4AF37] font-bold text-[#2A1215]">A</div>
+              <span class="font-display text-xl font-bold">A's Collection</span>
+            </div>
+            <p class="mt-4 text-xs leading-6 text-white/70">Elevating confidence with authentic luxury fragrances and bespoke scent profiles.</p>
+          </div>
+          <div>
+            <h4 class="mb-3 text-xs font-semibold uppercase tracking-widest text-[#D4AF37]">Categories</h4>
+            <ul class="space-y-2 text-xs text-white/75">
+              <li><a href="#bestsellers" class="hover:text-[#D4AF37]">Arabian Perfumes</a></li>
+              <li><a href="#bestsellers" class="hover:text-[#D4AF37]">Designer Perfumes</a></li>
+              <li><a href="#bestsellers" class="hover:text-[#D4AF37]">Oil Perfumes</a></li>
+              <li><a href="#bestsellers" class="hover:text-[#D4AF37]">Giftsets & Boxes</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="mb-3 text-xs font-semibold uppercase tracking-widest text-[#D4AF37]">Customer Service</h4>
+            <ul class="space-y-2 text-xs text-white/75">
+              <li><a href="#checkout" class="hover:text-[#D4AF37]">Shipping & Delivery</a></li>
+              <li><a href="#" class="hover:text-[#D4AF37]">Order Tracking</a></li>
+              <li><a href="#" class="hover:text-[#D4AF37]">WhatsApp Support</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="mb-3 text-xs font-semibold uppercase tracking-widest text-[#D4AF37]">Location</h4>
+            <p class="text-xs text-white/75">Abuja, FCT, Nigeria</p>
+            <p class="mt-2 text-xs text-white/75">Support: +234 800 000 0000</p>
+          </div>
+        </div>
+        <div class="mt-8 border-t border-white/10 pt-6 text-center text-[11px] text-white/50">
+          © 2026 A's Collection. All rights reserved. Built for elegance.
+        </div>
+      </div>
     </footer>
-    
-</body>
 
+    <!-- PRODUCT MODAL WITH SWIPER / VARIANT SELECTOR -->
+    <div id="productModal" class="modal-backdrop fixed inset-0 z-50 hidden items-center justify-center p-4">
+      <div class="w-full max-w-4xl rounded-[30px] bg-[#0E0812] p-4 text-white shadow-[0_40px_90px_rgba(0,0,0,0.45)] md:p-6">
+        <div class="flex justify-end">
+          <button type="button" class="close-modal rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-sm text-white hover:bg-white/10">Close</button>
+        </div>
+        <div id="productModalContent" class="mt-3"></div>
+      </div>
+    </div>
+
+    <!-- CHECKOUT MODAL -->
+    <div id="checkoutModal" class="modal-backdrop fixed inset-0 z-50 hidden items-center justify-center p-4 overflow-y-auto">
+      <div class="w-full max-w-xl rounded-[30px] bg-white p-6 shadow-[0_40px_90px_rgba(0,0,0,0.3)] my-8">
+        <div class="mb-4 flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.28em] text-[#8d7b6d]">Checkout</p>
+            <h3 class="font-display text-3xl text-[#2A1215]">Complete your order</h3>
+          </div>
+          <button type="button" class="close-modal rounded-full border border-[#e7d8c7] bg-[#fffaf5] px-3 py-1.5 text-sm text-[#2A1215]">Close</button>
+        </div>
+
+        <form id="checkoutForm" class="space-y-4">
+          <div>
+            <label class="mb-1 block text-sm font-medium text-[#2A1215]">Full Name</label>
+            <input type="text" id="custName" required class="w-full rounded-xl border border-[#e7d8c7] px-4 py-2.5 text-sm outline-none focus:border-[#D4AF37]" />
+          </div>
+          <div>
+            <label class="mb-1 block text-sm font-medium text-[#2A1215]">Email Address</label>
+            <input type="email" id="custEmail" required class="w-full rounded-xl border border-[#e7d8c7] px-4 py-2.5 text-sm outline-none focus:border-[#D4AF37]" />
+          </div>
+          <div>
+            <label class="mb-1 block text-sm font-medium text-[#2A1215]">WhatsApp Phone Number</label>
+            <input type="tel" id="custPhone" required class="w-full rounded-xl border border-[#e7d8c7] px-4 py-2.5 text-sm outline-none focus:border-[#D4AF37]" placeholder="+234..." />
+          </div>
+
+          <!-- Destination Selector -->
+          <div>
+            <label class="mb-1 block text-sm font-medium text-[#2A1215]">Delivery Destination</label>
+            <select id="destinationSelect" required class="w-full rounded-xl border border-[#e7d8c7] px-4 py-2.5 text-sm outline-none focus:border-[#D4AF37]">
+              <option value="0" data-name="Pick Up">Select Destination</option>
+              <option value="2000" data-name="Abuja Central">Abuja Central (₦2,000)</option>
+              <option value="3500" data-name="Abuja Regional / Outskirts">Abuja Regional / Outskirts (₦3,500)</option>
+              <option value="4500" data-name="Lagos / State Capitals">Lagos / State Capitals (₦4,500)</option>
+              <option value="6000" data-name="Interstate Other Regions">Interstate Other Regions (₦6,000)</option>
+            </select>
+          </div>
+
+          <div class="rounded-[20px] bg-[#f8f2eb] p-4">
+            <div class="text-sm font-semibold text-[#2A1215]">Order summary</div>
+            <div id="checkoutSummary" class="mt-3 space-y-2 text-sm text-[#4b403b]"></div>
+          </div>
+
+          <button type="submit" class="btn-gold w-full rounded-full px-6 py-3 text-sm font-semibold shadow-md">Pay Now via Paystack</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- SUCCESS MODAL -->
+    <div id="successModal" class="modal-backdrop fixed inset-0 z-[60] hidden items-center justify-center p-4">
+      <div class="w-full max-w-md rounded-[30px] bg-[#2A1215] p-8 text-center text-white shadow-[0_40px_100px_rgba(0,0,0,0.45)]">
+        <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#D4AF37] text-2xl text-[#2A1215]">✓</div>
+        <h3 class="font-display text-3xl">Payment Successful!</h3>
+        <p class="mt-3 text-sm leading-7 text-white/75">Your order has been logged. An email with your tracking ID <span id="trackingIdDisplay" class="font-bold text-[#D4AF37]"></span> has been dispatched.</p>
+        <button type="button" class="close-modal mt-6 rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#2A1215]">Continue shopping</button>
+      </div>
+    </div>
+
+    <script>
+      // PRODUCTS CATALOG WITH VARIANT SWIPING & DUPLICATES READY FOR EDITING
+      const products = [
+        {
+          id: 1,
+          name: 'Opulent by Lattafa',
+          price: 25000,
+          category: 'Arabian perfumes',
+          badge: 'Best Seller',
+          description: 'Luxurious Arabian formulation rich in signature resins and woods.',
+          images: [
+            'images/opulent_oud.jpg',
+            'images/opulent_redmusk.jpg'
+          ],
+          variants: [
+            { name: 'Oud', price: 25000, image: 'images/opulent_oud.jpg' },
+            { name: 'Red Musk', price: 25000, image: 'images/opulent_redmusk.jpg' }
+          ]
+        },
+        {
+          id: 2,
+          name: 'Khamrah by Lattafa',
+          price: 45000,
+          category: 'Arabian perfumes',
+          badge: 'Popular',
+          description: 'Warm sweet gourmet fragrance with oriental spicy accents.',
+          images: [
+            'images/khamrah.jpg',
+            'images/khamrah_waha.jpg',
+            'images/khamrah_dukhan.jpg',
+            'images/khamrah_qhawa.jpg'
+          ],
+          variants: [
+            { name: 'Khamrah Standard', price: 45000, image: 'images/khamrah.jpg' },
+            { name: 'Khamrah Waha', price: 49000, image: 'images/khamrah_waha.jpg' },
+            { name: 'Khamrah Dukhan', price: 45000, image: 'images/khamrah_dukhan.jpg' },
+            { name: 'Khamrah Qhawa', price: 45000, image: 'images/khamrah_qhawa.jpg' }
+          ]
+        },
+        {
+          id: 3,
+          name: 'Asad by Lattafa',
+          price: 30000,
+          category: 'Arabian perfumes',
+          badge: 'Top Rated',
+          description: 'A dark, spicy signature for intense presence.',
+          images: [
+            'images/asad.jpg',
+            'images/asad_bourbon.jpg'
+          ],
+          variants: [
+            { name: 'Asad Standard', price: 30000, image: 'images/asad.jpg' },
+            { name: 'Asad Bourbon', price: 30000, image: 'images/asad_bourbon.jpg' }
+          ]
+        },
+        {
+          id: 4,
+          name: 'KALY 50ml',
+          price: 12000,
+          category: 'Designer perfumes',
+          badge: 'New',
+          description: 'Clean modern floral design for everyday elegance.',
+          images: ['images/kaly.jpg'],
+          variants: []
+        },
+        {
+          id: 5,
+          name: 'Confetti',
+          price: 5000,
+          category: 'Body mists/spray',
+          badge: 'Fresh',
+          description: 'Refreshing daily body spray with vibrant top notes.',
+          images: ['images/confetti.jpg'],
+          variants: []
+        },
+        {
+          id: 6,
+          name: 'Mousuf 4 in 1 (25ml)',
+          price: 20000,
+          category: 'Giftset/box',
+          badge: 'Luxury Gift',
+          description: 'Complete gift set featuring 4 iconic fragrance miniatures.',
+          images: ['images/mousuf_set.jpg'],
+          variants: []
+        },
+
+        /* TEMPLATE DUPLICATES - EDIT NAMES, CATEGORIES, PRICES & IMAGES HERE */
+        {
+          id: 7,
+          name: 'Custom Perfume 1',
+          price: 15000,
+          category: 'Oil perfume',
+          badge: 'New',
+          description: 'Edit description here.',
+          images: ['images/placeholder.jpg'],
+          variants: []
+        },
+        {
+          id: 8,
+          name: 'Custom Perfume 2',
+          price: 18000,
+          category: 'Body mists/spray',
+          badge: 'Special',
+          description: 'Edit description here.',
+          images: ['images/placeholder.jpg'],
+          variants: []
+        }
+      ];
+
+      const state = { activeCategory: 'all', cart: [], combo: [], deliveryFee: 0, deliveryDestination: '' };
+      const comboOptions = [
+        { id: '100ml', label: '100ml Bottle', price: 9500 },
+        { id: '50ml', label: '50ml Bottle', price: 6500 },
+        { id: '30ml', label: '30ml Pocket', price: 4200 },
+        { id: 'roll-on', label: 'Roll-on Oil', price: 1800 },
+        { id: 'mist', label: 'Body Mist', price: 3200 }
+      ];
+
+      function formatMoney(value) {
+        return new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', maximumFractionDigits: 0 }).format(value);
+      }
+
+      /* PROMOTIONAL DISCOUNT CALCULATION (SEPT 21 - SEPT 26) */
+      function calculateDiscount(subtotal) {
+        const now = new Date();
+        const year = now.getFullYear();
+        const saleStart = new Date(year, 8, 21, 0, 0, 0); // Sept 21
+        const saleEnd = new Date(year, 8, 26, 23, 59, 59); // Sept 26
+
+        const isSaleActive = (now >= saleStart && now <= saleEnd);
+        if (!isSaleActive) return 0;
+
+        if (subtotal > 15000) {
+          return subtotal * 0.15; // 15% discount
+        } else {
+          return subtotal * 0.10; // 10% discount
+        }
+      }
+
+      /* COUNTDOWN TIMER LOGIC */
+      function updateCountdown() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const saleStart = new Date(year, 8, 21, 0, 0, 0);
+        const saleEnd = new Date(year, 8, 26, 23, 59, 59);
+
+        const timerLabel = document.getElementById('timerLabel');
+        const display = document.getElementById('countdownDisplay');
+
+        let diff = 0;
+        if (now < saleStart) {
+          timerLabel.textContent = "Sales Start In";
+          diff = saleStart - now;
+        } else if (now >= saleStart && now <= saleEnd) {
+          timerLabel.textContent = "Sales End In";
+          diff = saleEnd - now;
+        } else {
+          timerLabel.textContent = "Promo Ended";
+          display.textContent = "00d 00h 00m 00s";
+          return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const mins = Math.floor((diff / 1000 / 60) % 60);
+        const secs = Math.floor((diff / 1000) % 60);
+
+        display.textContent = `${String(days).padStart(2,'0')}d ${String(hours).padStart(2,'0')}h ${String(mins).padStart(2,'0')}m ${String(secs).padStart(2,'0')}s`;
+      }
+      setInterval(updateCountdown, 1000);
+      updateCountdown();
+
+      /* RENDER PRODUCTS */
+      function renderProducts() {
+        const filtered = products.filter(product => state.activeCategory === 'all' || product.category === state.activeCategory);
+        document.getElementById('productGrid').innerHTML = filtered.map(product => `
+          <article class="product-card overflow-hidden rounded-[28px] border border-[#efe3d4] bg-white shadow-sm transition hover:-translate-y-2">
+            <div class="relative">
+              <img src="${product.images[0]}" alt="${product.name}" class="h-72 w-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=80'" />
+              <div class="absolute left-4 top-4 rounded-full bg-[#2A1215] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#f7d77d]">${product.badge}</div>
+            </div>
+            <div class="p-5">
+              <div class="mb-3 flex items-center justify-between gap-3">
+                <div>
+                  <div class="text-xs uppercase tracking-[0.2em] text-[#8d7b6d]">${product.category}</div>
+                  <h3 class="mt-1 font-display text-2xl text-[#2A1215]">${product.name}</h3>
+                </div>
+                <div class="text-xl font-bold text-[#2A1215]">${formatMoney(product.price)}</div>
+              </div>
+              <p class="mb-4 text-sm leading-6 text-[#5f504a]">${product.description}</p>
+              <div class="flex gap-3">
+                <button class="add-cart-btn flex-1 rounded-full bg-[#2A1215] px-4 py-3 text-sm font-semibold text-white" data-id="${product.id}">Add to Cart</button>
+                <button class="quick-view-btn rounded-full border border-[#e7d8c7] bg-[#fffaf5] px-4 py-3 text-sm font-semibold text-[#2A1215]" data-id="${product.id}">View</button>
+              </div>
+            </div>
+          </article>
+        `).join('');
+
+        document.querySelectorAll('.add-cart-btn').forEach(btn => {
+          btn.addEventListener('click', () => quickAdd(Number(btn.dataset.id)));
+        });
+
+        document.querySelectorAll('.quick-view-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const product = products.find(item => item.id === Number(btn.dataset.id));
+            if (product) openProductModal(product);
+          });
+        });
+      }
+
+      function quickAdd(id) {
+        const product = products.find(item => item.id === id);
+        if (product) {
+          state.cart.push({ name: product.name, price: product.price });
+          updateCartBadge();
+          openToast(`${product.name} added to cart`);
+        }
+      }
+
+      function updateCartBadge() {
+        document.getElementById('cartCount').textContent = state.cart.length;
+      }
+
+      function openToast(message) {
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-6 right-6 z-[90] rounded-full bg-[#2A1215] px-5 py-3 text-sm font-medium text-white shadow-lg';
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2000);
+      }
+
+      /* OPEN PRODUCT MODAL WITH DYNAMIC IMAGE SWIPING & VARIANT PRICING */
+      function openProductModal(product) {
+        let currentPrice = product.price;
+        let activeImage = product.images[0];
+
+        const content = document.getElementById('productModalContent');
+        content.innerHTML = `
+          <div class="grid gap-6 md:grid-cols-[0.95fr_1.05fr]">
+            <div>
+              <div class="overflow-hidden rounded-[26px] bg-gradient-to-br from-[#5A2D82] via-[#2F1B42] to-[#0E0812] p-4">
+                <img id="modalMainImg" src="${activeImage}" alt="${product.name}" class="floating-bottle h-[380px] w-full rounded-[24px] object-cover shadow-[0_30px_80px_rgba(212,175,55,0.35)]" onerror="this.src='https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=80'" />
+              </div>
+
+              <!-- Swipeable Image Carousel Gallery -->
+              <div class="mt-4 flex gap-2 overflow-x-auto no-scrollbar pb-2">
+                ${product.images.map((img, idx) => `
+                  <button type="button" class="img-thumb flex-shrink-0 overflow-hidden rounded-xl border-2 ${idx === 0 ? 'border-[#D4AF37]' : 'border-transparent'} w-16 h-16" data-src="${img}">
+                    <img src="${img}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=80'" />
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+
+            <div class="space-y-5">
+              <div class="flex items-center justify-between gap-4">
+                <div>
+                  <div class="text-xs uppercase tracking-[0.2em] text-[#d9c3ff]">${product.category}</div>
+                  <h3 class="font-display text-4xl text-white">${product.name}</h3>
+                </div>
+                <div id="modalPrice" class="text-2xl font-bold text-[#f5d77b]">${formatMoney(currentPrice)}</div>
+              </div>
+
+              <p class="text-sm leading-7 text-white/75">${product.description}</p>
+
+              <!-- Dynamic Variants Dropdown / Selector -->
+              ${product.variants.length > 0 ? `
+                <div class="rounded-[22px] border border-white/10 bg-white/5 p-4">
+                  <label class="mb-2 block text-xs uppercase tracking-[0.2em] text-[#d9c3ff]">Select Variant</label>
+                  <select id="variantSelect" class="w-full rounded-xl bg-[#2A1215] border border-white/20 px-3 py-2 text-sm text-white outline-none">
+                    ${product.variants.map(v => `<option value="${v.name}" data-price="${v.price}" data-img="${v.image}">${v.name} - ${formatMoney(v.price)}</option>`).join('')}
+                  </select>
+                </div>
+              ` : ''}
+
+              <div class="flex gap-3">
+                <button id="modalAddCart" class="flex-1 rounded-full bg-[#D4AF37] px-5 py-3 text-sm font-semibold text-[#2A1215]">Add to Cart</button>
+                <button class="close-modal rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white">Close</button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        const modal = document.getElementById('productModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+
+        // Image gallery click updates
+        content.querySelectorAll('.img-thumb').forEach(thumb => {
+          thumb.addEventListener('click', () => {
+            content.querySelectorAll('.img-thumb').forEach(t => t.classList.replace('border-[#D4AF37]', 'border-transparent'));
+            thumb.classList.replace('border-transparent', 'border-[#D4AF37]');
+            document.getElementById('modalMainImg').src = thumb.dataset.src;
+          });
+        });
+
+        // Variant selection logic
+        const variantSelect = document.getElementById('variantSelect');
+        if (variantSelect) {
+          variantSelect.addEventListener('change', (e) => {
+            const selectedOpt = e.target.options[e.target.selectedIndex];
+            currentPrice = Number(selectedOpt.dataset.price);
+            const variantImg = selectedOpt.dataset.img;
+            document.getElementById('modalPrice').textContent = formatMoney(currentPrice);
+            if (variantImg) document.getElementById('modalMainImg').src = variantImg;
+          });
+        }
+
+        document.getElementById('modalAddCart').addEventListener('click', () => {
+          const itemTitle = variantSelect ? `${product.name} (${variantSelect.value})` : product.name;
+          state.cart.push({ name: itemTitle, price: currentPrice });
+          updateCartBadge();
+          openToast(`${itemTitle} added to cart`);
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+        });
+      }
+
+      /* CATEGORY FILTERING */
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.activeCategory = btn.dataset.category;
+          document.querySelectorAll('.filter-btn').forEach(item => {
+            item.classList.toggle('bg-[#2A1215]', item === btn);
+            item.classList.toggle('text-white', item === btn);
+            item.classList.toggle('bg-white', item !== btn);
+            item.classList.toggle('text-[#2A1215]', item !== btn);
+          });
+          renderProducts();
+        });
+      });
+
+      /* COMBO BUILDER LOGIC */
+      function renderComboItems() {
+        document.getElementById('comboItems').innerHTML = comboOptions.map(item => {
+          const selected = state.combo.includes(item.id);
+          return `
+            <button type="button" class="combo-item rounded-[24px] border p-4 text-left transition ${selected ? 'border-[#D4AF37] bg-[#fffaf1]' : 'border-[#efe3d4] bg-[#fffaf6]'}" data-id="${item.id}">
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="text-xs uppercase tracking-[0.18em] text-[#8d7b6d]">Option</div>
+                  <div class="mt-1 text-xl font-bold text-[#2A1215]">${item.label}</div>
+                </div>
+                <span class="rounded-full ${selected ? 'bg-[#2A1215] text-white' : 'bg-[#f5efe7] text-[#2A1215]'} px-2 py-1 text-[10px] font-semibold">${selected ? 'Selected' : 'Add'}</span>
+              </div>
+              <div class="mt-4 text-sm text-[#5d4f49]">${formatMoney(item.price)}</div>
+            </button>
+          `;
+        }).join('');
+
+        const total = comboOptions.filter(item => state.combo.includes(item.id)).reduce((sum, item) => sum + item.price, 0);
+        document.getElementById('builderTotal').textContent = formatMoney(total);
+
+        document.querySelectorAll('.combo-item').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = btn.dataset.id;
+            if (state.combo.includes(id)) {
+              state.combo = state.combo.filter(item => item !== id);
+            } else {
+              state.combo.push(id);
+            }
+            renderComboItems();
+          });
+        });
+      }
+
+      /* DESTINATION & CHECKOUT SUMMARY UPDATES */
+      document.getElementById('destinationSelect').addEventListener('change', (e) => {
+        state.deliveryFee = Number(e.target.value);
+        state.deliveryDestination = e.target.options[e.target.selectedIndex].dataset.name;
+        updateCheckoutSummary();
+      });
+
+      function updateCheckoutSummary() {
+        const cartSubtotal = state.cart.reduce((sum, i) => sum + i.price, 0);
+        const comboSubtotal = comboOptions.filter(i => state.combo.includes(i.id)).reduce((sum, i) => sum + i.price, 0);
+        const subtotal = cartSubtotal + comboSubtotal;
+
+        const discount = calculateDiscount(subtotal);
+        const grandTotal = subtotal - discount + state.deliveryFee;
+
+        let html = '';
+        if (state.cart.length) {
+          html += state.cart.map(i => `<div class="flex justify-between"><span>${i.name}</span><span>${formatMoney(i.price)}</span></div>`).join('');
+        }
+        if (state.combo.length) {
+          const selectedCombo = comboOptions.filter(i => state.combo.includes(i.id));
+          html += selectedCombo.map(i => `<div class="flex justify-between text-xs text-[#5A2D82]"><span>Set: ${i.label}</span><span>${formatMoney(i.price)}</span></div>`).join('');
+        }
+        if (!state.cart.length && !state.combo.length) {
+          html = '<div class="text-[#6d5e56]">No items added yet.</div>';
+        }
+
+        if (subtotal > 0) {
+          html += `<div class="mt-2 flex justify-between border-t pt-2"><span>Subtotal</span><span>${formatMoney(subtotal)}</span></div>`;
+          if (discount > 0) {
+            html += `<div class="flex justify-between text-green-700 font-semibold"><span>Promo Discount</span><span>-${formatMoney(discount)}</span></div>`;
+          }
+          if (state.deliveryFee > 0) {
+            html += `<div class="flex justify-between text-xs"><span>Shipping (${state.deliveryDestination})</span><span>${formatMoney(state.deliveryFee)}</span></div>`;
+          }
+          html += `<div class="mt-2 flex justify-between border-t pt-2 font-bold text-[#2A1215] text-base"><span>Grand Total</span><span>${formatMoney(grandTotal)}</span></div>`;
+        }
+
+        document.getElementById('checkoutSummary').innerHTML = html;
+      }
+
+      /* PAYSTACK INLINE INTEGRATION & ORDER DISPATCH */
+      document.getElementById('checkoutForm').addEventListener('submit', event => {
+        event.preventDefault();
+
+        const cartSubtotal = state.cart.reduce((sum, i) => sum + i.price, 0);
+        const comboSubtotal = comboOptions.filter(i => state.combo.includes(i.id)).reduce((sum, i) => sum + i.price, 0);
+        const subtotal = cartSubtotal + comboSubtotal;
+        
+        if (subtotal === 0) {
+          alert("Please add at least one perfume or set option to your cart before checking out.");
+          return;
+        }
+
+        const discount = calculateDiscount(subtotal);
+        const grandTotal = subtotal - discount + state.deliveryFee;
+        const email = document.getElementById('custEmail').value;
+        const name = document.getElementById('custName').value;
+
+        // Initialize Paystack Inline Payment
+        const handler = PaystackPop.setup({
+          key: 'pk_test_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', // REPLACE WITH YOUR PAYSTACK PUBLIC KEY
+          email: email,
+          amount: grandTotal * 100, // Paystack operates in kobo
+          currency: 'NGN',
+          ref: 'ASC-' + Math.floor(Math.random() * 1000000000 + 1),
+          callback: function(response) {
+            // Payment verified
+            const trackingId = 'TRK-' + Math.floor(100000 + Math.random() * 900000);
+            document.getElementById('trackingIdDisplay').textContent = trackingId;
+
+            document.getElementById('checkoutModal').classList.add('hidden');
+            document.getElementById('checkoutModal').classList.remove('flex');
+            document.getElementById('successModal').classList.remove('hidden');
+            document.getElementById('successModal').classList.add('flex');
+
+            // Reset cart
+            state.cart = [];
+            state.combo = [];
+            updateCartBadge();
+          },
+          onClose: function() {
+            alert('Transaction cancelled.');
+          }
+        });
+        handler.openIframe();
+      });
+
+      document.getElementById('openCheckoutBtn').addEventListener('click', () => {
+        updateCheckoutSummary();
+        document.getElementById('checkoutModal').classList.remove('hidden');
+        document.getElementById('checkoutModal').classList.add('flex');
+      });
+
+      document.getElementById('cartBtn').addEventListener('click', () => {
+        updateCheckoutSummary();
+        document.getElementById('checkoutModal').classList.remove('hidden');
+        document.getElementById('checkoutModal').classList.add('flex');
+      });
+
+      document.querySelectorAll('.close-modal').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const modal = btn.closest('.modal-backdrop');
+          if (modal) {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+          }
+        });
+      });
+
+      renderProducts();
+      renderComboItems();
+      updateCartBadge();
+    </script>
+  </body>
 </html>

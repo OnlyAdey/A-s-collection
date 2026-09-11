@@ -1,45 +1,26 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>A's Collection | Luxury Fragrances</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Paystack Inline JS -->
     <script src="https://js.paystack.co/v1/inline.js"></script>
     <script>
       tailwind.config = {
         theme: {
           extend: {
-            colors: {
-              cream: '#FAFAFA',
-              burgundy: '#2A1215',
-              gold: '#D4AF37',
-              plum: '#5A2D82',
-              midnight: '#0E0812',
-            },
-            boxShadow: {
-              luxe: '0 18px 50px rgba(42, 18, 21, 0.18)',
-            },
-            fontFamily: {
-              display: ['Georgia', 'serif'],
-            },
+            colors: { cream: '#FAFAFA', burgundy: '#2A1215', gold: '#D4AF37', plum: '#5A2D82', midnight: '#0E0812' },
+            boxShadow: { luxe: '0 18px 50px rgba(42, 18, 21, 0.18)' },
+            fontFamily: { display: ['Georgia', 'serif'] },
           },
         },
       };
     </script>
     <style>
       html { scroll-behavior: smooth; }
-      body {
-        font-family: 'Segoe UI', sans-serif;
-        background: #fafafa;
-        color: #2a1215;
-      }
-      .glass {
-        background: rgba(255,255,255,0.18);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-      }
+      body { font-family: 'Segoe UI', sans-serif; background: #fafafa; color: #2a1215; }
+      .glass { background: rgba(255,255,255,0.18); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
       .floating-bottle { animation: floatBottle 4.5s ease-in-out infinite; }
       .ticker { overflow: hidden; white-space: nowrap; }
       .ticker-track { display: inline-flex; min-width: max-content; animation: tickerMove 18s linear infinite; }
@@ -53,7 +34,7 @@
     </style>
   </head>
   <body class="min-h-screen bg-[#FAFAFA] text-[#2A1215]">
-    
+
     <!-- HEADER -->
     <header class="sticky top-0 z-40 border-b border-[#e9dfd4] bg-[#FAFAFA]/90 backdrop-blur-lg">
       <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
@@ -65,15 +46,7 @@
           </div>
         </div>
 
-        <nav class="hidden items-center gap-7 text-sm font-medium md:flex">
-          <a href="#bestsellers" class="transition hover:text-[#D4AF37]">Bestsellers</a>
-          <a href="#discover" class="transition hover:text-[#D4AF37]">Collections</a>
-          <a href="#builder" class="transition hover:text-[#D4AF37]">Build a Set</a>
-          <a href="#checkout" class="transition hover:text-[#D4AF37]">Checkout</a>
-        </nav>
-
         <div class="flex items-center gap-3">
-          <!-- Countdown Timer Widget -->
           <div id="saleTimer" class="hidden sm:flex flex-col items-end rounded-xl border border-[#D4AF37]/30 bg-[#2A1215] px-3 py-1.5 text-white">
             <span class="text-[9px] uppercase tracking-wider text-[#D4AF37]" id="timerLabel">Sales Start In</span>
             <span id="countdownDisplay" class="font-mono text-xs font-bold">00d 00h 00m 00s</span>
@@ -82,11 +55,20 @@
           <button id="cartBtn" class="relative rounded-full border border-[#e3d5c6] bg-white px-4 py-2 text-sm font-medium shadow-sm transition hover:border-[#D4AF37] hover:text-[#D4AF37]">
             Cart <span id="cartCount" class="ml-2 inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-[#2A1215] px-1 text-[10px] text-white">0</span>
           </button>
-          <button id="openCheckoutBtn" class="btn-gold rounded-full px-4 py-2 text-sm font-semibold shadow-md transition hover:scale-[1.02]">
-            Buy Now
-          </button>
         </div>
       </div>
+
+      <!-- NAV ROW - visible on all screen sizes, horizontally scrollable on mobile -->
+      <nav class="border-t border-[#e9dfd4] bg-[#FAFAFA]">
+        <div class="mx-auto flex max-w-7xl items-center gap-2 overflow-x-auto no-scrollbar px-4 py-2.5 text-sm font-medium sm:px-6 lg:px-8">
+          <a href="#bestsellers" class="flex-shrink-0 rounded-full px-3 py-1.5 transition hover:bg-[#2A1215] hover:text-white">Bestsellers</a>
+          <a href="#discover" class="flex-shrink-0 rounded-full px-3 py-1.5 transition hover:bg-[#2A1215] hover:text-white">Collections</a>
+          <a href="#builder" class="flex-shrink-0 rounded-full px-3 py-1.5 transition hover:bg-[#2A1215] hover:text-white">Build a Set</a>
+          <button id="navCheckoutBtn" type="button" class="flex-shrink-0 rounded-full px-3 py-1.5 font-semibold text-[#D4AF37] transition hover:bg-[#2A1215]">Checkout</button>
+          <span class="mx-1 h-5 w-px flex-shrink-0 bg-[#e3d5c6]"></span>
+          <div id="navCategoryChips" class="flex items-center gap-2"></div>
+        </div>
+      </nav>
     </header>
 
     <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -186,15 +168,7 @@
             <p class="text-xs font-semibold uppercase tracking-[0.25em] text-[#8e7a6f]">Loved by thousands</p>
             <h2 class="font-display text-4xl text-[#2A1215]">Our Catalog</h2>
           </div>
-
-          <div class="flex flex-wrap gap-2">
-            <button class="filter-btn active rounded-full border border-[#2A1215]/10 bg-[#2A1215] px-3 py-2 text-xs font-semibold text-white" data-category="all">All</button>
-            <button class="filter-btn rounded-full border border-[#2A1215]/10 bg-white px-3 py-2 text-xs font-semibold text-[#2A1215]" data-category="Arabian perfumes">Arabian perfumes</button>
-            <button class="filter-btn rounded-full border border-[#2A1215]/10 bg-white px-3 py-2 text-xs font-semibold text-[#2A1215]" data-category="Designer perfumes">Designer perfumes</button>
-            <button class="filter-btn rounded-full border border-[#2A1215]/10 bg-white px-3 py-2 text-xs font-semibold text-[#2A1215]" data-category="Oil perfume">Oil perfume</button>
-            <button class="filter-btn rounded-full border border-[#2A1215]/10 bg-white px-3 py-2 text-xs font-semibold text-[#2A1215]" data-category="Body mists/spray">Body mists/spray</button>
-            <button class="filter-btn rounded-full border border-[#2A1215]/10 bg-white px-3 py-2 text-xs font-semibold text-[#2A1215]" data-category="Giftset/box">Giftset/box</button>
-          </div>
+          <div id="filterButtons" class="flex flex-wrap gap-2"></div>
         </div>
 
         <div id="productGrid" class="grid gap-6 md:grid-cols-2 xl:grid-cols-4"></div>
@@ -241,14 +215,14 @@
             <h4 class="mb-3 text-xs font-semibold uppercase tracking-widest text-[#D4AF37]">Customer Service</h4>
             <ul class="space-y-2 text-xs text-white/75">
               <li><a href="#checkout" class="hover:text-[#D4AF37]">Shipping & Delivery</a></li>
-              <li><a href="#" class="hover:text-[#D4AF37]">Order Tracking</a></li>
-              <li><a href="#" class="hover:text-[#D4AF37]">WhatsApp Support</a></li>
+              <li><button type="button" id="orderTrackingLink" class="hover:text-[#D4AF37]">Order Tracking</button></li>
+              <li><a id="whatsappSupportLink" href="#" target="_blank" rel="noopener" class="hover:text-[#D4AF37]">WhatsApp Support</a></li>
             </ul>
           </div>
           <div>
             <h4 class="mb-3 text-xs font-semibold uppercase tracking-widest text-[#D4AF37]">Location</h4>
             <p class="text-xs text-white/75">Abuja, FCT, Nigeria</p>
-            <p class="mt-2 text-xs text-white/75">Support: +234 800 000 0000</p>
+            <p class="mt-2 text-xs text-white/75" id="footerSupportNumber">Support: —</p>
           </div>
         </div>
         <div class="mt-8 border-t border-white/10 pt-6 text-center text-[11px] text-white/50">
@@ -257,7 +231,7 @@
       </div>
     </footer>
 
-    <!-- PRODUCT MODAL WITH SWIPER / VARIANT SELECTOR -->
+    <!-- PRODUCT MODAL -->
     <div id="productModal" class="modal-backdrop fixed inset-0 z-50 hidden items-center justify-center p-4">
       <div class="w-full max-w-4xl rounded-[30px] bg-[#0E0812] p-4 text-white shadow-[0_40px_90px_rgba(0,0,0,0.45)] md:p-6">
         <div class="flex justify-end">
@@ -292,15 +266,10 @@
             <input type="tel" id="custPhone" required class="w-full rounded-xl border border-[#e7d8c7] px-4 py-2.5 text-sm outline-none focus:border-[#D4AF37]" placeholder="+234..." />
           </div>
 
-          <!-- Destination Selector -->
           <div>
             <label class="mb-1 block text-sm font-medium text-[#2A1215]">Delivery Destination</label>
             <select id="destinationSelect" required class="w-full rounded-xl border border-[#e7d8c7] px-4 py-2.5 text-sm outline-none focus:border-[#D4AF37]">
-              <option value="0" data-name="Pick Up">Select Destination</option>
-              <option value="2000" data-name="Abuja Central">Abuja Central (₦2,000)</option>
-              <option value="3500" data-name="Abuja Regional / Outskirts">Abuja Regional / Outskirts (₦3,500)</option>
-              <option value="4500" data-name="Lagos / State Capitals">Lagos / State Capitals (₦4,500)</option>
-              <option value="6000" data-name="Interstate Other Regions">Interstate Other Regions (₦6,000)</option>
+              <option value="pickup">Select Destination</option>
             </select>
           </div>
 
@@ -309,7 +278,7 @@
             <div id="checkoutSummary" class="mt-3 space-y-2 text-sm text-[#4b403b]"></div>
           </div>
 
-          <button type="submit" class="btn-gold w-full rounded-full px-6 py-3 text-sm font-semibold shadow-md">Pay Now via Paystack</button>
+          <button type="submit" id="payNowBtn" class="btn-gold w-full rounded-full px-6 py-3 text-sm font-semibold shadow-md">Pay Now via Paystack</button>
         </form>
       </div>
     </div>
@@ -319,490 +288,40 @@
       <div class="w-full max-w-md rounded-[30px] bg-[#2A1215] p-8 text-center text-white shadow-[0_40px_100px_rgba(0,0,0,0.45)]">
         <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#D4AF37] text-2xl text-[#2A1215]">✓</div>
         <h3 class="font-display text-3xl">Payment Successful!</h3>
-        <p class="mt-3 text-sm leading-7 text-white/75">Your order has been logged. An email with your tracking ID <span id="trackingIdDisplay" class="font-bold text-[#D4AF37]"></span> has been dispatched.</p>
+        <p class="mt-3 text-sm leading-7 text-white/75">Your order has been logged. Your tracking ID is <span id="trackingIdDisplay" class="font-bold text-[#D4AF37]"></span>. Keep it safe to track your order.</p>
         <button type="button" class="close-modal mt-6 rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#2A1215]">Continue shopping</button>
       </div>
     </div>
 
-    <script>
-      // PRODUCTS CATALOG WITH VARIANT SWIPING & DUPLICATES READY FOR EDITING
-      const products = [
-        {
-          id: 1,
-          name: 'Opulent by Lattafa',
-          price: 25000,
-          category: 'Arabian perfumes',
-          badge: 'Best Seller',
-          description: 'Luxurious Arabian formulation rich in signature resins and woods.',
-          images: [
-            'images/opulent_oud.jpg',
-            'images/opulent_redmusk.jpg'
-          ],
-          variants: [
-            { name: 'Oud', price: 25000, image: 'images/opulent_oud.jpg' },
-            { name: 'Red Musk', price: 25000, image: 'images/opulent_redmusk.jpg' }
-          ]
-        },
-        {
-          id: 2,
-          name: 'Khamrah by Lattafa',
-          price: 45000,
-          category: 'Arabian perfumes',
-          badge: 'Popular',
-          description: 'Warm sweet gourmet fragrance with oriental spicy accents.',
-          images: [
-            'images/khamrah.jpg',
-            'images/khamrah_waha.jpg',
-            'images/khamrah_dukhan.jpg',
-            'images/khamrah_qhawa.jpg'
-          ],
-          variants: [
-            { name: 'Khamrah Standard', price: 45000, image: 'images/khamrah.jpg' },
-            { name: 'Khamrah Waha', price: 49000, image: 'images/khamrah_waha.jpg' },
-            { name: 'Khamrah Dukhan', price: 45000, image: 'images/khamrah_dukhan.jpg' },
-            { name: 'Khamrah Qhawa', price: 45000, image: 'images/khamrah_qhawa.jpg' }
-          ]
-        },
-        {
-          id: 3,
-          name: 'Asad by Lattafa',
-          price: 30000,
-          category: 'Arabian perfumes',
-          badge: 'Top Rated',
-          description: 'A dark, spicy signature for intense presence.',
-          images: [
-            'images/asad.jpg',
-            'images/asad_bourbon.jpg'
-          ],
-          variants: [
-            { name: 'Asad Standard', price: 30000, image: 'images/asad.jpg' },
-            { name: 'Asad Bourbon', price: 30000, image: 'images/asad_bourbon.jpg' }
-          ]
-        },
-        {
-          id: 4,
-          name: 'KALY 50ml',
-          price: 12000,
-          category: 'Designer perfumes',
-          badge: 'New',
-          description: 'Clean modern floral design for everyday elegance.',
-          images: ['images/kaly.jpg'],
-          variants: []
-        },
-        {
-          id: 5,
-          name: 'Confetti',
-          price: 5000,
-          category: 'Body mists/spray',
-          badge: 'Fresh',
-          description: 'Refreshing daily body spray with vibrant top notes.',
-          images: ['images/confetti.jpg'],
-          variants: []
-        },
-        {
-          id: 6,
-          name: 'Mousuf 4 in 1 (25ml)',
-          price: 20000,
-          category: 'Giftset/box',
-          badge: 'Luxury Gift',
-          description: 'Complete gift set featuring 4 iconic fragrance miniatures.',
-          images: ['images/mousuf_set.jpg'],
-          variants: []
-        },
-
-        /* TEMPLATE DUPLICATES - EDIT NAMES, CATEGORIES, PRICES & IMAGES HERE */
-        {
-          id: 7,
-          name: 'Custom Perfume 1',
-          price: 15000,
-          category: 'Oil perfume',
-          badge: 'New',
-          description: 'Edit description here.',
-          images: ['images/placeholder.jpg'],
-          variants: []
-        },
-        {
-          id: 8,
-          name: 'Custom Perfume 2',
-          price: 18000,
-          category: 'Body mists/spray',
-          badge: 'Special',
-          description: 'Edit description here.',
-          images: ['images/placeholder.jpg'],
-          variants: []
-        }
-      ];
-
-      const state = { activeCategory: 'all', cart: [], combo: [], deliveryFee: 0, deliveryDestination: '' };
-      const comboOptions = [
-        { id: '100ml', label: '100ml Bottle', price: 9500 },
-        { id: '50ml', label: '50ml Bottle', price: 6500 },
-        { id: '30ml', label: '30ml Pocket', price: 4200 },
-        { id: 'roll-on', label: 'Roll-on Oil', price: 1800 },
-        { id: 'mist', label: 'Body Mist', price: 3200 }
-      ];
-
-      function formatMoney(value) {
-        return new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', maximumFractionDigits: 0 }).format(value);
-      }
-
-      /* PROMOTIONAL DISCOUNT CALCULATION (SEPT 21 - SEPT 26) */
-      function calculateDiscount(subtotal) {
-        const now = new Date();
-        const year = now.getFullYear();
-        const saleStart = new Date(year, 8, 21, 0, 0, 0); // Sept 21
-        const saleEnd = new Date(year, 8, 26, 23, 59, 59); // Sept 26
-
-        const isSaleActive = (now >= saleStart && now <= saleEnd);
-        if (!isSaleActive) return 0;
-
-        if (subtotal > 15000) {
-          return subtotal * 0.15; // 15% discount
-        } else {
-          return subtotal * 0.10; // 10% discount
-        }
-      }
-
-      /* COUNTDOWN TIMER LOGIC */
-      function updateCountdown() {
-        const now = new Date();
-        const year = now.getFullYear();
-        const saleStart = new Date(year, 8, 21, 0, 0, 0);
-        const saleEnd = new Date(year, 8, 26, 23, 59, 59);
-
-        const timerLabel = document.getElementById('timerLabel');
-        const display = document.getElementById('countdownDisplay');
-
-        let diff = 0;
-        if (now < saleStart) {
-          timerLabel.textContent = "Sales Start In";
-          diff = saleStart - now;
-        } else if (now >= saleStart && now <= saleEnd) {
-          timerLabel.textContent = "Sales End In";
-          diff = saleEnd - now;
-        } else {
-          timerLabel.textContent = "Promo Ended";
-          display.textContent = "00d 00h 00m 00s";
-          return;
-        }
-
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        const mins = Math.floor((diff / 1000 / 60) % 60);
-        const secs = Math.floor((diff / 1000) % 60);
-
-        display.textContent = `${String(days).padStart(2,'0')}d ${String(hours).padStart(2,'0')}h ${String(mins).padStart(2,'0')}m ${String(secs).padStart(2,'0')}s`;
-      }
-      setInterval(updateCountdown, 1000);
-      updateCountdown();
-
-      /* RENDER PRODUCTS */
-      function renderProducts() {
-        const filtered = products.filter(product => state.activeCategory === 'all' || product.category === state.activeCategory);
-        document.getElementById('productGrid').innerHTML = filtered.map(product => `
-          <article class="product-card overflow-hidden rounded-[28px] border border-[#efe3d4] bg-white shadow-sm transition hover:-translate-y-2">
-            <div class="relative">
-              <img src="${product.images[0]}" alt="${product.name}" class="h-72 w-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=80'" />
-              <div class="absolute left-4 top-4 rounded-full bg-[#2A1215] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#f7d77d]">${product.badge}</div>
-            </div>
-            <div class="p-5">
-              <div class="mb-3 flex items-center justify-between gap-3">
-                <div>
-                  <div class="text-xs uppercase tracking-[0.2em] text-[#8d7b6d]">${product.category}</div>
-                  <h3 class="mt-1 font-display text-2xl text-[#2A1215]">${product.name}</h3>
-                </div>
-                <div class="text-xl font-bold text-[#2A1215]">${formatMoney(product.price)}</div>
-              </div>
-              <p class="mb-4 text-sm leading-6 text-[#5f504a]">${product.description}</p>
-              <div class="flex gap-3">
-                <button class="add-cart-btn flex-1 rounded-full bg-[#2A1215] px-4 py-3 text-sm font-semibold text-white" data-id="${product.id}">Add to Cart</button>
-                <button class="quick-view-btn rounded-full border border-[#e7d8c7] bg-[#fffaf5] px-4 py-3 text-sm font-semibold text-[#2A1215]" data-id="${product.id}">View</button>
-              </div>
-            </div>
-          </article>
-        `).join('');
-
-        document.querySelectorAll('.add-cart-btn').forEach(btn => {
-          btn.addEventListener('click', () => quickAdd(Number(btn.dataset.id)));
-        });
-
-        document.querySelectorAll('.quick-view-btn').forEach(btn => {
-          btn.addEventListener('click', () => {
-            const product = products.find(item => item.id === Number(btn.dataset.id));
-            if (product) openProductModal(product);
-          });
-        });
-      }
-
-      function quickAdd(id) {
-        const product = products.find(item => item.id === id);
-        if (product) {
-          state.cart.push({ name: product.name, price: product.price });
-          updateCartBadge();
-          openToast(`${product.name} added to cart`);
-        }
-      }
-
-      function updateCartBadge() {
-        document.getElementById('cartCount').textContent = state.cart.length;
-      }
-
-      function openToast(message) {
-        const toast = document.createElement('div');
-        toast.className = 'fixed bottom-6 right-6 z-[90] rounded-full bg-[#2A1215] px-5 py-3 text-sm font-medium text-white shadow-lg';
-        toast.textContent = message;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 2000);
-      }
-
-      /* OPEN PRODUCT MODAL WITH DYNAMIC IMAGE SWIPING & VARIANT PRICING */
-      function openProductModal(product) {
-        let currentPrice = product.price;
-        let activeImage = product.images[0];
-
-        const content = document.getElementById('productModalContent');
-        content.innerHTML = `
-          <div class="grid gap-6 md:grid-cols-[0.95fr_1.05fr]">
-            <div>
-              <div class="overflow-hidden rounded-[26px] bg-gradient-to-br from-[#5A2D82] via-[#2F1B42] to-[#0E0812] p-4">
-                <img id="modalMainImg" src="${activeImage}" alt="${product.name}" class="floating-bottle h-[380px] w-full rounded-[24px] object-cover shadow-[0_30px_80px_rgba(212,175,55,0.35)]" onerror="this.src='https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=80'" />
-              </div>
-
-              <!-- Swipeable Image Carousel Gallery -->
-              <div class="mt-4 flex gap-2 overflow-x-auto no-scrollbar pb-2">
-                ${product.images.map((img, idx) => `
-                  <button type="button" class="img-thumb flex-shrink-0 overflow-hidden rounded-xl border-2 ${idx === 0 ? 'border-[#D4AF37]' : 'border-transparent'} w-16 h-16" data-src="${img}">
-                    <img src="${img}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=80'" />
-                  </button>
-                `).join('')}
-              </div>
-            </div>
-
-            <div class="space-y-5">
-              <div class="flex items-center justify-between gap-4">
-                <div>
-                  <div class="text-xs uppercase tracking-[0.2em] text-[#d9c3ff]">${product.category}</div>
-                  <h3 class="font-display text-4xl text-white">${product.name}</h3>
-                </div>
-                <div id="modalPrice" class="text-2xl font-bold text-[#f5d77b]">${formatMoney(currentPrice)}</div>
-              </div>
-
-              <p class="text-sm leading-7 text-white/75">${product.description}</p>
-
-              <!-- Dynamic Variants Dropdown / Selector -->
-              ${product.variants.length > 0 ? `
-                <div class="rounded-[22px] border border-white/10 bg-white/5 p-4">
-                  <label class="mb-2 block text-xs uppercase tracking-[0.2em] text-[#d9c3ff]">Select Variant</label>
-                  <select id="variantSelect" class="w-full rounded-xl bg-[#2A1215] border border-white/20 px-3 py-2 text-sm text-white outline-none">
-                    ${product.variants.map(v => `<option value="${v.name}" data-price="${v.price}" data-img="${v.image}">${v.name} - ${formatMoney(v.price)}</option>`).join('')}
-                  </select>
-                </div>
-              ` : ''}
-
-              <div class="flex gap-3">
-                <button id="modalAddCart" class="flex-1 rounded-full bg-[#D4AF37] px-5 py-3 text-sm font-semibold text-[#2A1215]">Add to Cart</button>
-                <button class="close-modal rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white">Close</button>
-              </div>
-            </div>
+    <!-- ORDER TRACKING MODAL -->
+    <div id="trackingModal" class="modal-backdrop fixed inset-0 z-[60] hidden items-center justify-center p-4">
+      <div class="w-full max-w-md rounded-[30px] bg-white p-6 shadow-[0_40px_90px_rgba(0,0,0,0.3)]">
+        <div class="mb-4 flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.28em] text-[#8d7b6d]">Order Tracking</p>
+            <h3 class="font-display text-2xl text-[#2A1215]">Track your order</h3>
           </div>
-        `;
+          <button type="button" class="close-modal rounded-full border border-[#e7d8c7] bg-[#fffaf5] px-3 py-1.5 text-sm text-[#2A1215]">Close</button>
+        </div>
 
-        const modal = document.getElementById('productModal');
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
+        <form id="trackingForm" class="space-y-4">
+          <div>
+            <label class="mb-1 block text-sm font-medium text-[#2A1215]">Tracking ID</label>
+            <input type="text" id="trackingIdInput" required placeholder="TRK-123456" class="w-full rounded-xl border border-[#e7d8c7] px-4 py-2.5 text-sm outline-none focus:border-[#D4AF37]" />
+          </div>
+          <div>
+            <label class="mb-1 block text-sm font-medium text-[#2A1215]">Email used at checkout</label>
+            <input type="email" id="trackingEmailInput" required class="w-full rounded-xl border border-[#e7d8c7] px-4 py-2.5 text-sm outline-none focus:border-[#D4AF37]" />
+          </div>
+          <button type="submit" class="btn-gold w-full rounded-full px-6 py-3 text-sm font-semibold shadow-md">Track Order</button>
+        </form>
 
-        // Image gallery click updates
-        content.querySelectorAll('.img-thumb').forEach(thumb => {
-          thumb.addEventListener('click', () => {
-            content.querySelectorAll('.img-thumb').forEach(t => t.classList.replace('border-[#D4AF37]', 'border-transparent'));
-            thumb.classList.replace('border-transparent', 'border-[#D4AF37]');
-            document.getElementById('modalMainImg').src = thumb.dataset.src;
-          });
-        });
+        <div id="trackingResult" class="mt-4"></div>
 
-        // Variant selection logic
-        const variantSelect = document.getElementById('variantSelect');
-        if (variantSelect) {
-          variantSelect.addEventListener('change', (e) => {
-            const selectedOpt = e.target.options[e.target.selectedIndex];
-            currentPrice = Number(selectedOpt.dataset.price);
-            const variantImg = selectedOpt.dataset.img;
-            document.getElementById('modalPrice').textContent = formatMoney(currentPrice);
-            if (variantImg) document.getElementById('modalMainImg').src = variantImg;
-          });
-        }
+        <p class="mt-4 text-xs leading-5 text-[#8d7b6d]">Can't find your order? Reach us on <a id="trackingWhatsappLink" href="#" target="_blank" rel="noopener" class="font-semibold text-[#5A2D82] underline">WhatsApp</a> with your tracking ID.</p>
+      </div>
+    </div>
 
-        document.getElementById('modalAddCart').addEventListener('click', () => {
-          const itemTitle = variantSelect ? `${product.name} (${variantSelect.value})` : product.name;
-          state.cart.push({ name: itemTitle, price: currentPrice });
-          updateCartBadge();
-          openToast(`${itemTitle} added to cart`);
-          modal.classList.add('hidden');
-          modal.classList.remove('flex');
-        });
-      }
-
-      /* CATEGORY FILTERING */
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          state.activeCategory = btn.dataset.category;
-          document.querySelectorAll('.filter-btn').forEach(item => {
-            item.classList.toggle('bg-[#2A1215]', item === btn);
-            item.classList.toggle('text-white', item === btn);
-            item.classList.toggle('bg-white', item !== btn);
-            item.classList.toggle('text-[#2A1215]', item !== btn);
-          });
-          renderProducts();
-        });
-      });
-
-      /* COMBO BUILDER LOGIC */
-      function renderComboItems() {
-        document.getElementById('comboItems').innerHTML = comboOptions.map(item => {
-          const selected = state.combo.includes(item.id);
-          return `
-            <button type="button" class="combo-item rounded-[24px] border p-4 text-left transition ${selected ? 'border-[#D4AF37] bg-[#fffaf1]' : 'border-[#efe3d4] bg-[#fffaf6]'}" data-id="${item.id}">
-              <div class="flex items-center justify-between">
-                <div>
-                  <div class="text-xs uppercase tracking-[0.18em] text-[#8d7b6d]">Option</div>
-                  <div class="mt-1 text-xl font-bold text-[#2A1215]">${item.label}</div>
-                </div>
-                <span class="rounded-full ${selected ? 'bg-[#2A1215] text-white' : 'bg-[#f5efe7] text-[#2A1215]'} px-2 py-1 text-[10px] font-semibold">${selected ? 'Selected' : 'Add'}</span>
-              </div>
-              <div class="mt-4 text-sm text-[#5d4f49]">${formatMoney(item.price)}</div>
-            </button>
-          `;
-        }).join('');
-
-        const total = comboOptions.filter(item => state.combo.includes(item.id)).reduce((sum, item) => sum + item.price, 0);
-        document.getElementById('builderTotal').textContent = formatMoney(total);
-
-        document.querySelectorAll('.combo-item').forEach(btn => {
-          btn.addEventListener('click', () => {
-            const id = btn.dataset.id;
-            if (state.combo.includes(id)) {
-              state.combo = state.combo.filter(item => item !== id);
-            } else {
-              state.combo.push(id);
-            }
-            renderComboItems();
-          });
-        });
-      }
-
-      /* DESTINATION & CHECKOUT SUMMARY UPDATES */
-      document.getElementById('destinationSelect').addEventListener('change', (e) => {
-        state.deliveryFee = Number(e.target.value);
-        state.deliveryDestination = e.target.options[e.target.selectedIndex].dataset.name;
-        updateCheckoutSummary();
-      });
-
-      function updateCheckoutSummary() {
-        const cartSubtotal = state.cart.reduce((sum, i) => sum + i.price, 0);
-        const comboSubtotal = comboOptions.filter(i => state.combo.includes(i.id)).reduce((sum, i) => sum + i.price, 0);
-        const subtotal = cartSubtotal + comboSubtotal;
-
-        const discount = calculateDiscount(subtotal);
-        const grandTotal = subtotal - discount + state.deliveryFee;
-
-        let html = '';
-        if (state.cart.length) {
-          html += state.cart.map(i => `<div class="flex justify-between"><span>${i.name}</span><span>${formatMoney(i.price)}</span></div>`).join('');
-        }
-        if (state.combo.length) {
-          const selectedCombo = comboOptions.filter(i => state.combo.includes(i.id));
-          html += selectedCombo.map(i => `<div class="flex justify-between text-xs text-[#5A2D82]"><span>Set: ${i.label}</span><span>${formatMoney(i.price)}</span></div>`).join('');
-        }
-        if (!state.cart.length && !state.combo.length) {
-          html = '<div class="text-[#6d5e56]">No items added yet.</div>';
-        }
-
-        if (subtotal > 0) {
-          html += `<div class="mt-2 flex justify-between border-t pt-2"><span>Subtotal</span><span>${formatMoney(subtotal)}</span></div>`;
-          if (discount > 0) {
-            html += `<div class="flex justify-between text-green-700 font-semibold"><span>Promo Discount</span><span>-${formatMoney(discount)}</span></div>`;
-          }
-          if (state.deliveryFee > 0) {
-            html += `<div class="flex justify-between text-xs"><span>Shipping (${state.deliveryDestination})</span><span>${formatMoney(state.deliveryFee)}</span></div>`;
-          }
-          html += `<div class="mt-2 flex justify-between border-t pt-2 font-bold text-[#2A1215] text-base"><span>Grand Total</span><span>${formatMoney(grandTotal)}</span></div>`;
-        }
-
-        document.getElementById('checkoutSummary').innerHTML = html;
-      }
-
-      /* PAYSTACK INLINE INTEGRATION & ORDER DISPATCH */
-      document.getElementById('checkoutForm').addEventListener('submit', event => {
-        event.preventDefault();
-
-        const cartSubtotal = state.cart.reduce((sum, i) => sum + i.price, 0);
-        const comboSubtotal = comboOptions.filter(i => state.combo.includes(i.id)).reduce((sum, i) => sum + i.price, 0);
-        const subtotal = cartSubtotal + comboSubtotal;
-        
-        if (subtotal === 0) {
-          alert("Please add at least one perfume or set option to your cart before checking out.");
-          return;
-        }
-
-        const discount = calculateDiscount(subtotal);
-        const grandTotal = subtotal - discount + state.deliveryFee;
-        const email = document.getElementById('custEmail').value;
-        const name = document.getElementById('custName').value;
-
-        // Initialize Paystack Inline Payment
-        const handler = PaystackPop.setup({
-          key: 'pk_test_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', // REPLACE WITH YOUR PAYSTACK PUBLIC KEY
-          email: email,
-          amount: grandTotal * 100, // Paystack operates in kobo
-          currency: 'NGN',
-          ref: 'ASC-' + Math.floor(Math.random() * 1000000000 + 1),
-          callback: function(response) {
-            // Payment verified
-            const trackingId = 'TRK-' + Math.floor(100000 + Math.random() * 900000);
-            document.getElementById('trackingIdDisplay').textContent = trackingId;
-
-            document.getElementById('checkoutModal').classList.add('hidden');
-            document.getElementById('checkoutModal').classList.remove('flex');
-            document.getElementById('successModal').classList.remove('hidden');
-            document.getElementById('successModal').classList.add('flex');
-
-            // Reset cart
-            state.cart = [];
-            state.combo = [];
-            updateCartBadge();
-          },
-          onClose: function() {
-            alert('Transaction cancelled.');
-          }
-        });
-        handler.openIframe();
-      });
-
-      document.getElementById('openCheckoutBtn').addEventListener('click', () => {
-        updateCheckoutSummary();
-        document.getElementById('checkoutModal').classList.remove('hidden');
-        document.getElementById('checkoutModal').classList.add('flex');
-      });
-
-      document.getElementById('cartBtn').addEventListener('click', () => {
-        updateCheckoutSummary();
-        document.getElementById('checkoutModal').classList.remove('hidden');
-        document.getElementById('checkoutModal').classList.add('flex');
-      });
-
-      document.querySelectorAll('.close-modal').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const modal = btn.closest('.modal-backdrop');
-          if (modal) {
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-          }
-        });
-      });
-
-      renderProducts();
-      renderComboItems();
-      updateCartBadge();
-    </script>
+    <script src="app.js"></script>
   </body>
 </html>

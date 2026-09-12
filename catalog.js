@@ -173,9 +173,8 @@ const products = [
     variants: [
       { name: 'Vintage Radio Lamanda', price: 7000, image: '/images/Vintage Radio (Mini).jpg' },
       { name: 'Vintage Radio Classic', price: 7000, image: '/images/Vintage Radio (Mini).jpg' }
-    ] }
-  ];
-{ id: 31, name: 'Fakhar Perfume Mist by Lattafa', category: 'Body mists/spray', badge: 'Fresh',
+    ] },
+  { id: 31, name: 'Fakhar Perfume Mist by Lattafa', category: 'Body mists/spray', badge: 'Fresh',
     description: 'A 250ml fruity-floral perfume mist from Lattafa, in three shades. A light, fresh opening leads into soft jasmine and floral accords, settling on a clean musky-woody base — an easy, non-overpowering daily spray.',
     images: ['/images/Lattafa Mist.jpg'], price: 7000,
     variants: [

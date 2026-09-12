@@ -175,6 +175,19 @@ const products = [
       { name: 'Vintage Radio Classic', price: 7000, image: '/images/Vintage Radio (Mini).jpg' }
     ] }
   ];
+{ id: 31, name: 'Fakhar Perfume Mist by Lattafa', category: 'Body mists/spray', badge: 'Fresh',
+    description: 'A 250ml fruity-floral perfume mist from Lattafa, in three shades. A light, fresh opening leads into soft jasmine and floral accords, settling on a clean musky-woody base — an easy, non-overpowering daily spray.',
+    images: ['/images/Lattafa Mist.jpg'], price: 7000,
+    variants: [
+      { name: 'Fakhar Mist (Pink)', price: 7000, image: '/images/Lattafa Mist.jpg' },
+      { name: 'Fakhar Mist (Gold)', price: 7000, image: '/images/Lattafa Mist.jpg' },
+      { name: 'Fakhar Mist (Hot Pink)', price: 7000, image: '/images/Lattafa Mist.jpg' }
+    ] },
+
+  { id: 32, name: 'Hawas Ice by Rasasi', category: 'Designer perfumes', badge: 'Best Seller',
+    description: 'A fresh, energetic aromatic fragrance for men from Rasasi. Opens with apple, Italian lemon, Sicilian bergamot and star anise, moves into a plum, orange blossom and cardamom heart, and settles on musk, amber, moss and driftwood. 100ml EDP.',
+    images: ['/images/Hawas Ice by Rasasi.jpg'], price: 65000, variants: [] }
+  ];
 
 const comboOptions = [
   { id: '50ml', label: '50ml Bottle', price: 6000 },

@@ -177,7 +177,7 @@ function renderProducts() {
           </div>
           <div class="text-xs sm:text-base md:text-xl font-bold text-[#2A1215] whitespace-nowrap" id="cardPrice-${product.id}">${formatMoney(displayPrice)}</div>
         </div>
-        <p class="mb-4 text-sm leading-6 text-[#5f504a]" id="cardDesc-${product.id}">${displayDesc}</p>
+        <p class="mb-4 text-sm leading-6 text-[#5f504a] line-clamp-2 overflow-hidden" id="cardDesc-${product.id}">${displayDesc}</p>
         <div class="flex gap-3">
           <button class="add-cart-btn flex-1 rounded-full bg-[#2A1215] px-1.5 py-1.5 text-[10px] sm:px-4 sm:py-3 sm:text-sm font-semibold text-white" data-id="${product.id}">Add</button>
 <button class="quick-view-btn rounded-full border border-[#e7d8c7] bg-[#fffaf5] px-1.5 py-1.5 text-[10px] sm:px-4 sm:py-3 sm:text-sm font-semibold text-[#2A1215]" data-id="${product.id}">View</button>

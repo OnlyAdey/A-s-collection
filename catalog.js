@@ -75,11 +75,11 @@ const products = [
 
   { id: 12, name: '24K White', category: 'Designer perfumes', badge: 'New',
     description: 'A warm, amber-spiced fragrance blending Egyptian jasmine, musk and Virginian cedarwood, finished with a touch of warm spice for a chic, long-lasting aromatic trail. 100ml EDP.',
-    images: ['/images/24K white.jpg'], price: 20000, variants: [] },
+    images: ['/images/24K white.jpg'], price: 7000, variants: [] },
 
   { id: 13, name: "Bade'e Al Oud Gift Set by Lattafa", category: 'Giftset/box', badge: 'Luxury Gift',
     description: "A 3-piece 50ml gift set from Lattafa: Amethyst (bergamot and pink pepper over Turkish rose, jasmine, oud and vanilla), Oud For Glory (saffron, nutmeg and lavender over agarwood, patchouli and musk), and Sublime (apple, litchi and rose over plum, jasmine, vanilla, moss and patchouli).",
-    images: ["/images/Bade'e Al Oud.jpg"], price: 35000, variants: [] },
+    images: ["/images/Bade'e Al Oud.jpg"], price: 22000, variants: [] },
 
   { id: 14, name: 'Choco Musk by Al-Rehab', category: 'Mini perfumes', badge: 'Fresh',
     description: 'A cozy gourmand fragrance opening with vanilla and chocolate, warmed by cinnamon, spices and musk, and finished with rose, sandalwood and amber — sweet, comforting and easy to wear all day. 50ml EDP.',
@@ -87,22 +87,22 @@ const products = [
 
   { id: 15, name: 'Club de Nuit Iconic by Armaf', category: 'Designer perfumes', badge: 'Popular',
     description: 'A citrus-woody signature opening with grapefruit, lemon, mint and pink pepper, moving through ginger, melon and jasmine, and settling into a resinous base of incense, sandalwood, amber and cedar.',
-    images: ['/images/Club de Nuit Iconic.jpg'], price: 28000, variants: [] },
+    images: ['/images/Club de Nuit Iconic.jpg'], price: 60000, variants: [] },
 
   { id: 16, name: 'Club de Nuit Intense Man by Armaf', category: 'Designer perfumes', badge: 'Best Seller',
     description: 'A cult-favorite woody-spicy fragrance for men. Lemon, pineapple, bergamot and blackcurrant open into a smoky birch, jasmine and rose heart, drying down to musk, ambergris, patchouli and vanilla.',
-    images: ['/images/Club De Nuit Intense Man.jpg'], price: 26000, variants: [] },
+    images: ['/images/Club De Nuit Intense Man.jpg'], price: 55000, variants: [] },
 
   { id: 17, name: 'Lasgidi Body Mist', category: 'Body mists/spray', badge: 'Fresh',
     description: 'A playful 6-flavor local body mist line: Juicy Crush, Gelato Crush, Vanilla Crush, Pinky Crush, Candy Crush and Pistachio Crush — light, fruity-sweet scents for everyday layering.',
-    images: ['/images/Lasgidi Body mist.jpg'], price: 4000,
+    images: ['/images/Lasgidi Body mist.jpg'], price: 3500,
     variants: [
-      { name: 'Juicy Crush', price: 4000, image: '/images/Lasgidi Body mist.jpg' },
-      { name: 'Gelato Crush', price: 4000, image: '/images/Lasgidi Body mist.jpg' },
-      { name: 'Vanilla Crush', price: 4000, image: '/images/Lasgidi Body mist.jpg' },
-      { name: 'Pinky Crush', price: 4000, image: '/images/Lasgidi Body mist.jpg' },
-      { name: 'Candy Crush', price: 4000, image: '/images/Lasgidi Body mist.jpg' },
-      { name: 'Pistachio Crush', price: 4000, image: '/images/Lasgidi Body mist.jpg' }
+      { name: 'Juicy Crush', price: 3500, image: '/images/Lasgidi Body mist.jpg' },
+      { name: 'Gelato Crush', price: 3500, image: '/images/Lasgidi Body mist.jpg' },
+      { name: 'Vanilla Crush', price: 3500, image: '/images/Lasgidi Body mist.jpg' },
+      { name: 'Pinky Crush', price: 3500, image: '/images/Lasgidi Body mist.jpg' },
+      { name: 'Candy Crush', price: 3500, image: '/images/Lasgidi Body mist.jpg' },
+      { name: 'Pistachio Crush', price: 3500, image: '/images/Lasgidi Body mist.jpg' }
     ] },
 
   { id: 18, name: 'Matelot Eau de Parfum', category: 'Designer perfumes', badge: 'New',
@@ -190,14 +190,14 @@ const products = [
   ];
 
 const comboOptions = [
-  { id: '50ml', label: '50ml Bottle', price: 6000 },
-  { id: '50ml', label: '50ml Bottle', price: 500 },
-  { id: '30ml', label: '30ml Bottle', price: 5000 },
+  { id: '50ml-bottle-1', label: '50ml Bottle', price: 6000 },
+  { id: '50ml-bottle-2', label: '50ml Bottle', price: 5000 },
+  { id: '30ml-bottle', label: '30ml Bottle', price: 5000 },
   { id: 'roll-on', label: 'Roll-on Oil', price: 2700 },
-  { id: 'mist', label: 'Body Mist', price: 6000 },
-  { id: 'mist', label: 'Body Mist', price: 5000},
-  { id: 'Body spray', label: 'Body Spray', price: 5000},
-  { id: 'body spray', label: 'Body Spray', price: 4500}
+  { id: 'mist-1', label: 'Body Mist', price: 6000 },
+  { id: 'mist-2', label: 'Body Mist', price: 5000 },
+  { id: 'body-spray-1', label: 'Body Spray', price: 5000 },
+  { id: 'body-spray-2', label: 'Body Spray', price: 4500 }
 ];
 
 const destinations = {

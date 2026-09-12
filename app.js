@@ -150,7 +150,7 @@ function renderProducts() {
     return `
     <article class="product-card group overflow-hidden rounded-[28px] border border-[#efe3d4] bg-white shadow-sm transition hover:-translate-y-2" data-id="${product.id}">
       <div class="relative overflow-hidden">
-        <img id="cardImg-${product.id}" src="${imgSrc}" alt="${product.name}" class="h-72 w-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=80'" />
+        <img id="cardImg-${product.id}" src="${imgSrc}" alt="${product.name}" class="h-24 sm:h-40 md:h-56 lg:h-72 w-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=80'" />
         <div class="absolute left-4 top-4 rounded-full bg-[#2A1215] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#f7d77d]">${product.badge}</div>
 
         <button type="button" class="share-btn absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-[#2A1215] shadow-md transition hover:bg-white" data-id="${product.id}" aria-label="Share ${product.name}">
@@ -168,19 +168,19 @@ function renderProducts() {
           <button type="button" class="card-arrow absolute right-2 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-white/85 text-lg font-bold text-[#2A1215] shadow-md hover:bg-white" data-id="${product.id}" data-dir="1" aria-label="Next variant">›</button>
         ` : ''}
       </div>
-      <div class="p-5">
+      <div class="p-2 sm:p-4 md:p-5">
         <div class="mb-3 flex items-center justify-between gap-3">
           <div>
-            <div class="text-xs uppercase tracking-[0.2em] text-[#8d7b6d]">${product.category}</div>
-            <h3 class="mt-1 font-display text-2xl text-[#2A1215]">${product.name}</h3>
+            <div class="hidden sm:block text-xs uppercase tracking-[0.2em] text-[#8d7b6d]">${product.category}</div>
+            <h3 class="mt-1 font-display text-xs sm:text-lg md:text-2xl leading-tight text-[#2A1215] line-clamp-2">${product.name}</h3>
             ${imgVariants ? `<div id="cardVariantLabel-${product.id}" class="mt-0.5 text-xs font-semibold text-[#5A2D82]">${activeVariant.name}</div>` : ''}
           </div>
-          <div class="text-xl font-bold text-[#2A1215]" id="cardPrice-${product.id}">${formatMoney(displayPrice)}</div>
+          <div class="text-xs sm:text-base md:text-xl font-bold text-[#2A1215] whitespace-nowrap" id="cardPrice-${product.id}">${formatMoney(displayPrice)}</div>
         </div>
         <p class="mb-4 text-sm leading-6 text-[#5f504a]" id="cardDesc-${product.id}">${displayDesc}</p>
         <div class="flex gap-3">
-          <button class="add-cart-btn flex-1 rounded-full bg-[#2A1215] px-4 py-3 text-sm font-semibold text-white" data-id="${product.id}">Add to Cart</button>
-          <button class="quick-view-btn rounded-full border border-[#e7d8c7] bg-[#fffaf5] px-4 py-3 text-sm font-semibold text-[#2A1215]" data-id="${product.id}">View</button>
+          <button class="add-cart-btn flex-1 rounded-full bg-[#2A1215] px-1.5 py-1.5 text-[10px] sm:px-4 sm:py-3 sm:text-sm font-semibold text-white" data-id="${product.id}">Add</button>
+<button class="quick-view-btn rounded-full border border-[#e7d8c7] bg-[#fffaf5] px-1.5 py-1.5 text-[10px] sm:px-4 sm:py-3 sm:text-sm font-semibold text-[#2A1215]" data-id="${product.id}">View</button>
         </div>
       </div>
     </article>

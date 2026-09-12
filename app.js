@@ -78,8 +78,8 @@ function renderFilterButtons() {
 }
 
 function renderNavCategoryChips() {
-  document.getElementById('navCategoryChips').innerHTML = getCategories().filter(c => c !== 'all').map(cat => `
-    <button type="button" class="nav-category-btn flex-shrink-0 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-[#5A2D82] shadow-sm ring-1 ring-[#e3d5c6] transition hover:bg-[#2A1215] hover:text-white" data-category="${cat}">${cat}</button>
+  document.getElementById('navCategoryChips').innerHTML = getCategories().map(cat => `
+    <button type="button" class="nav-category-btn flex-shrink-0 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-[#5A2D82] shadow-sm ring-1 ring-[#e3d5c6] transition hover:bg-[#2A1215] hover:text-white" data-category="${cat}">${cat === 'all' ? 'All' : cat}</button>
   `).join('');
   document.querySelectorAll('.nav-category-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -292,6 +292,12 @@ async function fetchQuote() {
   return res.json();
 }
 
+function removeFromCart(key) {
+  state.cart = state.cart.filter(i => i.key !== key);
+  updateCartBadge();
+  updateCheckoutSummary();
+}
+
 async function updateCheckoutSummary() {
   const summaryEl = document.getElementById('checkoutSummary');
   if (state.cart.length === 0) {
@@ -301,12 +307,23 @@ async function updateCheckoutSummary() {
   }
 
   const quote = await fetchQuote();
-  let html = state.cart.map(i => `<div class="flex justify-between"><span>${i.label}</span><span>${formatMoney(i.price)}</span></div>`).join('');
+  let html = state.cart.map(i => `
+    <div class="flex items-center justify-between gap-3">
+      <span>${i.label}</span>
+      <span class="flex items-center gap-2">
+        <span>${formatMoney(i.price)}</span>
+        <button type="button" class="remove-cart-item-btn flex h-6 w-6 items-center justify-center rounded-full border border-[#e7d8c7] bg-[#fffaf5] text-xs font-bold text-[#8d3a3a] transition hover:bg-[#f3d9d9]" data-key="${i.key}" aria-label="Remove ${i.label}" title="Remove">&times;</button>
+      </span>
+    </div>`).join('');
   html += `<div class="mt-2 flex justify-between border-t pt-2"><span>Subtotal</span><span>${formatMoney(quote.subtotal)}</span></div>`;
   if (quote.discount > 0) html += `<div class="flex justify-between text-green-700 font-semibold"><span>Promo Discount</span><span>-${formatMoney(quote.discount)}</span></div>`;
   if (quote.deliveryFee > 0) html += `<div class="flex justify-between text-xs"><span>Shipping (${quote.destinationLabel})</span><span>${formatMoney(quote.deliveryFee)}</span></div>`;
   html += `<div class="mt-2 flex justify-between border-t pt-2 font-bold text-[#2A1215] text-base"><span>Grand Total</span><span>${formatMoney(quote.total)}</span></div>`;
   summaryEl.innerHTML = html;
+
+  document.querySelectorAll('.remove-cart-item-btn').forEach(btn => {
+    btn.addEventListener('click', () => removeFromCart(btn.dataset.key));
+  });
 }
 
 function openCheckoutModal() {

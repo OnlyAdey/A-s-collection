@@ -14,11 +14,49 @@ const state = {
   destinations: {},
   paystackPublicKey: '',
   whatsappNumber: '',
-  deliveryKey: 'pickup'
+  deliveryKey: 'pickup',
+  cardVariantIndex: {}   // tracks which image-variant is showing on each product card, keyed by product id
 };
 
 function formatMoney(value) {
   return new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', maximumFractionDigits: 0 }).format(value);
+}
+// A product only gets the hover-arrow image cycler if its variants
+// actually point to different image files (not just different names/prices).
+function getImageVariants(product) {
+  if (!product.variants || product.variants.length < 2) return null;
+  const uniqueImages = new Set(product.variants.map(v => v.image));
+  if (uniqueImages.size < 2) return null;
+  return product.variants;
+}
+
+function updateCardVariant(product, variant) {
+  const imgSrc = variant.image?.startsWith('/') ? variant.image : `/${variant.image}`;
+  const imgEl = document.getElementById(`cardImg-${product.id}`);
+  if (imgEl) imgEl.src = imgSrc;
+  const priceEl = document.getElementById(`cardPrice-${product.id}`);
+  if (priceEl) priceEl.textContent = formatMoney(variant.price);
+  const descEl = document.getElementById(`cardDesc-${product.id}`);
+  if (descEl) descEl.textContent = variant.note || product.description;
+  const labelEl = document.getElementById(`cardVariantLabel-${product.id}`);
+  if (labelEl) labelEl.textContent = variant.name;
+}
+
+function shareProduct(product) {
+  const variants = getImageVariants(product);
+  const idx = variants ? (state.cardVariantIndex[product.id] ?? 0) : null;
+  const variant = variants ? variants[idx] : null;
+  const name = variant ? `${product.name} (${variant.name})` : product.name;
+  const price = variant ? variant.price : product.price;
+  const url = `${window.location.origin}${window.location.pathname}`;
+  const text = `Check out ${name} — ${formatMoney(price)} at A's Collection! ${url}`;
+
+  if (navigator.share) {
+    navigator.share({ title: name, text, url }).catch(() => {});
+  } else {
+    // Fallback for browsers without the native share sheet (mostly desktop)
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+  }
 }
 
 async function loadConfig() {
@@ -98,23 +136,48 @@ function setActiveCategory(category) {
 /* RENDER PRODUCTS */
 function renderProducts() {
   const filtered = state.products.filter(p => state.activeCategory === 'all' || p.category === state.activeCategory);
+
   document.getElementById('productGrid').innerHTML = filtered.map(product => {
-    const imgSrc = product.images[0]?.startsWith('/') ? product.images[0] : `/${product.images[0]}`;
+    const imgVariants = getImageVariants(product);
+    const idx = imgVariants ? (state.cardVariantIndex[product.id] ?? 0) : 0;
+    const activeVariant = imgVariants ? imgVariants[idx] : null;
+
+    const rawImg = activeVariant ? activeVariant.image : product.images[0];
+    const imgSrc = rawImg?.startsWith('/') ? rawImg : `/${rawImg}`;
+    const displayPrice = activeVariant ? activeVariant.price : product.price;
+    const displayDesc = activeVariant ? (activeVariant.note || product.description) : product.description;
+
     return `
-    <article class="product-card overflow-hidden rounded-[28px] border border-[#efe3d4] bg-white shadow-sm transition hover:-translate-y-2">
-      <div class="relative">
-        <img src="${imgSrc}" alt="${product.name}" class="h-72 w-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=80'" />
+    <article class="product-card group overflow-hidden rounded-[28px] border border-[#efe3d4] bg-white shadow-sm transition hover:-translate-y-2" data-id="${product.id}">
+      <div class="relative overflow-hidden">
+        <img id="cardImg-${product.id}" src="${imgSrc}" alt="${product.name}" class="h-72 w-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=80'" />
         <div class="absolute left-4 top-4 rounded-full bg-[#2A1215] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#f7d77d]">${product.badge}</div>
+
+        <button type="button" class="share-btn absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-[#2A1215] shadow-md transition hover:bg-white" data-id="${product.id}" aria-label="Share ${product.name}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.6" y1="10.6" x2="15.4" y2="6.4"></line>
+            <line x1="8.6" y1="13.4" x2="15.4" y2="17.6"></line>
+          </svg>
+        </button>
+
+        ${imgVariants ? `
+          <button type="button" class="card-arrow absolute left-2 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-white/85 text-lg font-bold text-[#2A1215] shadow-md hover:bg-white" data-id="${product.id}" data-dir="-1" aria-label="Previous variant">‹</button>
+          <button type="button" class="card-arrow absolute right-2 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-white/85 text-lg font-bold text-[#2A1215] shadow-md hover:bg-white" data-id="${product.id}" data-dir="1" aria-label="Next variant">›</button>
+        ` : ''}
       </div>
       <div class="p-5">
         <div class="mb-3 flex items-center justify-between gap-3">
           <div>
             <div class="text-xs uppercase tracking-[0.2em] text-[#8d7b6d]">${product.category}</div>
             <h3 class="mt-1 font-display text-2xl text-[#2A1215]">${product.name}</h3>
+            ${imgVariants ? `<div id="cardVariantLabel-${product.id}" class="mt-0.5 text-xs font-semibold text-[#5A2D82]">${activeVariant.name}</div>` : ''}
           </div>
-          <div class="text-xl font-bold text-[#2A1215]">${formatMoney(product.price)}</div>
+          <div class="text-xl font-bold text-[#2A1215]" id="cardPrice-${product.id}">${formatMoney(displayPrice)}</div>
         </div>
-        <p class="mb-4 text-sm leading-6 text-[#5f504a]">${product.description}</p>
+        <p class="mb-4 text-sm leading-6 text-[#5f504a]" id="cardDesc-${product.id}">${displayDesc}</p>
         <div class="flex gap-3">
           <button class="add-cart-btn flex-1 rounded-full bg-[#2A1215] px-4 py-3 text-sm font-semibold text-white" data-id="${product.id}">Add to Cart</button>
           <button class="quick-view-btn rounded-full border border-[#e7d8c7] bg-[#fffaf5] px-4 py-3 text-sm font-semibold text-[#2A1215]" data-id="${product.id}">View</button>
@@ -123,11 +186,52 @@ function renderProducts() {
     </article>
   `}).join('');
 
-  document.querySelectorAll('.add-cart-btn').forEach(btn => btn.addEventListener('click', () => quickAdd(Number(btn.dataset.id))));
+  document.querySelectorAll('.add-cart-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = Number(btn.dataset.id);
+      const product = state.products.find(p => p.id === id);
+      const imgVariants = getImageVariants(product);
+      if (imgVariants) {
+        const idx = state.cardVariantIndex[id] ?? 0;
+        const variant = imgVariants[idx];
+        addToCart({ type: 'product', productId: id, variantName: variant.name, label: `${product.name} (${variant.name})`, price: variant.price });
+      } else {
+        quickAdd(id);
+      }
+    });
+  });
+
   document.querySelectorAll('.quick-view-btn').forEach(btn => {
     btn.addEventListener('click', () => {
+      const id = Number(btn.dataset.id);
+      const product = state.products.find(p => p.id === id);
+      if (!product) return;
+      const imgVariants = getImageVariants(product);
+      const initialVariant = imgVariants ? imgVariants[state.cardVariantIndex[id] ?? 0].name : null;
+      openProductModal(product, initialVariant);
+    });
+  });
+
+  document.querySelectorAll('.share-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
       const product = state.products.find(p => p.id === Number(btn.dataset.id));
-      if (product) openProductModal(product);
+      if (product) shareProduct(product);
+    });
+  });
+
+  document.querySelectorAll('.card-arrow').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = Number(btn.dataset.id);
+      const product = state.products.find(p => p.id === id);
+      const imgVariants = getImageVariants(product);
+      if (!imgVariants) return;
+      const dir = Number(btn.dataset.dir);
+      const current = state.cardVariantIndex[id] ?? 0;
+      const next = (current + dir + imgVariants.length) % imgVariants.length;
+      state.cardVariantIndex[id] = next;
+      updateCardVariant(product, imgVariants[next]);
     });
   });
 }
@@ -156,13 +260,17 @@ function openToast(message) {
 }
 
 /* PRODUCT MODAL WITH VARIANT SELECTOR */
-function openProductModal(product) {
-  let currentPrice = product.price;
-  let currentVariantName = null;
+function openProductModal(product, initialVariantName) {
+  const initialVariant = initialVariantName
+    ? product.variants.find(v => v.name === initialVariantName)
+    : null;
+
+  let currentPrice = initialVariant ? initialVariant.price : product.price;
+  let currentVariantName = initialVariant ? initialVariant.name : null;
 
   const content = document.getElementById('productModalContent');
-  const mainImgSrc = product.images[0]?.startsWith('/') ? product.images[0] : `/${product.images[0]}`;
-
+  const initialImg = initialVariant?.image || product.images[0];
+  const mainImgSrc = initialImg?.startsWith('/') ? initialImg : `/${initialImg}`;
   content.innerHTML = `
     <div class="grid gap-6 md:grid-cols-[0.95fr_1.05fr]">
       <div>
@@ -195,7 +303,8 @@ function openProductModal(product) {
             <select id="variantSelect" class="w-full rounded-xl bg-[#2A1215] border border-white/20 px-3 py-2 text-sm text-white outline-none">
               ${product.variants.map(v => {
                 const varImg = v.image?.startsWith('/') ? v.image : `/${v.image}`;
-                return `<option value="${v.name}" data-price="${v.price}" data-img="${varImg}">${v.name} - ${formatMoney(v.price)}</option>`;
+                const isSelected = currentVariantName === v.name ? 'selected' : '';
+                return `<option value="${v.name}" data-price="${v.price}" data-img="${varImg}" ${isSelected}>${v.name} - ${formatMoney(v.price)}</option>`;
               }).join('')}
             </select>
           </div>

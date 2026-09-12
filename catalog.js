@@ -83,7 +83,7 @@ const products = [
 
   { id: 14, name: 'Choco Musk by Al-Rehab', category: 'Mini perfumes', badge: 'Fresh',
     description: 'A cozy gourmand fragrance opening with vanilla and chocolate, warmed by cinnamon, spices and musk, and finished with rose, sandalwood and amber — sweet, comforting and easy to wear all day. 50ml EDP.',
-    images: ['/images/Choco_Musk.jpg'], price: 12000, variants: [] },
+    images: ['/images/Choco_Musk.jpg'], price: 5000, variants: [] },
 
   { id: 15, name: 'Club de Nuit Iconic by Armaf', category: 'Designer perfumes', badge: 'Popular',
     description: 'A citrus-woody signature opening with grapefruit, lemon, mint and pink pepper, moving through ginger, melon and jasmine, and settling into a resinous base of incense, sandalwood, amber and cedar.',

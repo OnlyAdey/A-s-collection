@@ -192,7 +192,9 @@ const products = [
 const comboOptions = [
   { id: '50ml-bottle-1', label: '50ml Bottle', price: 6000 },
   { id: '50ml-bottle-2', label: '50ml Bottle', price: 5000 },
-  { id: '30ml-bottle', label: '30ml Bottle', price: 5000 },
+  { id: '30ml-bottle-1', label: '30ml Bottle', price: 5000 },
+  { id: '30ml-bottle-2', label: '30ml Bottle', price: 4500 },
+  { id: '25ml-bottle', label: '25ml Bottle', price: 4500 },
   { id: 'roll-on', label: 'Roll-on Oil', price: 2700 },
   { id: 'mist-1', label: 'Body Mist', price: 6000 },
   { id: 'mist-2', label: 'Body Mist', price: 5000 },

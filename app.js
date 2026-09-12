@@ -275,8 +275,8 @@ function openProductModal(product, initialVariantName) {
     <div class="grid gap-6 md:grid-cols-[0.95fr_1.05fr]">
       <div>
         <div class="overflow-hidden rounded-[26px] bg-gradient-to-br from-[#5A2D82] via-[#2F1B42] to-[#0E0812] p-4">
-          <img id="modalMainImg" src="${mainImgSrc}" alt="${product.name}" class="floating-bottle h-[380px] w-full rounded-[24px] object-cover shadow-[0_30px_80px_rgba(212,175,55,0.35)]" onerror="this.src='https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=80'" />
-        </div>
+          <img id="modalMainImg" src="${mainImgSrc}" alt="${product.name}" class="floating-bottle h-56 sm:h-72 md:h-[380px] w-full rounded-[24px] object-cover shadow-[0_30px_80px_rgba(212,175,55,0.35)]" onerror="this.src='https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=80'" />     
+          </div>
         <div class="mt-4 flex gap-2 overflow-x-auto no-scrollbar pb-2">
           ${product.images.map((img, idx) => {
             const thumbSrc = img.startsWith('/') ? img : `/${img}`;
@@ -309,10 +309,9 @@ function openProductModal(product, initialVariantName) {
             </select>
           </div>
         ` : ''}
-        <div class="flex gap-3">
-          <button id="modalAddCart" class="flex-1 rounded-full bg-[#D4AF37] px-5 py-3 text-sm font-semibold text-[#2A1215]">Add to Cart</button>
-          <button class="close-modal rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white">Close</button>
-        </div>
+        <<div class="flex gap-3">
+  <button id="modalAddCart" class="w-full rounded-full bg-[#D4AF37] px-5 py-3 text-sm font-semibold text-[#2A1215]">Add to Cart</button>
+</div>
       </div>
     </div>
   `;

@@ -1,420 +1,433 @@
 /* =========================================================
-         APP STATE - catalog is fetched from the backend (/api/config)
-         so pricing always matches what the server will charge.
-      ========================================================= */
-      const state = {
-        activeCategory: 'all',
-        cart: [],          // { key, type, productId?, variantName?, comboId?, label, price }
-        products: [],
-        comboOptions: [],
-        destinations: {},
-        paystackPublicKey: '',
-        whatsappNumber: '',
-        deliveryKey: 'pickup'
-      };
+   APP STATE - catalog is fetched from the backend (/api/config)
+   so pricing always matches what the server will charge.
+========================================================= */
 
-      function formatMoney(value) {
-        return new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', maximumFractionDigits: 0 }).format(value);
-      }
+// Define your live Render backend URL:
+const API_BASE_URL = 'https://a-s-collection.onrender.com';
 
-      async function loadConfig() {
-        const res = await fetch('/api/config');
-        const cfg = await res.json();
-        state.products = cfg.products;
-        state.comboOptions = cfg.comboOptions;
-        state.destinations = cfg.destinations;
-        state.paystackPublicKey = cfg.paystackPublicKey;
-        state.whatsappNumber = cfg.whatsappNumber;
+const state = {
+  activeCategory: 'all',
+  cart: [],          // { key, type, productId?, variantName?, comboId?, label, price }
+  products: [],
+  comboOptions: [],
+  destinations: {},
+  paystackPublicKey: '',
+  whatsappNumber: '',
+  deliveryKey: 'pickup'
+};
 
-        renderFilterButtons();
-        renderNavCategoryChips();
-        renderProducts();
-        renderComboItems();
-        populateDestinations();
+function formatMoney(value) {
+  return new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', maximumFractionDigits: 0 }).format(value);
+}
 
-        const waLink = `https://wa.me/${state.whatsappNumber}?text=Hi%2C%20I%27d%20like%20some%20help%20with%20an%20order%20from%20A%27s%20Collection`;
-        document.getElementById('whatsappSupportLink').href = waLink;
-        document.getElementById('trackingWhatsappLink').href = `https://wa.me/${state.whatsappNumber}`;
-        document.getElementById('footerSupportNumber').textContent = `Support: +${state.whatsappNumber}`;
-      }
+async function loadConfig() {
+  const res = await fetch(`${API_BASE_URL}/api/config`);
+  const cfg = await res.json();
+  state.products = cfg.products;
+  state.comboOptions = cfg.comboOptions;
+  state.destinations = cfg.destinations;
+  state.paystackPublicKey = cfg.paystackPublicKey;
+  state.whatsappNumber = cfg.whatsappNumber;
 
-      /* COUNTDOWN TIMER (Sept 21-26 promo) */
-      function updateCountdown() {
-        const now = new Date();
-        const year = now.getFullYear();
-        const saleStart = new Date(year, 8, 21, 0, 0, 0);
-        const saleEnd = new Date(year, 8, 26, 23, 59, 59);
-        const timerLabel = document.getElementById('timerLabel');
-        const display = document.getElementById('countdownDisplay');
-        let diff = 0;
-        if (now < saleStart) { timerLabel.textContent = "Sales Start In"; diff = saleStart - now; }
-        else if (now <= saleEnd) { timerLabel.textContent = "Sales End In"; diff = saleEnd - now; }
-        else { timerLabel.textContent = "Promo Ended"; display.textContent = "00d 00h 00m 00s"; return; }
-        const days = Math.floor(diff / 86400000);
-        const hours = Math.floor((diff / 3600000) % 24);
-        const mins = Math.floor((diff / 60000) % 60);
-        const secs = Math.floor((diff / 1000) % 60);
-        display.textContent = `${String(days).padStart(2,'0')}d ${String(hours).padStart(2,'0')}h ${String(mins).padStart(2,'0')}m ${String(secs).padStart(2,'0')}s`;
-      }
-      setInterval(updateCountdown, 1000);
-      updateCountdown();
+  renderFilterButtons();
+  renderNavCategoryChips();
+  renderProducts();
+  renderComboItems();
+  populateDestinations();
 
-      /* CATEGORY FILTER BUTTONS (catalog section) */
-      function getCategories() {
-        return ['all', ...new Set(state.products.map(p => p.category))];
-      }
+  const waLink = `https://wa.me/${state.whatsappNumber}?text=Hi%2C%20I%27d%20like%20some%20help%20with%20an%20order%20from%20A%27s%20Collection`;
+  document.getElementById('whatsappSupportLink').href = waLink;
+  document.getElementById('trackingWhatsappLink').href = `https://wa.me/${state.whatsappNumber}`;
+  document.getElementById('footerSupportNumber').textContent = `Support: +${state.whatsappNumber}`;
+}
 
-      function renderFilterButtons() {
-        document.getElementById('filterButtons').innerHTML = getCategories().map(cat => `
-          <button class="filter-btn rounded-full border border-[#2A1215]/10 px-3 py-2 text-xs font-semibold ${cat === state.activeCategory ? 'bg-[#2A1215] text-white' : 'bg-white text-[#2A1215]'}" data-category="${cat}">${cat === 'all' ? 'All' : cat}</button>
-        `).join('');
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-          btn.addEventListener('click', () => setActiveCategory(btn.dataset.category));
-        });
-      }
+/* COUNTDOWN TIMER (Sept 21-26 promo) */
+function updateCountdown() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const saleStart = new Date(year, 8, 21, 0, 0, 0);
+  const saleEnd = new Date(year, 8, 26, 23, 59, 59);
+  const timerLabel = document.getElementById('timerLabel');
+  const display = document.getElementById('countdownDisplay');
+  let diff = 0;
+  if (now < saleStart) { timerLabel.textContent = "Sales Start In"; diff = saleStart - now; }
+  else if (now <= saleEnd) { timerLabel.textContent = "Sales End In"; diff = saleEnd - now; }
+  else { timerLabel.textContent = "Promo Ended"; display.textContent = "00d 00h 00m 00s"; return; }
+  const days = Math.floor(diff / 86400000);
+  const hours = Math.floor((diff / 3600000) % 24);
+  const mins = Math.floor((diff / 60000) % 60);
+  const secs = Math.floor((diff / 1000) % 60);
+  display.textContent = `${String(days).padStart(2,'0')}d ${String(hours).padStart(2,'0')}h ${String(mins).padStart(2,'0')}m ${String(secs).padStart(2,'0')}s`;
+}
+setInterval(updateCountdown, 1000);
+updateCountdown();
 
-      function renderNavCategoryChips() {
-        document.getElementById('navCategoryChips').innerHTML = getCategories().filter(c => c !== 'all').map(cat => `
-          <button type="button" class="nav-category-btn flex-shrink-0 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-[#5A2D82] shadow-sm ring-1 ring-[#e3d5c6] transition hover:bg-[#2A1215] hover:text-white" data-category="${cat}">${cat}</button>
-        `).join('');
-        document.querySelectorAll('.nav-category-btn').forEach(btn => {
-          btn.addEventListener('click', () => {
-            setActiveCategory(btn.dataset.category);
-            document.getElementById('bestsellers').scrollIntoView({ behavior: 'smooth', block: 'start' });
-          });
-        });
-      }
+/* CATEGORY FILTER BUTTONS (catalog section) */
+function getCategories() {
+  return ['all', ...new Set(state.products.map(p => p.category))];
+}
 
-      function setActiveCategory(category) {
-        state.activeCategory = category;
-        renderFilterButtons();
-        renderProducts();
-      }
+function renderFilterButtons() {
+  document.getElementById('filterButtons').innerHTML = getCategories().map(cat => `
+    <button class="filter-btn rounded-full border border-[#2A1215]/10 px-3 py-2 text-xs font-semibold ${cat === state.activeCategory ? 'bg-[#2A1215] text-white' : 'bg-white text-[#2A1215]'}" data-category="${cat}">${cat === 'all' ? 'All' : cat}</button>
+  `).join('');
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => setActiveCategory(btn.dataset.category));
+  });
+}
 
-      /* RENDER PRODUCTS */
-      function renderProducts() {
-        const filtered = state.products.filter(p => state.activeCategory === 'all' || p.category === state.activeCategory);
-        document.getElementById('productGrid').innerHTML = filtered.map(product => `
-          <article class="product-card overflow-hidden rounded-[28px] border border-[#efe3d4] bg-white shadow-sm transition hover:-translate-y-2">
-            <div class="relative">
-              <img src="${product.images[0]}" alt="${product.name}" class="h-72 w-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=80'" />
-              <div class="absolute left-4 top-4 rounded-full bg-[#2A1215] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#f7d77d]">${product.badge}</div>
-            </div>
-            <div class="p-5">
-              <div class="mb-3 flex items-center justify-between gap-3">
-                <div>
-                  <div class="text-xs uppercase tracking-[0.2em] text-[#8d7b6d]">${product.category}</div>
-                  <h3 class="mt-1 font-display text-2xl text-[#2A1215]">${product.name}</h3>
-                </div>
-                <div class="text-xl font-bold text-[#2A1215]">${formatMoney(product.price)}</div>
-              </div>
-              <p class="mb-4 text-sm leading-6 text-[#5f504a]">${product.description}</p>
-              <div class="flex gap-3">
-                <button class="add-cart-btn flex-1 rounded-full bg-[#2A1215] px-4 py-3 text-sm font-semibold text-white" data-id="${product.id}">Add to Cart</button>
-                <button class="quick-view-btn rounded-full border border-[#e7d8c7] bg-[#fffaf5] px-4 py-3 text-sm font-semibold text-[#2A1215]" data-id="${product.id}">View</button>
-              </div>
-            </div>
-          </article>
-        `).join('');
+function renderNavCategoryChips() {
+  document.getElementById('navCategoryChips').innerHTML = getCategories().filter(c => c !== 'all').map(cat => `
+    <button type="button" class="nav-category-btn flex-shrink-0 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-[#5A2D82] shadow-sm ring-1 ring-[#e3d5c6] transition hover:bg-[#2A1215] hover:text-white" data-category="${cat}">${cat}</button>
+  `).join('');
+  document.querySelectorAll('.nav-category-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setActiveCategory(btn.dataset.category);
+      document.getElementById('bestsellers').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+}
 
-        document.querySelectorAll('.add-cart-btn').forEach(btn => btn.addEventListener('click', () => quickAdd(Number(btn.dataset.id))));
-        document.querySelectorAll('.quick-view-btn').forEach(btn => {
-          btn.addEventListener('click', () => {
-            const product = state.products.find(p => p.id === Number(btn.dataset.id));
-            if (product) openProductModal(product);
-          });
-        });
-      }
+function setActiveCategory(category) {
+  state.activeCategory = category;
+  renderFilterButtons();
+  renderProducts();
+}
 
-      function addToCart(item) {
-        state.cart.push({ key: crypto.randomUUID(), ...item });
-        updateCartBadge();
-        openToast(`${item.label} added to cart`);
-      }
-
-      function quickAdd(id) {
-        const product = state.products.find(p => p.id === id);
-        if (product) addToCart({ type: 'product', productId: product.id, label: product.name, price: product.price });
-      }
-
-      function updateCartBadge() {
-        document.getElementById('cartCount').textContent = state.cart.length;
-      }
-
-      function openToast(message) {
-        const toast = document.createElement('div');
-        toast.className = 'fixed bottom-6 right-6 z-[90] rounded-full bg-[#2A1215] px-5 py-3 text-sm font-medium text-white shadow-lg';
-        toast.textContent = message;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 2000);
-      }
-
-      /* PRODUCT MODAL WITH VARIANT SELECTOR */
-      function openProductModal(product) {
-        let currentPrice = product.price;
-        let currentVariantName = null;
-
-        const content = document.getElementById('productModalContent');
-        content.innerHTML = `
-          <div class="grid gap-6 md:grid-cols-[0.95fr_1.05fr]">
-            <div>
-              <div class="overflow-hidden rounded-[26px] bg-gradient-to-br from-[#5A2D82] via-[#2F1B42] to-[#0E0812] p-4">
-                <img id="modalMainImg" src="${product.images[0]}" alt="${product.name}" class="floating-bottle h-[380px] w-full rounded-[24px] object-cover shadow-[0_30px_80px_rgba(212,175,55,0.35)]" onerror="this.src='https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=80'" />
-              </div>
-              <div class="mt-4 flex gap-2 overflow-x-auto no-scrollbar pb-2">
-                ${product.images.map((img, idx) => `
-                  <button type="button" class="img-thumb flex-shrink-0 overflow-hidden rounded-xl border-2 ${idx === 0 ? 'border-[#D4AF37]' : 'border-transparent'} w-16 h-16" data-src="${img}">
-                    <img src="${img}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=80'" />
-                  </button>
-                `).join('')}
-              </div>
-            </div>
-
-            <div class="space-y-5">
-              <div class="flex items-center justify-between gap-4">
-                <div>
-                  <div class="text-xs uppercase tracking-[0.2em] text-[#d9c3ff]">${product.category}</div>
-                  <h3 class="font-display text-4xl text-white">${product.name}</h3>
-                </div>
-                <div id="modalPrice" class="text-2xl font-bold text-[#f5d77b]">${formatMoney(currentPrice)}</div>
-              </div>
-              <p class="text-sm leading-7 text-white/75">${product.description}</p>
-              ${product.variants.length > 0 ? `
-                <div class="rounded-[22px] border border-white/10 bg-white/5 p-4">
-                  <label class="mb-2 block text-xs uppercase tracking-[0.2em] text-[#d9c3ff]">Select Variant</label>
-                  <select id="variantSelect" class="w-full rounded-xl bg-[#2A1215] border border-white/20 px-3 py-2 text-sm text-white outline-none">
-                    ${product.variants.map(v => `<option value="${v.name}" data-price="${v.price}" data-img="${v.image}">${v.name} - ${formatMoney(v.price)}</option>`).join('')}
-                  </select>
-                </div>
-              ` : ''}
-              <div class="flex gap-3">
-                <button id="modalAddCart" class="flex-1 rounded-full bg-[#D4AF37] px-5 py-3 text-sm font-semibold text-[#2A1215]">Add to Cart</button>
-                <button class="close-modal rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white">Close</button>
-              </div>
-            </div>
+/* RENDER PRODUCTS */
+function renderProducts() {
+  const filtered = state.products.filter(p => state.activeCategory === 'all' || p.category === state.activeCategory);
+  document.getElementById('productGrid').innerHTML = filtered.map(product => {
+    const imgSrc = product.images[0]?.startsWith('/') ? product.images[0] : `/${product.images[0]}`;
+    return `
+    <article class="product-card overflow-hidden rounded-[28px] border border-[#efe3d4] bg-white shadow-sm transition hover:-translate-y-2">
+      <div class="relative">
+        <img src="${imgSrc}" alt="${product.name}" class="h-72 w-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=80'" />
+        <div class="absolute left-4 top-4 rounded-full bg-[#2A1215] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#f7d77d]">${product.badge}</div>
+      </div>
+      <div class="p-5">
+        <div class="mb-3 flex items-center justify-between gap-3">
+          <div>
+            <div class="text-xs uppercase tracking-[0.2em] text-[#8d7b6d]">${product.category}</div>
+            <h3 class="mt-1 font-display text-2xl text-[#2A1215]">${product.name}</h3>
           </div>
-        `;
+          <div class="text-xl font-bold text-[#2A1215]">${formatMoney(product.price)}</div>
+        </div>
+        <p class="mb-4 text-sm leading-6 text-[#5f504a]">${product.description}</p>
+        <div class="flex gap-3">
+          <button class="add-cart-btn flex-1 rounded-full bg-[#2A1215] px-4 py-3 text-sm font-semibold text-white" data-id="${product.id}">Add to Cart</button>
+          <button class="quick-view-btn rounded-full border border-[#e7d8c7] bg-[#fffaf5] px-4 py-3 text-sm font-semibold text-[#2A1215]" data-id="${product.id}">View</button>
+        </div>
+      </div>
+    </article>
+  `}).join('');
 
-        const modal = document.getElementById('productModal');
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
+  document.querySelectorAll('.add-cart-btn').forEach(btn => btn.addEventListener('click', () => quickAdd(Number(btn.dataset.id))));
+  document.querySelectorAll('.quick-view-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const product = state.products.find(p => p.id === Number(btn.dataset.id));
+      if (product) openProductModal(product);
+    });
+  });
+}
 
-        content.querySelectorAll('.img-thumb').forEach(thumb => {
-          thumb.addEventListener('click', () => {
-            content.querySelectorAll('.img-thumb').forEach(t => t.classList.replace('border-[#D4AF37]', 'border-transparent'));
-            thumb.classList.replace('border-transparent', 'border-[#D4AF37]');
-            document.getElementById('modalMainImg').src = thumb.dataset.src;
-          });
-        });
+function addToCart(item) {
+  state.cart.push({ key: crypto.randomUUID(), ...item });
+  updateCartBadge();
+  openToast(`${item.label} added to cart`);
+}
 
-        const variantSelect = document.getElementById('variantSelect');
-        if (variantSelect) {
-          currentVariantName = variantSelect.value;
-          variantSelect.addEventListener('change', (e) => {
-            const opt = e.target.options[e.target.selectedIndex];
-            currentPrice = Number(opt.dataset.price);
-            currentVariantName = opt.value;
-            document.getElementById('modalPrice').textContent = formatMoney(currentPrice);
-            if (opt.dataset.img) document.getElementById('modalMainImg').src = opt.dataset.img;
-          });
-        }
+function quickAdd(id) {
+  const product = state.products.find(p => p.id === id);
+  if (product) addToCart({ type: 'product', productId: product.id, label: product.name, price: product.price });
+}
 
-        document.getElementById('modalAddCart').addEventListener('click', () => {
-          const label = currentVariantName ? `${product.name} (${currentVariantName})` : product.name;
-          addToCart({ type: 'product', productId: product.id, variantName: currentVariantName || undefined, label, price: currentPrice });
-          modal.classList.add('hidden');
-          modal.classList.remove('flex');
-        });
-      }
+function updateCartBadge() {
+  document.getElementById('cartCount').textContent = state.cart.length;
+}
 
-      /* COMBO BUILDER */
-      function renderComboItems() {
-        document.getElementById('comboItems').innerHTML = state.comboOptions.map(item => `
-          <button type="button" class="combo-item rounded-[24px] border border-[#efe3d4] bg-[#fffaf6] p-4 text-left transition" data-id="${item.id}">
-            <div class="flex items-center justify-between">
-              <div>
-                <div class="text-xs uppercase tracking-[0.18em] text-[#8d7b6d]">Option</div>
-                <div class="mt-1 text-xl font-bold text-[#2A1215]">${item.label}</div>
-              </div>
-              <span class="rounded-full bg-[#f5efe7] text-[#2A1215] px-2 py-1 text-[10px] font-semibold">Add</span>
-            </div>
-            <div class="mt-4 text-sm text-[#5d4f49]">${formatMoney(item.price)}</div>
-          </button>
-        `).join('');
+function openToast(message) {
+  const toast = document.createElement('div');
+  toast.className = 'fixed bottom-6 right-6 z-[90] rounded-full bg-[#2A1215] px-5 py-3 text-sm font-medium text-white shadow-lg';
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2000);
+}
 
-        document.querySelectorAll('.combo-item').forEach(btn => {
-          btn.addEventListener('click', () => {
-            const combo = state.comboOptions.find(c => c.id === btn.dataset.id);
-            addToCart({ type: 'combo', comboId: combo.id, label: `Set: ${combo.label}`, price: combo.price });
-          });
-        });
-      }
+/* PRODUCT MODAL WITH VARIANT SELECTOR */
+function openProductModal(product) {
+  let currentPrice = product.price;
+  let currentVariantName = null;
 
-      /* DESTINATION SELECT */
-      function populateDestinations() {
-        const select = document.getElementById('destinationSelect');
-        select.innerHTML = Object.entries(state.destinations).map(([key, d]) =>
-          `<option value="${key}">${d.label}${d.fee > 0 ? ` (${formatMoney(d.fee)})` : ''}</option>`
-        ).join('');
-        select.value = state.deliveryKey;
-        select.addEventListener('change', (e) => {
-          state.deliveryKey = e.target.value;
-          updateCheckoutSummary();
-        });
-      }
+  const content = document.getElementById('productModalContent');
+  const mainImgSrc = product.images[0]?.startsWith('/') ? product.images[0] : `/${product.images[0]}`;
 
-      /* PRICE THE CART VIA THE BACKEND (authoritative) */
-      function cartToApiItems() {
-        return state.cart.map(i => i.type === 'product'
-          ? { type: 'product', productId: i.productId, variantName: i.variantName }
-          : { type: 'combo', comboId: i.comboId });
-      }
+  content.innerHTML = `
+    <div class="grid gap-6 md:grid-cols-[0.95fr_1.05fr]">
+      <div>
+        <div class="overflow-hidden rounded-[26px] bg-gradient-to-br from-[#5A2D82] via-[#2F1B42] to-[#0E0812] p-4">
+          <img id="modalMainImg" src="${mainImgSrc}" alt="${product.name}" class="floating-bottle h-[380px] w-full rounded-[24px] object-cover shadow-[0_30px_80px_rgba(212,175,55,0.35)]" onerror="this.src='https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=80'" />
+        </div>
+        <div class="mt-4 flex gap-2 overflow-x-auto no-scrollbar pb-2">
+          ${product.images.map((img, idx) => {
+            const thumbSrc = img.startsWith('/') ? img : `/${img}`;
+            return `
+            <button type="button" class="img-thumb flex-shrink-0 overflow-hidden rounded-xl border-2 ${idx === 0 ? 'border-[#D4AF37]' : 'border-transparent'} w-16 h-16" data-src="${thumbSrc}">
+              <img src="${thumbSrc}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=80'" />
+            </button>
+          `}).join('')}
+        </div>
+      </div>
 
-      async function fetchQuote() {
-        const res = await fetch('/api/orders/quote', {
+      <div class="space-y-5">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <div class="text-xs uppercase tracking-[0.2em] text-[#d9c3ff]">${product.category}</div>
+            <h3 class="font-display text-4xl text-white">${product.name}</h3>
+          </div>
+          <div id="modalPrice" class="text-2xl font-bold text-[#f5d77b]">${formatMoney(currentPrice)}</div>
+        </div>
+        <p class="text-sm leading-7 text-white/75">${product.description}</p>
+        ${product.variants.length > 0 ? `
+          <div class="rounded-[22px] border border-white/10 bg-white/5 p-4">
+            <label class="mb-2 block text-xs uppercase tracking-[0.2em] text-[#d9c3ff]">Select Variant</label>
+            <select id="variantSelect" class="w-full rounded-xl bg-[#2A1215] border border-white/20 px-3 py-2 text-sm text-white outline-none">
+              ${product.variants.map(v => {
+                const varImg = v.image?.startsWith('/') ? v.image : `/${v.image}`;
+                return `<option value="${v.name}" data-price="${v.price}" data-img="${varImg}">${v.name} - ${formatMoney(v.price)}</option>`;
+              }).join('')}
+            </select>
+          </div>
+        ` : ''}
+        <div class="flex gap-3">
+          <button id="modalAddCart" class="flex-1 rounded-full bg-[#D4AF37] px-5 py-3 text-sm font-semibold text-[#2A1215]">Add to Cart</button>
+          <button class="close-modal rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white">Close</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const modal = document.getElementById('productModal');
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+
+  content.querySelectorAll('.img-thumb').forEach(thumb => {
+    thumb.addEventListener('click', () => {
+      content.querySelectorAll('.img-thumb').forEach(t => t.classList.replace('border-[#D4AF37]', 'border-transparent'));
+      thumb.classList.replace('border-transparent', 'border-[#D4AF37]');
+      document.getElementById('modalMainImg').src = thumb.dataset.src;
+    });
+  });
+
+  const variantSelect = document.getElementById('variantSelect');
+  if (variantSelect) {
+    currentVariantName = variantSelect.value;
+    variantSelect.addEventListener('change', (e) => {
+      const opt = e.target.options[e.target.selectedIndex];
+      currentPrice = Number(opt.dataset.price);
+      currentVariantName = opt.value;
+      document.getElementById('modalPrice').textContent = formatMoney(currentPrice);
+      if (opt.dataset.img) document.getElementById('modalMainImg').src = opt.dataset.img;
+    });
+  }
+
+  document.getElementById('modalAddCart').addEventListener('click', () => {
+    const label = currentVariantName ? `${product.name} (${currentVariantName})` : product.name;
+    addToCart({ type: 'product', productId: product.id, variantName: currentVariantName || undefined, label, price: currentPrice });
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  });
+}
+
+/* COMBO BUILDER */
+function renderComboItems() {
+  document.getElementById('comboItems').innerHTML = state.comboOptions.map(item => `
+    <button type="button" class="combo-item rounded-[24px] border border-[#efe3d4] bg-[#fffaf6] p-4 text-left transition" data-id="${item.id}">
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="text-xs uppercase tracking-[0.18em] text-[#8d7b6d]">Option</div>
+          <div class="mt-1 text-xl font-bold text-[#2A1215]">${item.label}</div>
+        </div>
+        <span class="rounded-full bg-[#f5efe7] text-[#2A1215] px-2 py-1 text-[10px] font-semibold">Add</span>
+      </div>
+      <div class="mt-4 text-sm text-[#5d4f49]">${formatMoney(item.price)}</div>
+    </button>
+  `).join('');
+
+  document.querySelectorAll('.combo-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const combo = state.comboOptions.find(c => c.id === btn.dataset.id);
+      addToCart({ type: 'combo', comboId: combo.id, label: `Set: ${combo.label}`, price: combo.price });
+    });
+  });
+}
+
+/* DESTINATION SELECT */
+function populateDestinations() {
+  const select = document.getElementById('destinationSelect');
+  select.innerHTML = Object.entries(state.destinations).map(([key, d]) =>
+    `<option value="${key}">${d.label}${d.fee > 0 ? ` (${formatMoney(d.fee)})` : ''}</option>`
+  ).join('');
+  select.value = state.deliveryKey;
+  select.addEventListener('change', (e) => {
+    state.deliveryKey = e.target.value;
+    updateCheckoutSummary();
+  });
+}
+
+/* PRICE THE CART VIA THE BACKEND (authoritative) */
+function cartToApiItems() {
+  return state.cart.map(i => i.type === 'product'
+    ? { type: 'product', productId: i.productId, variantName: i.variantName }
+    : { type: 'combo', comboId: i.comboId });
+}
+
+async function fetchQuote() {
+  const res = await fetch(`${API_BASE_URL}/api/orders/quote`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ items: cartToApiItems(), destinationKey: state.deliveryKey })
+  });
+  return res.json();
+}
+
+async function updateCheckoutSummary() {
+  const summaryEl = document.getElementById('checkoutSummary');
+  if (state.cart.length === 0) {
+    summaryEl.innerHTML = '<div class="text-[#6d5e56]">No items added yet.</div>';
+    document.getElementById('builderTotal').textContent = formatMoney(0);
+    return;
+  }
+
+  const quote = await fetchQuote();
+  let html = state.cart.map(i => `<div class="flex justify-between"><span>${i.label}</span><span>${formatMoney(i.price)}</span></div>`).join('');
+  html += `<div class="mt-2 flex justify-between border-t pt-2"><span>Subtotal</span><span>${formatMoney(quote.subtotal)}</span></div>`;
+  if (quote.discount > 0) html += `<div class="flex justify-between text-green-700 font-semibold"><span>Promo Discount</span><span>-${formatMoney(quote.discount)}</span></div>`;
+  if (quote.deliveryFee > 0) html += `<div class="flex justify-between text-xs"><span>Shipping (${quote.destinationLabel})</span><span>${formatMoney(quote.deliveryFee)}</span></div>`;
+  html += `<div class="mt-2 flex justify-between border-t pt-2 font-bold text-[#2A1215] text-base"><span>Grand Total</span><span>${formatMoney(quote.total)}</span></div>`;
+  summaryEl.innerHTML = html;
+}
+
+function openCheckoutModal() {
+  updateCheckoutSummary();
+  document.getElementById('checkoutModal').classList.remove('hidden');
+  document.getElementById('checkoutModal').classList.add('flex');
+}
+document.getElementById('navCheckoutBtn').addEventListener('click', openCheckoutModal);
+document.getElementById('cartBtn').addEventListener('click', openCheckoutModal);
+
+/* CHECKOUT: create pending order -> Paystack -> verify server-side */
+document.getElementById('checkoutForm').addEventListener('submit', async event => {
+  event.preventDefault();
+  if (state.cart.length === 0) {
+    alert('Please add at least one perfume or set option to your cart before checking out.');
+    return;
+  }
+
+  const name = document.getElementById('custName').value;
+  const email = document.getElementById('custEmail').value;
+  const phone = document.getElementById('custPhone').value;
+  const payBtn = document.getElementById('payNowBtn');
+  payBtn.disabled = true;
+  payBtn.textContent = 'Preparing your order...';
+
+  try {
+    const orderRes = await fetch(`${API_BASE_URL}/api/orders`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: cartToApiItems(), destinationKey: state.deliveryKey, name, email, phone })
+    });
+    const order = await orderRes.json();
+    if (!orderRes.ok) throw new Error(order.error || 'Could not create order');
+
+    const handler = PaystackPop.setup({
+      key: state.paystackPublicKey,
+      email: email,
+      amount: order.total * 100,
+      currency: 'NGN',
+      ref: order.reference,
+      callback: function() {
+        fetch(`${API_BASE_URL}/api/payments/verify`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ items: cartToApiItems(), destinationKey: state.deliveryKey })
-        });
-        return res.json();
-      }
-
-      async function updateCheckoutSummary() {
-        const summaryEl = document.getElementById('checkoutSummary');
-        if (state.cart.length === 0) {
-          summaryEl.innerHTML = '<div class="text-[#6d5e56]">No items added yet.</div>';
-          document.getElementById('builderTotal').textContent = formatMoney(0);
-          return;
-        }
-
-        const quote = await fetchQuote();
-        let html = state.cart.map(i => `<div class="flex justify-between"><span>${i.label}</span><span>${formatMoney(i.price)}</span></div>`).join('');
-        html += `<div class="mt-2 flex justify-between border-t pt-2"><span>Subtotal</span><span>${formatMoney(quote.subtotal)}</span></div>`;
-        if (quote.discount > 0) html += `<div class="flex justify-between text-green-700 font-semibold"><span>Promo Discount</span><span>-${formatMoney(quote.discount)}</span></div>`;
-        if (quote.deliveryFee > 0) html += `<div class="flex justify-between text-xs"><span>Shipping (${quote.destinationLabel})</span><span>${formatMoney(quote.deliveryFee)}</span></div>`;
-        html += `<div class="mt-2 flex justify-between border-t pt-2 font-bold text-[#2A1215] text-base"><span>Grand Total</span><span>${formatMoney(quote.total)}</span></div>`;
-        summaryEl.innerHTML = html;
-      }
-
-      function openCheckoutModal() {
-        updateCheckoutSummary();
-        document.getElementById('checkoutModal').classList.remove('hidden');
-        document.getElementById('checkoutModal').classList.add('flex');
-      }
-      document.getElementById('navCheckoutBtn').addEventListener('click', openCheckoutModal);
-      document.getElementById('cartBtn').addEventListener('click', openCheckoutModal);
-
-      /* CHECKOUT: create pending order -> Paystack -> verify server-side */
-      document.getElementById('checkoutForm').addEventListener('submit', async event => {
-        event.preventDefault();
-        if (state.cart.length === 0) {
-          alert('Please add at least one perfume or set option to your cart before checking out.');
-          return;
-        }
-
-        const name = document.getElementById('custName').value;
-        const email = document.getElementById('custEmail').value;
-        const phone = document.getElementById('custPhone').value;
-        const payBtn = document.getElementById('payNowBtn');
-        payBtn.disabled = true;
-        payBtn.textContent = 'Preparing your order...';
-
-        try {
-          const orderRes = await fetch('/api/orders', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ items: cartToApiItems(), destinationKey: state.deliveryKey, name, email, phone })
-          });
-          const order = await orderRes.json();
-          if (!orderRes.ok) throw new Error(order.error || 'Could not create order');
-
-          const handler = PaystackPop.setup({
-            key: state.paystackPublicKey,
-            email: email,
-            amount: order.total * 100,
-            currency: 'NGN',
-            ref: order.reference,
-            callback: function() {
-              fetch('/api/payments/verify', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ reference: order.reference })
-              })
-                .then(r => r.json())
-                .then(result => {
-                  if (result.status !== 'paid') {
-                    alert('We could not confirm your payment yet. If you were charged, contact support with reference ' + order.reference);
-                    return;
-                  }
-                  document.getElementById('trackingIdDisplay').textContent = result.trackingId;
-                  document.getElementById('checkoutModal').classList.add('hidden');
-                  document.getElementById('checkoutModal').classList.remove('flex');
-                  document.getElementById('successModal').classList.remove('hidden');
-                  document.getElementById('successModal').classList.add('flex');
-                  state.cart = [];
-                  updateCartBadge();
-                })
-                .catch(() => alert('Payment verification failed. Please contact support with reference ' + order.reference));
-            },
-            onClose: function() {
-              alert('Transaction cancelled.');
+          body: JSON.stringify({ reference: order.reference })
+        })
+          .then(r => r.json())
+          .then(result => {
+            if (result.status !== 'paid') {
+              alert('We could not confirm your payment yet. If you were charged, contact support with reference ' + order.reference);
+              return;
             }
-          });
-          handler.openIframe();
-        } catch (err) {
-          alert(err.message);
-        } finally {
-          payBtn.disabled = false;
-          payBtn.textContent = 'Pay Now via Paystack';
-        }
-      });
+            document.getElementById('trackingIdDisplay').textContent = result.trackingId;
+            document.getElementById('checkoutModal').classList.add('hidden');
+            document.getElementById('checkoutModal').classList.remove('flex');
+            document.getElementById('successModal').classList.remove('hidden');
+            document.getElementById('successModal').classList.add('flex');
+            state.cart = [];
+            updateCartBadge();
+          })
+          .catch(() => alert('Payment verification failed. Please contact support with reference ' + order.reference));
+      },
+      onClose: function() {
+        alert('Transaction cancelled.');
+      }
+    });
+    handler.openIframe();
+  } catch (err) {
+    alert(err.message);
+  } finally {
+    payBtn.disabled = false;
+    payBtn.textContent = 'Pay Now via Paystack';
+  }
+});
 
-      /* ORDER TRACKING */
-      document.getElementById('orderTrackingLink').addEventListener('click', () => {
-        document.getElementById('trackingResult').innerHTML = '';
-        document.getElementById('trackingForm').reset();
-        const modal = document.getElementById('trackingModal');
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-      });
+/* ORDER TRACKING */
+document.getElementById('orderTrackingLink').addEventListener('click', () => {
+  document.getElementById('trackingResult').innerHTML = '';
+  document.getElementById('trackingForm').reset();
+  const modal = document.getElementById('trackingModal');
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+});
 
-      document.getElementById('trackingForm').addEventListener('submit', async event => {
-        event.preventDefault();
-        const trackingId = document.getElementById('trackingIdInput').value.trim();
-        const email = document.getElementById('trackingEmailInput').value.trim();
-        const resultBox = document.getElementById('trackingResult');
+document.getElementById('trackingForm').addEventListener('submit', async event => {
+  event.preventDefault();
+  const trackingId = document.getElementById('trackingIdInput').value.trim();
+  const email = document.getElementById('trackingEmailInput').value.trim();
+  const resultBox = document.getElementById('trackingResult');
 
-        try {
-          const res = await fetch(`/api/orders/track?trackingId=${encodeURIComponent(trackingId)}&email=${encodeURIComponent(email)}`);
-          if (!res.ok) {
-            resultBox.innerHTML = `<div class="rounded-2xl border border-[#e7d8c7] bg-[#fffaf5] p-4 text-sm text-[#5f504a]">We couldn't find an order with that tracking ID and email. Please double check them, or contact us on WhatsApp.</div>`;
-            return;
-          }
-          const order = await res.json();
-          const items = order.items.map(i => i.label).join(', ');
-          resultBox.innerHTML = `
-            <div class="rounded-2xl border border-[#D4AF37]/40 bg-[#fffaf1] p-4 text-sm text-[#2A1215]">
-              <div class="mb-2 flex items-center justify-between">
-                <span class="font-semibold">${order.tracking_id}</span>
-                <span class="rounded-full bg-[#2A1215] px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-[#f7d87f]">${order.status}</span>
-              </div>
-              <div class="space-y-1 text-xs text-[#5f504a]">
-                <div>Placed: ${new Date(order.created_at).toLocaleString('en-NG')}</div>
-                <div>Destination: ${order.destination}</div>
-                <div>Items: ${items}</div>
-                <div class="pt-1 font-semibold text-[#2A1215]">Total: ${formatMoney(order.total)}</div>
-              </div>
-            </div>`;
-        } catch {
-          resultBox.innerHTML = `<div class="rounded-2xl border border-[#e7d8c7] bg-[#fffaf5] p-4 text-sm text-[#5f504a]">Something went wrong. Please try again.</div>`;
-        }
-      });
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/orders/track?trackingId=${encodeURIComponent(trackingId)}&email=${encodeURIComponent(email)}`);
+    if (!res.ok) {
+      resultBox.innerHTML = `<div class="rounded-2xl border border-[#e7d8c7] bg-[#fffaf5] p-4 text-sm text-[#5f504a]">We couldn't find an order with that tracking ID and email. Please double check them, or contact us on WhatsApp.</div>`;
+      return;
+    }
+    const order = await res.json();
+    const items = order.items.map(i => i.label).join(', ');
+    resultBox.innerHTML = `
+      <div class="rounded-2xl border border-[#D4AF37]/40 bg-[#fffaf1] p-4 text-sm text-[#2A1215]">
+        <div class="mb-2 flex items-center justify-between">
+          <span class="font-semibold">${order.tracking_id}</span>
+          <span class="rounded-full bg-[#2A1215] px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-[#f7d87f]">${order.status}</span>
+        </div>
+        <div class="space-y-1 text-xs text-[#5f504a]">
+          <div>Placed: ${new Date(order.created_at).toLocaleString('en-NG')}</div>
+          <div>Destination: ${order.destination}</div>
+          <div>Items: ${items}</div>
+          <div class="pt-1 font-semibold text-[#2A1215]">Total: ${formatMoney(order.total)}</div>
+        </div>
+      </div>`;
+  } catch {
+    resultBox.innerHTML = `<div class="rounded-2xl border border-[#e7d8c7] bg-[#fffaf5] p-4 text-sm text-[#5f504a]">Something went wrong. Please try again.</div>`;
+  }
+});
 
-      document.addEventListener('click', (e) => {
-        const btn = e.target.closest('.close-modal');
-        if (!btn) return;
-        const modal = btn.closest('.modal-backdrop');
-        if (modal) { modal.classList.add('hidden'); modal.classList.remove('flex'); }
-      });
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.close-modal');
+  if (!btn) return;
+  const modal = btn.closest('.modal-backdrop');
+  if (modal) { modal.classList.add('hidden'); modal.classList.remove('flex'); }
+});
 
-      loadConfig();
+loadConfig();

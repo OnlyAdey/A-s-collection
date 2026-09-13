@@ -4,17 +4,6 @@ const { pool } = require('../db');
 const { priceOrder } = require('../pricing');
 
 // Live price quote (no DB write) - used to render the checkout summary as the cart/destination changes
-router.post('/quote', (req, res) => {
-  try {
-    const { items = [], destinationKey } = req.body;
-    res.json(priceOrder(items, destinationKey));
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-});
-
-// Create a pending order & get a Paystack reference to pay against.
-// The frontend only ever sends item IDs - the server looks up real prices.
 router.post('/quote', async (req, res) => {
   try {
     const { items = [], destinationKey } = req.body;
@@ -24,7 +13,16 @@ router.post('/quote', async (req, res) => {
   }
 });
 
-        const quote = await priceOrder(items, destinationKey);
+// Create a pending order & get a Paystack reference to pay against.
+// The frontend only ever sends item IDs - the server looks up real prices.
+router.post('/', async (req, res) => {
+  try {
+    const { items = [], destinationKey, name, email, phone } = req.body;
+    if (!name || !email || !phone) {
+      return res.status(400).json({ error: 'name, email and phone are required' });
+    }
+
+    const quote = await priceOrder(items, destinationKey);
     if (quote.total <= 0) {
       return res.status(400).json({ error: 'Cart is empty' });
     }

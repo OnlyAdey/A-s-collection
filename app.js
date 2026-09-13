@@ -326,7 +326,7 @@ function openProductModal(product, initialVariantName) {
             </select>
           </div>
         ` : ''}
-        <<div class="flex gap-3">
+        <div class="flex gap-3">
   <button id="modalAddCart" class="w-full rounded-full bg-[#D4AF37] px-5 py-3 text-sm font-semibold text-[#2A1215]">Add to Cart</button>
 </div>
       </div>

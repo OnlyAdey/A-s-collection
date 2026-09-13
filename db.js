@@ -29,14 +29,6 @@ async function initDb() {
     );
   `);
 
-  // ONE-TIME FIX: old leftover tables (products, product_variants, order_items)
-  // from an earlier setup had the wrong shape and were blocking the correct
-  // table below from being created. None of these are used anywhere in the
-  // actual app code, so it's safe to clear them and rebuild fresh.
-  // REMOVE THIS LINE after the next successful deploy — leaving it in would
-  // wipe your products every time the server restarts.
-  await pool.query(`DROP TABLE IF EXISTS products CASCADE;`);
-
   await pool.query(`
     CREATE TABLE IF NOT EXISTS products (
       id SERIAL PRIMARY KEY,

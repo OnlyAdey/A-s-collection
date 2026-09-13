@@ -75,4 +75,16 @@ router.delete('/products/:id', requireAdmin, async (req, res) => {
   res.json({ ok: true });
 });
 
+// Save theme colors (upserts into site_settings)
+router.put('/theme', requireAdmin, async (req, res) => {
+  const { primary, accent, secondary, dark, background } = req.body;
+  const theme = { primary, accent, secondary, dark, background };
+  await pool.query(
+    `INSERT INTO site_settings (key, value, updated_at) VALUES ('theme', $1, now())
+     ON CONFLICT (key) DO UPDATE SET value = $1, updated_at = now()`,
+    [JSON.stringify(theme)]
+  );
+  res.json({ ok: true, theme });
+});
+
 module.exports = router;

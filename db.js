@@ -29,6 +29,12 @@ async function initDb() {
     );
   `);
 
+  // ONE-TIME FIX: an earlier broken deploy created a "products" table with the
+  // wrong columns before it crashed. Drop it once so the correct version below
+  // actually gets created. REMOVE THIS LINE after the next successful deploy —
+  // leaving it in would wipe your products every time the server restarts.
+  await pool.query(`DROP TABLE IF EXISTS products;`);
+
   await pool.query(`
     CREATE TABLE IF NOT EXISTS products (
       id SERIAL PRIMARY KEY,

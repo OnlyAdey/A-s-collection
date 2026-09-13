@@ -11,13 +11,15 @@ function priceItem(item) {
     }
     return { label: product.name, price: product.price };
   }
-  if (item.type === 'combo') {
+    if (item.type === 'combo') {
     const combo = comboOptions.find(c => c.id === item.comboId);
     if (!combo) throw new Error('Unknown combo option in cart');
-    return { label: `Set: ${combo.label}`, price: combo.price };
-  }
-  throw new Error('Unknown item type in cart');
-}
+    const allowedNotes = ['Unisex', 'Feminine', 'Masculine', 'Fruity', 'Floral', 'Woody', 'Oriental', 'Fresh', 'Spicy'];
+    const note = typeof item.note === 'string'
+      ? item.note.split(', ').filter(n => allowedNotes.includes(n)).join(', ')
+      : '';
+    return { label: note ? `Set: ${combo.label} — ${note}` : `Set: ${combo.label}`, price: combo.price };
+    }
 
 // Promotional discount: Sept 21-26 (10% off, or 15% off orders above ₦15,000)
 function calculateDiscount(subtotal) {

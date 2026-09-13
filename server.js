@@ -58,6 +58,16 @@ app.get('/api/config', async (req, res) => {
   }
 });
 
+app.get('/api/theme', async (req, res) => {
+  try {
+    const { rows } = await pool.query(`SELECT value FROM site_settings WHERE key = 'theme'`);
+    const defaults = { primary: '#2A1215', accent: '#D4AF37', bg: '#FAFAFA', dark: '#0E0812', secondary: '#5A2D82' };
+    res.json(rows.length ? { ...defaults, ...rows[0].value } : defaults);
+  } catch (err) {
+    res.json({ primary: '#2A1215', accent: '#D4AF37', bg: '#FAFAFA', dark: '#0E0812', secondary: '#5A2D82' });
+  }
+});
+
 app.use('/api/orders', ordersRouter);
 app.use('/api/payments', paymentsRouter);
 app.use('/api/admin', adminRouter);

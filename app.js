@@ -10,7 +10,8 @@ const state = {
   activeCategory: 'all',
   cart: [],          // { key, type, productId?, variantName?, comboId?, label, price }
   products: [],
-  comboOptions: [],
+    comboOptions: [],
+  comboFilters: { gender: null, family: null },
   destinations: {},
   paystackPublicKey: '',
   whatsappNumber: '',
@@ -72,6 +73,7 @@ async function loadConfig() {
   renderNavCategoryChips();
   renderProducts();
   renderComboItems();
+attachComboFilters();
   populateDestinations();
 
   const waLink = `https://wa.me/${state.whatsappNumber}?text=Hi%2C%20I%27d%20like%20some%20help%20with%20an%20order%20from%20A%27s%20Collection`;
@@ -366,11 +368,34 @@ function renderComboItems() {
   document.querySelectorAll('.combo-item').forEach(btn => {
     btn.addEventListener('click', () => {
       const combo = state.comboOptions.find(c => c.id === btn.dataset.id);
-      addToCart({ type: 'combo', comboId: combo.id, label: `Set: ${combo.label}`, price: combo.price });
+      const vibeParts = [state.comboFilters.gender, state.comboFilters.family].filter(Boolean);
+      const vibeNote = vibeParts.length ? vibeParts.join(', ') : null;
+      const label = vibeNote ? `Set: ${combo.label} — ${vibeNote}` : `Set: ${combo.label}`;
+      addToCart({ type: 'combo', comboId: combo.id, note: vibeNote, label, price: combo.price });
     });
   });
 }
 
+function attachComboFilters() {
+  document.querySelectorAll('.combo-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const group = btn.dataset.group;
+      const value = btn.dataset.value;
+      const isActive = state.comboFilters[group] === value;
+      state.comboFilters[group] = isActive ? null : value;
+
+      document.querySelectorAll(`.combo-filter-btn[data-group="${group}"]`).forEach(b => {
+        const on = state.comboFilters[group] === b.dataset.value;
+        b.classList.toggle('bg-[#2A1215]', on);
+        b.classList.toggle('text-white', on);
+        b.classList.toggle('border-[#2A1215]', on);
+        b.classList.toggle('bg-[#fffaf5]', !on);
+        b.classList.toggle('text-[#2A1215]', !on);
+        b.classList.toggle('border-[#e7d8c7]', !on);
+      });
+    });
+  });
+}
 /* DESTINATION SELECT */
 function populateDestinations() {
   const select = document.getElementById('destinationSelect');

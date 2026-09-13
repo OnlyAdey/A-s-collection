@@ -24,7 +24,7 @@ router.post('/quote', async (req, res) => {
   }
 });
 
-    const quote = priceOrder(items, destinationKey);
+        const quote = await priceOrder(items, destinationKey);
     if (quote.total <= 0) {
       return res.status(400).json({ error: 'Cart is empty' });
     }

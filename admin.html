@@ -44,8 +44,51 @@
         <button id="logoutBtn" class="rounded-full border border-[#e7d8c7] bg-white px-4 py-2 text-xs font-semibold text-[#2A1215]">Log out</button>
       </div>
 
-      <button id="addProductBtn" class="mb-6 w-full rounded-full bg-[#D4AF37] px-4 py-3 text-sm font-semibold text-[#2A1215] shadow-luxe">+ Add Product</button>
+            <button id="addProductBtn" class="mb-6 w-full rounded-full bg-[#D4AF37] px-4 py-3 text-sm font-semibold text-[#2A1215] shadow-luxe">+ Add Product</button>
 
+      <!-- THEME COLOR PICKER -->
+      <div class="mb-6 rounded-[24px] border border-[#efe3d4] bg-white p-5 shadow-sm">
+        <h2 class="mb-4 font-display text-xl text-[#2A1215]">Theme Colors</h2>
+        <div class="space-y-3" id="themeFields">
+          <div class="flex items-center justify-between gap-3">
+            <label class="text-sm font-medium text-[#2A1215]">Primary (main dark brand color)</label>
+            <div class="flex items-center gap-2">
+              <input type="color" id="theme_primary" class="h-9 w-9 cursor-pointer rounded-lg border border-[#e7d8c7]" />
+              <input type="text" id="theme_primary_hex" class="w-24 rounded-lg border border-[#e7d8c7] px-2 py-1 text-xs" />
+            </div>
+          </div>
+          <div class="flex items-center justify-between gap-3">
+            <label class="text-sm font-medium text-[#2A1215]">Accent (gold buttons/badges)</label>
+            <div class="flex items-center gap-2">
+              <input type="color" id="theme_accent" class="h-9 w-9 cursor-pointer rounded-lg border border-[#e7d8c7]" />
+              <input type="text" id="theme_accent_hex" class="w-24 rounded-lg border border-[#e7d8c7] px-2 py-1 text-xs" />
+            </div>
+          </div>
+          <div class="flex items-center justify-between gap-3">
+            <label class="text-sm font-medium text-[#2A1215]">Background (page background)</label>
+            <div class="flex items-center gap-2">
+              <input type="color" id="theme_bg" class="h-9 w-9 cursor-pointer rounded-lg border border-[#e7d8c7]" />
+              <input type="text" id="theme_bg_hex" class="w-24 rounded-lg border border-[#e7d8c7] px-2 py-1 text-xs" />
+            </div>
+          </div>
+          <div class="flex items-center justify-between gap-3">
+            <label class="text-sm font-medium text-[#2A1215]">Dark (modal / deep panels)</label>
+            <div class="flex items-center gap-2">
+              <input type="color" id="theme_dark" class="h-9 w-9 cursor-pointer rounded-lg border border-[#e7d8c7]" />
+              <input type="text" id="theme_dark_hex" class="w-24 rounded-lg border border-[#e7d8c7] px-2 py-1 text-xs" />
+            </div>
+          </div>
+          <div class="flex items-center justify-between gap-3">
+            <label class="text-sm font-medium text-[#2A1215]">Secondary (plum accents/links)</label>
+            <div class="flex items-center gap-2">
+              <input type="color" id="theme_secondary" class="h-9 w-9 cursor-pointer rounded-lg border border-[#e7d8c7]" />
+              <input type="text" id="theme_secondary_hex" class="w-24 rounded-lg border border-[#e7d8c7] px-2 py-1 text-xs" />
+            </div>
+          </div>
+        </div>
+        <button id="saveThemeBtn" class="mt-4 w-full rounded-full bg-[#2A1215] px-4 py-3 text-sm font-semibold text-white">Save Theme</button>
+        <p id="themeSavedMsg" class="hidden mt-2 text-center text-xs font-semibold text-green-700">Saved! Refresh your storefront to see it live.</p>
+      </div>
       <!-- ADD/EDIT FORM -->
       <div id="productForm" class="hidden mb-6 rounded-[24px] border border-[#efe3d4] bg-white p-5 shadow-sm">
         <h2 id="formTitle" class="mb-4 font-display text-xl text-[#2A1215]">Add Product</h2>

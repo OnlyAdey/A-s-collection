@@ -218,6 +218,8 @@ document.getElementById('saveThemeBtn').addEventListener('click', async () => {
   }
 });
 
+loadThemeIntoPicker();
+
 if (adminKey) {
   tryKey(adminKey).then(ok => {
     if (ok) showDashboard();

@@ -236,6 +236,21 @@ function renderProducts() {
       updateCardVariant(product, imgVariants[next]);
     });
   });
+     filtered.forEach(product => {
+    if (product.inStock === false) {
+      const card = document.querySelector(`.product-card[data-id="${product.id}"]`);
+      if (!card) return;
+      const img = card.querySelector('img');
+      if (img) img.classList.add('grayscale', 'opacity-60');
+      const addBtn = card.querySelector('.add-cart-btn');
+      if (addBtn) {
+        addBtn.disabled = true;
+        addBtn.textContent = 'Out of Stock';
+        addBtn.classList.add('opacity-50', 'cursor-not-allowed', 'bg-gray-400');
+        addBtn.classList.remove('bg-[#2A1215]');
+      }
+    }
+  });
 }
 
 function addToCart(item) {

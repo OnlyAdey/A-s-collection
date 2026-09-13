@@ -60,7 +60,23 @@ function shareProduct(product) {
   }
 }
 
+async function loadTheme() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/theme`);
+    const theme = await res.json();
+    const root = document.documentElement.style;
+    if (theme.primary) root.setProperty('--color-primary', theme.primary);
+    if (theme.accent) root.setProperty('--color-accent', theme.accent);
+    if (theme.bg) root.setProperty('--color-bg', theme.bg);
+    if (theme.dark) root.setProperty('--color-dark', theme.dark);
+    if (theme.secondary) root.setProperty('--color-secondary', theme.secondary);
+  } catch {
+    // If this fails, the CSS defaults already baked into index.html just apply — safe fallback.
+  }
+}
+
 async function loadConfig() {
+  await loadTheme();
   const res = await fetch(`${API_BASE_URL}/api/config`);
   const cfg = await res.json();
   state.products = cfg.products;
@@ -109,8 +125,8 @@ function getCategories() {
 }
 
 function renderFilterButtons() {
-  document.getElementById('filterButtons').innerHTML = getCategories().map(cat => `
-    <button class="filter-btn rounded-full border border-[#2A1215]/10 px-3 py-2 text-xs font-semibold ${cat === state.activeCategory ? 'bg-[#2A1215] text-white' : 'bg-white text-[#2A1215]'}" data-category="${cat}">${cat === 'all' ? 'All' : cat}</button>
+    document.getElementById('filterButtons').innerHTML = getCategories().map(cat => `
+    <button class="filter-btn rounded-full border border-[var(--color-primary)]/10 px-3 py-2 text-xs font-semibold ${cat === state.activeCategory ? 'bg-[var(--color-primary)] text-white' : 'bg-white text-[var(--color-primary)]'}" data-category="${cat}">${cat === 'all' ? 'All' : cat}</button>
   `).join('');
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => setActiveCategory(btn.dataset.category));
@@ -401,11 +417,11 @@ function attachComboFilters() {
 
       document.querySelectorAll(`.combo-filter-btn[data-group="${group}"]`).forEach(b => {
         const on = state.comboFilters[group] === b.dataset.value;
-        b.classList.toggle('bg-[#2A1215]', on);
+                b.classList.toggle('bg-[var(--color-primary)]', on);
         b.classList.toggle('text-white', on);
-        b.classList.toggle('border-[#2A1215]', on);
+        b.classList.toggle('border-[var(--color-primary)]', on);
         b.classList.toggle('bg-[#fffaf5]', !on);
-        b.classList.toggle('text-[#2A1215]', !on);
+        b.classList.toggle('text-[var(--color-primary)]', !on);
         b.classList.toggle('border-[#e7d8c7]', !on);
       });
     });

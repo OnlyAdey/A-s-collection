@@ -15,12 +15,14 @@ router.post('/quote', (req, res) => {
 
 // Create a pending order & get a Paystack reference to pay against.
 // The frontend only ever sends item IDs - the server looks up real prices.
-router.post('/', async (req, res) => {
+router.post('/quote', async (req, res) => {
   try {
-    const { items = [], destinationKey, name, email, phone } = req.body;
-    if (!name || !email || !phone) {
-      return res.status(400).json({ error: 'name, email and phone are required' });
-    }
+    const { items = [], destinationKey } = req.body;
+    res.json(await priceOrder(items, destinationKey));
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
 
     const quote = priceOrder(items, destinationKey);
     if (quote.total <= 0) {

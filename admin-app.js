@@ -181,6 +181,43 @@ async function saveProduct() {
   await loadProducts();
 }
 
+const THEME_KEYS = ['primary', 'accent', 'bg', 'dark', 'secondary'];
+
+async function loadThemeIntoPicker() {
+  const res = await fetch(`${API_BASE_URL}/api/theme`);
+  const theme = await res.json();
+  THEME_KEYS.forEach(k => {
+    document.getElementById(`theme_${k}`).value = theme[k];
+    document.getElementById(`theme_${k}_hex`).value = theme[k];
+  });
+}
+
+THEME_KEYS.forEach(k => {
+  const colorInput = document.getElementById(`theme_${k}`);
+  const hexInput = document.getElementById(`theme_${k}_hex`);
+  colorInput.addEventListener('input', () => { hexInput.value = colorInput.value; });
+  hexInput.addEventListener('input', () => {
+    if (/^#[0-9A-Fa-f]{6}$/.test(hexInput.value)) colorInput.value = hexInput.value;
+  });
+});
+
+document.getElementById('saveThemeBtn').addEventListener('click', async () => {
+  const payload = {};
+  THEME_KEYS.forEach(k => { payload[k] = document.getElementById(`theme_${k}_hex`).value; });
+  const res = await fetch(`${API_BASE_URL}/api/admin/theme`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey },
+    body: JSON.stringify(payload)
+  });
+  const msg = document.getElementById('themeSavedMsg');
+  if (res.ok) {
+    msg.classList.remove('hidden');
+    setTimeout(() => msg.classList.add('hidden'), 3000);
+  } else {
+    alert('Failed to save theme.');
+  }
+});
+
 if (adminKey) {
   tryKey(adminKey).then(ok => {
     if (ok) showDashboard();

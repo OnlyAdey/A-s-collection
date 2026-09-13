@@ -24,6 +24,8 @@ app.use(express.json());
 
 // Frontend loads this once on page load to get product data + public keys.
 // Nothing secret lives here - PAYSTACK_SECRET_KEY and ADMIN_KEY never leave the server.
+const DEFAULT_THEME = { primary: '#2A1215', accent: '#D4AF37', secondary: '#5A2D82', dark: '#0E0812', background: '#FAFAFA' };
+
 app.get('/api/config', async (req, res) => {
   try {
     const { rows } = await pool.query('SELECT * FROM products ORDER BY sort_order ASC, id ASC');
@@ -38,12 +40,17 @@ app.get('/api/config', async (req, res) => {
       variants: p.variants,
       inStock: p.in_stock
     }));
+
+    const themeRow = await pool.query(`SELECT value FROM site_settings WHERE key = 'theme'`);
+    const theme = themeRow.rows[0] ? { ...DEFAULT_THEME, ...themeRow.rows[0].value } : DEFAULT_THEME;
+
     res.json({
       paystackPublicKey: process.env.PAYSTACK_PUBLIC_KEY || '',
       whatsappNumber: process.env.WHATSAPP_NUMBER || '',
       products,
       comboOptions,
-      destinations
+      destinations,
+      theme
     });
   } catch (err) {
     console.error(err);

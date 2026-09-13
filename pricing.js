@@ -18,8 +18,10 @@ function priceItem(item) {
     const note = typeof item.note === 'string'
       ? item.note.split(', ').filter(n => allowedNotes.includes(n)).join(', ')
       : '';
-    return { label: note ? `Set: ${combo.label} — ${note}` : `Set: ${combo.label}`, price: combo.price };
-    }
+        return { label: note ? `Set: ${combo.label} — ${note}` : `Set: ${combo.label}`, price: combo.price };
+  }
+  throw new Error('Unknown item type in cart');
+}
 
 // Promotional discount: Sept 21-26 (10% off, or 15% off orders above ₦15,000)
 function calculateDiscount(subtotal) {

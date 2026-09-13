@@ -18,31 +18,38 @@
       };
     </script>
     <style>
+      :root {
+        --color-primary: #2A1215;
+        --color-accent: #D4AF37;
+        --color-bg: #FAFAFA;
+        --color-dark: #0E0812;
+        --color-secondary: #5A2D82;
+      }
       html { scroll-behavior: smooth; }
-      body { font-family: 'Segoe UI', sans-serif; background: #fafafa; color: #2a1215; }
+      body { font-family: 'Segoe UI', sans-serif; background: var(--color-bg); color: var(--color-primary); }
       .glass { background: rgba(255,255,255,0.18); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
       .floating-bottle { animation: floatBottle 4.5s ease-in-out infinite; }
       .ticker { overflow: hidden; white-space: nowrap; }
       .ticker-track { display: inline-flex; min-width: max-content; animation: tickerMove 18s linear infinite; }
       @keyframes floatBottle { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-16px); } }
       @keyframes tickerMove { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-      .modal-backdrop { background: rgba(14, 8, 18, 0.72); }
-      .btn-gold { background: linear-gradient(135deg, #d4af37, #c99d2d); color: #2a1215; }
+      .modal-backdrop { background: color-mix(in srgb, var(--color-dark) 72%, transparent); }
+      .btn-gold { background: linear-gradient(135deg, var(--color-accent), color-mix(in srgb, var(--color-accent) 80%, black)); color: var(--color-primary); }
       .product-card img { object-fit: cover; }
       .no-scrollbar::-webkit-scrollbar { display: none; }
       .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       .card-arrow { opacity: 0; transition: opacity 0.2s ease, background 0.2s ease; }
-.product-card:hover .card-arrow { opacity: 1; }
-.share-btn svg { width: 16px; height: 16px; }
+      .product-card:hover .card-arrow { opacity: 1; }
+      .share-btn svg { width: 16px; height: 16px; }
     </style>
   </head>
-  <body class="min-h-screen bg-[#FAFAFA] text-[#2A1215]">
+  <body class="min-h-screen bg-[var(--color-bg)] text-[var(--color-primary)]">
 
     <!-- HEADER -->
-    <header class="sticky top-0 z-40 border-b border-[#e9dfd4] bg-[#FAFAFA]/90 backdrop-blur-lg">
+    <header class="sticky top-0 z-40 border-b border-[#e9dfd4] bg-[var(--color-bg)]/90 backdrop-blur-lg">
       <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <div class="flex items-center gap-3">
-          <div class="flex h-11 w-11 items-center justify-center rounded-full bg-[#2A1215] text-lg font-bold text-[#D4AF37] shadow">A</div>
+          <div class="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-primary)] text-lg font-bold text-[var(--color-accent)] shadow">A</div>
           <div>
             <div class="font-display text-2xl font-bold tracking-wide">A's Collection</div>
             <div class="text-[10px] uppercase tracking-[0.3em] text-[#7c6a63]">Luxury Fragrance House</div>
@@ -50,24 +57,24 @@
         </div>
 
         <div class="flex items-center gap-3">
-          <div id="saleTimer" class="hidden sm:flex flex-col items-end rounded-xl border border-[#D4AF37]/30 bg-[#2A1215] px-3 py-1.5 text-white">
-            <span class="text-[9px] uppercase tracking-wider text-[#D4AF37]" id="timerLabel">Sales Start In</span>
+          <div id="saleTimer" class="hidden sm:flex flex-col items-end rounded-xl border border-[var(--color-accent)]/30 bg-[var(--color-primary)] px-3 py-1.5 text-white">
+            <span class="text-[9px] uppercase tracking-wider text-[var(--color-accent)]" id="timerLabel">Sales Start In</span>
             <span id="countdownDisplay" class="font-mono text-xs font-bold">00d 00h 00m 00s</span>
           </div>
 
-          <button id="cartBtn" class="relative rounded-full border border-[#e3d5c6] bg-white px-4 py-2 text-sm font-medium shadow-sm transition hover:border-[#D4AF37] hover:text-[#D4AF37]">
-            Cart <span id="cartCount" class="ml-2 inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-[#2A1215] px-1 text-[10px] text-white">0</span>
+          <button id="cartBtn" class="relative rounded-full border border-[#e3d5c6] bg-white px-4 py-2 text-sm font-medium shadow-sm transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]">
+            Cart <span id="cartCount" class="ml-2 inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-[var(--color-primary)] px-1 text-[10px] text-white">0</span>
           </button>
         </div>
       </div>
 
       <!-- NAV ROW - visible on all screen sizes, horizontally scrollable on mobile -->
-      <nav class="border-t border-[#e9dfd4] bg-[#FAFAFA]">
+      <nav class="border-t border-[#e9dfd4] bg-[var(--color-bg)]">
         <div class="mx-auto flex max-w-7xl items-center gap-2 overflow-x-auto no-scrollbar px-4 py-2.5 text-sm font-medium sm:px-6 lg:px-8">
-          <a href="#bestsellers" class="flex-shrink-0 rounded-full px-3 py-1.5 transition hover:bg-[#2A1215] hover:text-white">Bestsellers</a>
-          <a href="#discover" class="flex-shrink-0 rounded-full px-3 py-1.5 transition hover:bg-[#2A1215] hover:text-white">Collections</a>
-          <a href="#builder" class="flex-shrink-0 rounded-full px-3 py-1.5 transition hover:bg-[#2A1215] hover:text-white">Build a Set</a>
-          <button id="navCheckoutBtn" type="button" class="flex-shrink-0 rounded-full px-3 py-1.5 font-semibold text-[#D4AF37] transition hover:bg-[#2A1215]">Checkout</button>
+          <a href="#bestsellers" class="flex-shrink-0 rounded-full px-3 py-1.5 transition hover:bg-[var(--color-primary)] hover:text-white">Bestsellers</a>
+          <a href="#discover" class="flex-shrink-0 rounded-full px-3 py-1.5 transition hover:bg-[var(--color-primary)] hover:text-white">Collections</a>
+          <a href="#builder" class="flex-shrink-0 rounded-full px-3 py-1.5 transition hover:bg-[var(--color-primary)] hover:text-white">Build a Set</a>
+          <button id="navCheckoutBtn" type="button" class="flex-shrink-0 rounded-full px-3 py-1.5 font-semibold text-[var(--color-accent)] transition hover:bg-[var(--color-primary)]">Checkout</button>
           <span class="mx-1 h-5 w-px flex-shrink-0 bg-[#e3d5c6]"></span>
           <div id="navCategoryChips" class="flex items-center gap-2"></div>
         </div>
@@ -77,7 +84,7 @@
     <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <!-- HERO -->
       <section class="mb-8 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-        <div class="relative overflow-hidden rounded-[32px] bg-[#2A1215] p-8 text-white shadow-luxe">
+        <div class="relative overflow-hidden rounded-[32px] bg-[var(--color-primary)] p-8 text-white shadow-luxe">
           <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(212,175,55,0.32),_transparent_24%),radial-gradient(circle_at_bottom_left,_rgba(145,117,233,0.18),_transparent_30%)]"></div>
           <div class="relative z-10">
             <div class="mb-4 inline-flex items-center rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.25em] text-[#f9e5a6]">Sept 21–26 Promotional Event</div>
@@ -95,9 +102,9 @@
             <div class="mb-3 flex items-center justify-between">
               <div>
                 <div class="text-xs uppercase tracking-[0.2em] text-[#7a6e66]">Signature</div>
-<div class="font-display text-3xl text-[#2A1215]">Hawas Ice by Rasasi</div>
+                <div class="font-display text-3xl text-[var(--color-primary)]">Hawas Ice by Rasasi</div>
               </div>
-              <div class="rounded-full bg-[#2A1215] px-3 py-1 text-xs font-semibold text-[#f7d87f]">Best seller</div>
+              <div class="rounded-full bg-[var(--color-primary)] px-3 py-1 text-xs font-semibold text-[#f7d87f]">Best seller</div>
             </div>
             <div class="relative overflow-hidden rounded-[22px] bg-gradient-to-br from-[#fef9f2] to-[#f4e8d7] p-4">
               <img src="/images/Hawas Ice by Rasasi.jpg" alt="Hawas Ice by Rasasi" class="h-64 w-full rounded-[18px] object-cover" />
@@ -105,11 +112,270 @@
             <div class="mt-4 flex items-center justify-between">
               <div>
                 <div class="text-xs uppercase tracking-[0.2em] text-[#8e7a6f]">From</div>
-                <div class="text-2xl font-bold text-[#2A1215]">₦65,000</div>
+                <div class="text-2xl font-bold text-[var(--color-primary)]">₦65,000</div>
               </div>
-              <button class="rounded-full border border-[#D4AF37] bg-[#fffaf0] px-4 py-2 text-sm font-semibold text-[#2A1215] transition hover:bg-[#f9e9ba]" onclick="quickAdd(32)">Add to cart</button>
+              <button class="rounded-full border border-[var(--color-accent)] bg-[#fffaf0] px-4 py-2 text-sm font-semibold text-[var(--color-primary)] transition hover:bg-[#f9e9ba]" onclick="quickAdd(32)">Add to cart</button>
+            </div>
           </div>
         </div>
+      </section>
+
+      <!-- TICKER -->
+      <section class="mb-8 rounded-[30px] bg-[var(--color-primary)] p-5 text-white shadow-luxe">
+        <div class="ticker">
+          <div class="ticker-track gap-8 text-sm font-medium">
+            <span>Hawas Ice by Rasasi — ₦65,000</span>
+            <span>Khamrah by Lattafa — ₦45,000</span>
+            <span>Opulent by Lattafa — ₦25,000</span>
+            <span>Fakhar Perfume Mist — ₦7,000</span>
+            <span>Hawas Ice by Rasasi — ₦65,000</span>
+            <span>Khamrah by Lattafa — ₦45,000</span>
+            <span>Opulent by Lattafa — ₦25,000</span>
+            <span>Fakhar Perfume Mist — ₦7,000</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- CATEGORIES DISCOVER -->
+      <section id="discover" class="mb-10">
+        <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.25em] text-[#8e7a6f]">Curated categories</p>
+            <h2 class="font-display text-4xl text-[var(--color-primary)]">Find your signature mood</h2>
+          </div>
+        </div>
+
+        <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+          <article class="group relative overflow-hidden rounded-[28px] min-h-[260px] shadow-luxe">
+            <div class="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-0.5">
+              <img src="/images/Oud Al layl.jpg" alt="" class="col-span-1 row-span-2 h-full w-full object-cover" onerror="this.style.display='none'" />
+              <img src="/images/Khamrah Waha.jpg" alt="" class="h-full w-full object-cover" onerror="this.style.display='none'" />
+              <img src="/images/Asad Bourbon.jpg" alt="" class="h-full w-full object-cover" onerror="this.style.display='none'" />
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-black/10"></div>
+            <div class="relative flex h-full min-h-[260px] flex-col justify-end p-6">
+              <div class="text-xs uppercase tracking-[0.3em] text-[#f4e5a7]">Arabian Perfumes</div>
+              <h3 class="mt-3 font-display text-3xl text-white">Rich & Exotic</h3>
+            </div>
+          </article>
+          <article class="group relative overflow-hidden rounded-[28px] min-h-[260px] shadow-luxe">
+            <div class="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-0.5">
+              <img src="/images/Club De Nuit Intense Man.jpg" alt="" class="col-span-1 row-span-2 h-full w-full object-cover" onerror="this.style.display='none'" />
+              <img src="/images/Club de Nuit Iconic.jpg" alt="" class="h-full w-full object-cover" onerror="this.style.display='none'" />
+              <img src="/images/24K white.jpg" alt="" class="h-full w-full object-cover" onerror="this.style.display='none'" />
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-black/10"></div>
+            <div class="relative flex h-full min-h-[260px] flex-col justify-end p-6">
+              <div class="text-xs uppercase tracking-[0.3em] text-[#f4e5a7]">Designer Perfumes</div>
+              <h3 class="mt-3 font-display text-3xl text-white">Couture Elegance</h3>
+            </div>
+          </article>
+          <article class="group relative overflow-hidden rounded-[28px] bg-cover bg-center min-h-[260px] shadow-luxe" style="background-image: linear-gradient(rgba(0,0,0,0.48), rgba(0,0,0,0.48)), url('https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&w=900&q=80');">
+            <div class="flex h-full flex-col justify-end p-6">
+              <div class="text-xs uppercase tracking-[0.3em] text-[#f4e5a7]">Oil Perfume</div>
+              <h3 class="mt-3 font-display text-3xl text-white">Pure & Concentrated</h3>
+            </div>
+          </article>
+          <article class="group relative overflow-hidden rounded-[28px] min-h-[260px] shadow-luxe">
+            <div class="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-0.5">
+              <img src="/images/Veyes gift box.jpg" alt="" class="col-span-1 row-span-2 h-full w-full object-cover" onerror="this.style.display='none'" />
+              <img src="/images/Mousuf 4in1.jpg" alt="" class="h-full w-full object-cover" onerror="this.style.display='none'" />
+              <img src="/images/Oud mood 3in1.jpg" alt="" class="h-full w-full object-cover" onerror="this.style.display='none'" />
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-black/10"></div>
+            <div class="relative flex h-full min-h-[260px] flex-col justify-end p-6">
+              <div class="text-xs uppercase tracking-[0.3em] text-[#f4e5a7]">Giftset / Box</div>
+              <h3 class="mt-3 font-display text-3xl text-white">Luxury Bundles</h3>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- CATALOG / BESTSELLERS -->
+      <section id="bestsellers" class="mb-10">
+        <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.25em] text-[#8e7a6f]">Loved by thousands</p>
+            <h2 class="font-display text-4xl text-[var(--color-primary)]">Our Catalog</h2>
+          </div>
+          <div id="filterButtons" class="flex flex-wrap gap-2"></div>
+        </div>
+        <div id="productGrid" class="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 xl:grid-cols-4"></div>
+      </section>
+
+      <!-- BUDGET BUILDER -->
+      <section id="builder" class="mb-10 rounded-[32px] border border-[#efe3d4] bg-white p-6 shadow-luxe lg:p-8">
+        <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.25em] text-[#8e7a6f]">Budget builder</p>
+            <h2 class="font-display text-4xl text-[var(--color-primary)]">Create your combo</h2>
+          </div>
+          <div class="flex items-center gap-2 rounded-full border border-[#e7d8c7] bg-[#fffaf5] px-3 py-2">
+            <span class="text-xs uppercase tracking-[0.2em] text-[#8b7b6d]">Total</span>
+            <span id="builderTotal" class="text-lg font-bold text-[var(--color-primary)]">₦0</span>
+          </div>
+        </div>
+
+        <div class="mb-5 space-y-3">
+          <div>
+            <div class="mb-2 text-xs uppercase tracking-[0.2em] text-[#8b7b6d]">Who's it for?</div>
+            <div id="comboGenderFilter" class="flex flex-wrap gap-2">
+              <button type="button" class="combo-filter-btn rounded-full border border-[#e7d8c7] bg-[#fffaf5] px-4 py-2 text-xs font-semibold text-[var(--color-primary)] transition" data-group="gender" data-value="Unisex">Unisex</button>
+              <button type="button" class="combo-filter-btn rounded-full border border-[#e7d8c7] bg-[#fffaf5] px-4 py-2 text-xs font-semibold text-[var(--color-primary)] transition" data-group="gender" data-value="Feminine">Feminine</button>
+              <button type="button" class="combo-filter-btn rounded-full border border-[#e7d8c7] bg-[#fffaf5] px-4 py-2 text-xs font-semibold text-[var(--color-primary)] transition" data-group="gender" data-value="Masculine">Masculine</button>
+            </div>
+          </div>
+          <div>
+            <div class="mb-2 text-xs uppercase tracking-[0.2em] text-[#8b7b6d]">Scent family</div>
+            <div id="comboFamilyFilter" class="flex flex-wrap gap-2">
+              <button type="button" class="combo-filter-btn rounded-full border border-[#e7d8c7] bg-[#fffaf5] px-4 py-2 text-xs font-semibold text-[var(--color-primary)] transition" data-group="family" data-value="Fruity">Fruity</button>
+              <button type="button" class="combo-filter-btn rounded-full border border-[#e7d8c7] bg-[#fffaf5] px-4 py-2 text-xs font-semibold text-[var(--color-primary)] transition" data-group="family" data-value="Floral">Floral</button>
+              <button type="button" class="combo-filter-btn rounded-full border border-[#e7d8c7] bg-[#fffaf5] px-4 py-2 text-xs font-semibold text-[var(--color-primary)] transition" data-group="family" data-value="Woody">Woody</button>
+              <button type="button" class="combo-filter-btn rounded-full border border-[#e7d8c7] bg-[#fffaf5] px-4 py-2 text-xs font-semibold text-[var(--color-primary)] transition" data-group="family" data-value="Oriental">Oriental</button>
+              <button type="button" class="combo-filter-btn rounded-full border border-[#e7d8c7] bg-[#fffaf5] px-4 py-2 text-xs font-semibold text-[var(--color-primary)] transition" data-group="family" data-value="Fresh">Fresh</button>
+              <button type="button" class="combo-filter-btn rounded-full border border-[#e7d8c7] bg-[#fffaf5] px-4 py-2 text-xs font-semibold text-[var(--color-primary)] transition" data-group="family" data-value="Spicy">Spicy</button>
+            </div>
+          </div>
+          <p class="text-xs text-[#8b7b6d]">Pick a vibe (optional), then choose your bottle size below — we'll fill it to match.</p>
+        </div>
+        <div id="comboItems" class="grid grid-cols-2 gap-3 sm:gap-4"></div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-[#e9dfd4] bg-[var(--color-primary)] py-12 text-white">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="grid gap-8 md:grid-cols-4">
+          <div>
+            <div class="flex items-center gap-3">
+              <div class="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-accent)] font-bold text-[var(--color-primary)]">A</div>
+              <span class="font-display text-xl font-bold">A's Collection</span>
+            </div>
+            <p class="mt-4 text-xs leading-6 text-white/70">Elevating confidence with authentic luxury fragrances and bespoke scent profiles.</p>
+          </div>
+          <div>
+            <h4 class="mb-3 text-xs font-semibold uppercase tracking-widest text-[var(--color-accent)]">Categories</h4>
+            <ul class="space-y-2 text-xs text-white/75">
+              <li><a href="#bestsellers" class="hover:text-[var(--color-accent)]">Arabian Perfumes</a></li>
+              <li><a href="#bestsellers" class="hover:text-[var(--color-accent)]">Designer Perfumes</a></li>
+              <li><a href="#bestsellers" class="hover:text-[var(--color-accent)]">Oil Perfumes</a></li>
+              <li><a href="#bestsellers" class="hover:text-[var(--color-accent)]">Giftsets & Boxes</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="mb-3 text-xs font-semibold uppercase tracking-widest text-[var(--color-accent)]">Customer Service</h4>
+            <ul class="space-y-2 text-xs text-white/75">
+              <li><a href="#checkout" class="hover:text-[var(--color-accent)]">Shipping & Delivery</a></li>
+              <li><button type="button" id="orderTrackingLink" class="hover:text-[var(--color-accent)]">Order Tracking</button></li>
+              <li><a id="whatsappSupportLink" href="#" target="_blank" rel="noopener" class="hover:text-[var(--color-accent)]">WhatsApp Support</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="mb-3 text-xs font-semibold uppercase tracking-widest text-[var(--color-accent)]">Location</h4>
+            <p class="text-xs text-white/75">Abuja, FCT, Nigeria</p>
+            <p class="mt-2 text-xs text-white/75" id="footerSupportNumber">Support: —</p>
+          </div>
+        </div>
+        <div class="mt-8 border-t border-white/10 pt-6 text-center text-[11px] text-white/50">
+          © 2026 A's Collection. All rights reserved. Built for elegance.
+        </div>
+      </div>
+    </footer>
+
+    <!-- PRODUCT MODAL -->
+    <div id="productModal" class="modal-backdrop fixed inset-0 z-50 hidden items-start justify-center p-4 overflow-y-auto">
+      <div class="relative my-8 w-full max-w-4xl rounded-[30px] bg-[var(--color-dark)] p-4 text-white shadow-[0_40px_90px_rgba(0,0,0,0.45)] md:p-6">
+        <div class="sticky top-0 z-10 flex justify-end bg-[var(--color-dark)] pb-2">
+          <button type="button" class="close-modal rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-sm text-white hover:bg-white/10">Close</button>
+        </div>
+        <div id="productModalContent" class="mt-3"></div>
+      </div>
+    </div>
+
+    <!-- CHECKOUT MODAL -->
+    <div id="checkoutModal" class="modal-backdrop fixed inset-0 z-50 hidden items-center justify-center p-4 overflow-y-auto">
+      <div class="w-full max-w-xl rounded-[30px] bg-white p-6 shadow-[0_40px_90px_rgba(0,0,0,0.3)] my-8">
+        <div class="mb-4 flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.28em] text-[#8d7b6d]">Checkout</p>
+            <h3 class="font-display text-3xl text-[var(--color-primary)]">Complete your order</h3>
+          </div>
+          <button type="button" class="close-modal rounded-full border border-[#e7d8c7] bg-[#fffaf5] px-3 py-1.5 text-sm text-[var(--color-primary)]">Close</button>
+        </div>
+
+        <form id="checkoutForm" class="space-y-4">
+          <div>
+            <label class="mb-1 block text-sm font-medium text-[var(--color-primary)]">Full Name</label>
+            <input type="text" id="custName" required class="w-full rounded-xl border border-[#e7d8c7] px-4 py-2.5 text-sm outline-none focus:border-[var(--color-accent)]" />
+          </div>
+          <div>
+            <label class="mb-1 block text-sm font-medium text-[var(--color-primary)]">Email Address</label>
+            <input type="email" id="custEmail" required class="w-full rounded-xl border border-[#e7d8c7] px-4 py-2.5 text-sm outline-none focus:border-[var(--color-accent)]" />
+          </div>
+          <div>
+            <label class="mb-1 block text-sm font-medium text-[var(--color-primary)]">WhatsApp Phone Number</label>
+            <input type="tel" id="custPhone" required class="w-full rounded-xl border border-[#e7d8c7] px-4 py-2.5 text-sm outline-none focus:border-[var(--color-accent)]" placeholder="+234..." />
+          </div>
+
+          <div>
+            <label class="mb-1 block text-sm font-medium text-[var(--color-primary)]">Delivery Destination</label>
+            <select id="destinationSelect" required class="w-full rounded-xl border border-[#e7d8c7] px-4 py-2.5 text-sm outline-none focus:border-[var(--color-accent)]">
+              <option value="pickup">Select Destination</option>
+            </select>
+          </div>
+
+          <div class="rounded-[20px] bg-[#f8f2eb] p-4">
+            <div class="text-sm font-semibold text-[var(--color-primary)]">Order summary</div>
+            <div id="checkoutSummary" class="mt-3 space-y-2 text-sm text-[#4b403b]"></div>
+          </div>
+
+          <button type="submit" id="payNowBtn" class="btn-gold w-full rounded-full px-6 py-3 text-sm font-semibold shadow-md">Pay Now via Paystack</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- SUCCESS MODAL -->
+    <div id="successModal" class="modal-backdrop fixed inset-0 z-[60] hidden items-center justify-center p-4">
+      <div class="w-full max-w-md rounded-[30px] bg-[var(--color-primary)] p-8 text-center text-white shadow-[0_40px_100px_rgba(0,0,0,0.45)]">
+        <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-accent)] text-2xl text-[var(--color-primary)]">✓</div>
+        <h3 class="font-display text-3xl">Payment Successful!</h3>
+        <p class="mt-3 text-sm leading-7 text-white/75">Your order has been logged. Your tracking ID is <span id="trackingIdDisplay" class="font-bold text-[var(--color-accent)]"></span>. Keep it safe to track your order.</p>
+        <button type="button" class="close-modal mt-6 rounded-full bg-white px-6 py-3 text-sm font-semibold text-[var(--color-primary)]">Continue shopping</button>
+      </div>
+    </div>
+
+    <!-- ORDER TRACKING MODAL -->
+    <div id="trackingModal" class="modal-backdrop fixed inset-0 z-[60] hidden items-center justify-center p-4">
+      <div class="w-full max-w-md rounded-[30px] bg-white p-6 shadow-[0_40px_90px_rgba(0,0,0,0.3)]">
+        <div class="mb-4 flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.28em] text-[#8d7b6d]">Order Tracking</p>
+            <h3 class="font-display text-2xl text-[var(--color-primary)]">Track your order</h3>
+          </div>
+          <button type="button" class="close-modal rounded-full border border-[#e7d8c7] bg-[#fffaf5] px-3 py-1.5 text-sm text-[var(--color-primary)]">Close</button>
+        </div>
+
+        <form id="trackingForm" class="space-y-4">
+          <div>
+            <label class="mb-1 block text-sm font-medium text-[var(--color-primary)]">Tracking ID</label>
+            <input type="text" id="trackingIdInput" required placeholder="TRK-123456" class="w-full rounded-xl border border-[#e7d8c7] px-4 py-2.5 text-sm outline-none focus:border-[var(--color-accent)]" />
+          </div>
+          <div>
+            <label class="mb-1 block text-sm font-medium text-[var(--color-primary)]">Email used at checkout</label>
+            <input type="email" id="trackingEmailInput" required class="w-full rounded-xl border border-[#e7d8c7] px-4 py-2.5 text-sm outline-none focus:border-[var(--color-accent)]" />
+          </div>
+          <button type="submit" class="btn-gold w-full rounded-full px-6 py-3 text-sm font-semibold shadow-md">Track Order</button>
+        </form>
+
+        <div id="trackingResult" class="mt-4"></div>
+
+        <p class="mt-4 text-xs leading-5 text-[#8d7b6d]">Can't find your order? Reach us on <a id="trackingWhatsappLink" href="#" target="_blank" rel="noopener" class="font-semibold text-[var(--color-secondary)] underline">WhatsApp</a> with your tracking ID.</p>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>        </div>
       </section>
 
       <!-- TICKER -->

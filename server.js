@@ -4,8 +4,8 @@ const cors = require('cors');
 const helmet = require('helmet');
 const path = require('path');
 
-const { initDb } = require('./db');
-const { products, comboOptions, destinations } = require('./catalog');
+const { initDb, pool } = require('./db');
+const { comboOptions, destinations } = require('./catalog');
 const ordersRouter = require('./routes/orders');
 const paymentsRouter = require('./routes/payments');
 const webhooksRouter = require('./routes/webhooks');
@@ -24,14 +24,31 @@ app.use(express.json());
 
 // Frontend loads this once on page load to get product data + public keys.
 // Nothing secret lives here - PAYSTACK_SECRET_KEY and ADMIN_KEY never leave the server.
-app.get('/api/config', (req, res) => {
-  res.json({
-    paystackPublicKey: process.env.PAYSTACK_PUBLIC_KEY || '',
-    whatsappNumber: process.env.WHATSAPP_NUMBER || '',
-    products,
-    comboOptions,
-    destinations
-  });
+app.get('/api/config', async (req, res) => {
+  try {
+    const { rows } = await pool.query('SELECT * FROM products ORDER BY sort_order ASC, id ASC');
+    const products = rows.map(p => ({
+      id: p.id,
+      name: p.name,
+      category: p.category,
+      badge: p.badge,
+      description: p.description,
+      images: p.images,
+      price: p.price,
+      variants: p.variants,
+      inStock: p.in_stock
+    }));
+    res.json({
+      paystackPublicKey: process.env.PAYSTACK_PUBLIC_KEY || '',
+      whatsappNumber: process.env.WHATSAPP_NUMBER || '',
+      products,
+      comboOptions,
+      destinations
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to load site config' });
+  }
 });
 
 app.use('/api/orders', ordersRouter);

@@ -55,6 +55,8 @@ async function showDashboard() {
   loginScreen.classList.add('hidden');
   dashboard.classList.remove('hidden');
   await loadProducts();
+  await loadDestinations();
+  await loadPromoIntoForm();
 }
 
 async function loadProducts() {

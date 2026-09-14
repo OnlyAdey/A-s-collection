@@ -82,8 +82,17 @@ async function loadPromo() {
   } catch {
     state.promo = { active: false };
   }
+  applyPromoCopy();
 }
 
+function applyPromoCopy() {
+  const el = document.getElementById('promoHeroText');
+  if (!el) return;
+  const { standardPercent, bulkPercent, bulkThreshold } = state.promo || {};
+  if (standardPercent && bulkPercent) {
+    el.textContent = `Enjoy ${standardPercent}% off all perfumes, or ${bulkPercent}% off orders above ${formatMoney(bulkThreshold)}.`;
+  }
+}
 async function loadConfig() {
   await loadTheme();
   await loadPromo();

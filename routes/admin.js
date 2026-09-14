@@ -87,4 +87,34 @@ router.put('/theme', requireAdmin, async (req, res) => {
   res.json({ ok: true, theme });
 });
 
+router.get('/destinations', requireAdmin, async (req, res) => {
+  const { rows } = await pool.query(`SELECT value FROM site_settings WHERE key = 'destinations'`);
+  res.json(rows.length ? rows[0].value : {});
+});
+
+router.put('/destinations', requireAdmin, async (req, res) => {
+  await pool.query(
+    `INSERT INTO site_settings (key, value, updated_at) VALUES ('destinations', $1, now())
+     ON CONFLICT (key) DO UPDATE SET value = $1, updated_at = now()`,
+    [JSON.stringify(req.body)]
+  );
+  res.json({ ok: true });
+});
+
+router.get('/promo', requireAdmin, async (req, res) => {
+  const { rows } = await pool.query(`SELECT value FROM site_settings WHERE key = 'promo'`);
+  res.json(rows.length ? rows[0].value : {});
+});
+
+router.put('/promo', requireAdmin, async (req, res) => {
+  const { enabled, startDate, endDate, standardPercent, bulkPercent, bulkThreshold } = req.body;
+  const value = { enabled, startDate, endDate, standardPercent, bulkPercent, bulkThreshold };
+  await pool.query(
+    `INSERT INTO site_settings (key, value, updated_at) VALUES ('promo', $1, now())
+     ON CONFLICT (key) DO UPDATE SET value = $1, updated_at = now()`,
+    [JSON.stringify(value)]
+  );
+  res.json({ ok: true, promo: value });
+});
+
 module.exports = router;

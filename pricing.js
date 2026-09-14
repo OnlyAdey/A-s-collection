@@ -1,5 +1,10 @@
 const { pool } = require('./db');
-const { comboOptions, destinations } = require('./catalog');
+const { comboOptions } = require('./catalog');
+
+async function getSetting(key, fallback) {
+  const { rows } = await pool.query('SELECT value FROM site_settings WHERE key = $1', [key]);
+  return rows.length ? rows[0].value : fallback;
+}
 
 async function priceItem(item) {
   if (item.type === 'product') {
@@ -25,14 +30,16 @@ async function priceItem(item) {
   throw new Error('Unknown item type in cart');
 }
 
-// Promotional discount: Sept 21-26 (10% off, or 15% off orders above ₦15,000)
-function calculateDiscount(subtotal) {
+async function calculateDiscount(subtotal) {
+  const promo = await getSetting('promo', { enabled: false });
+  if (!promo.enabled) return 0;
   const now = new Date();
-  const year = now.getFullYear();
-  const saleStart = new Date(year, 8, 21, 0, 0, 0);
-  const saleEnd = new Date(year, 8, 26, 23, 59, 59);
-  if (now < saleStart || now > saleEnd) return 0;
-  return subtotal > 15000 ? Math.round(subtotal * 0.15) : Math.round(subtotal * 0.10);
+  const start = new Date(promo.startDate + 'T00:00:00');
+  const end = new Date(promo.endDate + 'T23:59:59');
+  if (now < start || now > end) return 0;
+  return subtotal > promo.bulkThreshold
+    ? Math.round(subtotal * (promo.bulkPercent / 100))
+    : Math.round(subtotal * (promo.standardPercent / 100));
 }
 
 async function priceOrder(items, destinationKey) {
@@ -41,7 +48,8 @@ async function priceOrder(items, destinationKey) {
   }
   const priced = await Promise.all(items.map(priceItem));
   const subtotal = priced.reduce((sum, i) => sum + i.price, 0);
-  const discount = calculateDiscount(subtotal);
+  const discount = await calculateDiscount(subtotal);
+  const destinations = await getSetting('destinations', { pickup: { label: 'Pick Up', fee: 0 } });
   const destination = destinations[destinationKey] || destinations.pickup;
   const total = subtotal - discount + destination.fee;
   return { priced, subtotal, discount, deliveryFee: destination.fee, destinationLabel: destination.label, total };

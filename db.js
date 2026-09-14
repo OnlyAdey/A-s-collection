@@ -1,5 +1,5 @@
 const { Pool } = require('pg');
-const { products: seedProducts } = require('./catalog');
+const { products: seedProducts, destinations: seedDestinations } = require('./catalog');
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -70,6 +70,19 @@ async function initDb() {
       `SELECT setval(pg_get_serial_sequence('products','id'), COALESCE((SELECT MAX(id) FROM products), 1))`
     );
     console.log(`Seeded ${seedProducts.length} products.`);
+  }
+
+  const { rows: destRows } = await pool.query(`SELECT 1 FROM site_settings WHERE key = 'destinations'`);
+  if (!destRows.length) {
+    await pool.query(`INSERT INTO site_settings (key, value) VALUES ('destinations', $1)`, [JSON.stringify(seedDestinations)]);
+    console.log('Seeded destinations.');
+  }
+
+  const { rows: promoRows } = await pool.query(`SELECT 1 FROM site_settings WHERE key = 'promo'`);
+  if (!promoRows.length) {
+    const defaultPromo = { enabled: true, startDate: '2026-09-21', endDate: '2026-09-26', standardPercent: 10, bulkPercent: 15, bulkThreshold: 15000 };
+    await pool.query(`INSERT INTO site_settings (key, value) VALUES ('promo', $1)`, [JSON.stringify(defaultPromo)]);
+    console.log('Seeded promo settings.');
   }
 }
 

@@ -107,8 +107,6 @@ function updatePromoDisplay() {
     desc.textContent = `Enjoy ${state.promo.standardPercent}% off all perfumes from ${formatPromoDate(state.promo.startDate)}-${formatPromoDate(state.promo.endDate)}, or ${state.promo.bulkPercent}% off orders above ${formatMoney(state.promo.bulkThreshold)}.`;
   }
 }
-  applyPromoCopy();
-}
 
 function applyPromoCopy() {
   const el = document.getElementById('promoHeroText');

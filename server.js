@@ -65,6 +65,21 @@ app.get('/api/theme', async (req, res) => {
   }
 });
 
+app.get('/api/promo', async (req, res) => {
+  try {
+    const { rows } = await pool.query(`SELECT value FROM site_settings WHERE key = 'promo'`);
+    const promo = rows.length ? rows[0].value : { enabled: false };
+    if (!promo.enabled) return res.json({ active: false });
+    const now = new Date();
+    const start = new Date(promo.startDate + 'T00:00:00');
+    const end = new Date(promo.endDate + 'T23:59:59');
+    const active = now >= start && now <= end;
+    res.json({ active, standardPercent: promo.standardPercent, bulkPercent: promo.bulkPercent, bulkThreshold: promo.bulkThreshold });
+  } catch (err) {
+    res.json({ active: false });
+  }
+});
+
 app.use('/api/orders', ordersRouter);
 app.use('/api/payments', paymentsRouter);
 app.use('/api/admin', adminRouter);

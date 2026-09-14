@@ -218,6 +218,86 @@ document.getElementById('saveThemeBtn').addEventListener('click', async () => {
   }
 });
 
+/* ---- Destinations ---- */
+let destinationsData = {};
+
+async function loadDestinations() {
+  const res = await fetch(`${API_BASE_URL}/api/admin/destinations`, { headers: { 'x-admin-key': adminKey } });
+  destinationsData = await res.json();
+  renderDestinationRows();
+}
+
+function renderDestinationRows() {
+  document.getElementById('destinationRows').innerHTML = Object.entries(destinationsData).map(([key, d]) => `
+    <div class="grid grid-cols-[1fr_1fr_110px_28px] gap-2 items-center">
+      <input class="dest-key rounded-lg border border-[#e7d8c7] px-2 py-1.5 text-xs" value="${key}" data-orig="${key}" placeholder="key (e.g. lagos_state)" />
+      <input class="dest-label rounded-lg border border-[#e7d8c7] px-2 py-1.5 text-xs" value="${d.label}" data-orig="${key}" placeholder="Label" />
+      <input class="dest-fee rounded-lg border border-[#e7d8c7] px-2 py-1.5 text-xs" type="number" value="${d.fee}" data-orig="${key}" placeholder="Fee" />
+      <button type="button" class="remove-dest font-bold text-red-500" data-orig="${key}">✕</button>
+    </div>
+  `).join('');
+
+  document.querySelectorAll('.remove-dest').forEach(btn => btn.addEventListener('click', () => {
+    delete destinationsData[btn.dataset.orig];
+    renderDestinationRows();
+  }));
+}
+
+document.getElementById('addDestinationBtn').addEventListener('click', () => {
+  const newKey = 'new_destination_' + Object.keys(destinationsData).length;
+  destinationsData[newKey] = { label: 'New Destination', fee: 0 };
+  renderDestinationRows();
+});
+
+document.getElementById('saveDestinationsBtn').addEventListener('click', async () => {
+  const rebuilt = {};
+  document.querySelectorAll('.dest-key').forEach(el => {
+    const orig = el.dataset.orig;
+    const newKey = el.value.trim().replace(/\s+/g, '_').toLowerCase();
+    const label = document.querySelector(`.dest-label[data-orig="${orig}"]`).value.trim();
+    const fee = Number(document.querySelector(`.dest-fee[data-orig="${orig}"]`).value) || 0;
+    if (newKey && label) rebuilt[newKey] = { label, fee };
+  });
+  const res = await fetch(`${API_BASE_URL}/api/admin/destinations`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey },
+    body: JSON.stringify(rebuilt)
+  });
+  if (res.ok) { destinationsData = rebuilt; renderDestinationRows(); alert('Destinations saved.'); }
+  else alert('Failed to save destinations.');
+});
+
+/* ---- Promo ---- */
+async function loadPromoIntoForm() {
+  const res = await fetch(`${API_BASE_URL}/api/admin/promo`, { headers: { 'x-admin-key': adminKey } });
+  const promo = await res.json();
+  document.getElementById('promo_enabled').checked = !!promo.enabled;
+  document.getElementById('promo_start').value = promo.startDate || '';
+  document.getElementById('promo_end').value = promo.endDate || '';
+  document.getElementById('promo_standard').value = promo.standardPercent ?? '';
+  document.getElementById('promo_bulk').value = promo.bulkPercent ?? '';
+  document.getElementById('promo_threshold').value = promo.bulkThreshold ?? '';
+}
+
+document.getElementById('savePromoBtn').addEventListener('click', async () => {
+  const payload = {
+    enabled: document.getElementById('promo_enabled').checked,
+    startDate: document.getElementById('promo_start').value,
+    endDate: document.getElementById('promo_end').value,
+    standardPercent: Number(document.getElementById('promo_standard').value),
+    bulkPercent: Number(document.getElementById('promo_bulk').value),
+    bulkThreshold: Number(document.getElementById('promo_threshold').value)
+  };
+  const res = await fetch(`${API_BASE_URL}/api/admin/promo`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey },
+    body: JSON.stringify(payload)
+  });
+  const msg = document.getElementById('promoSavedMsg');
+  if (res.ok) { msg.classList.remove('hidden'); setTimeout(() => msg.classList.add('hidden'), 3000); }
+  else alert('Failed to save promo.');
+});
+
 loadThemeIntoPicker();
 
 if (adminKey) {

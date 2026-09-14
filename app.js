@@ -75,8 +75,18 @@ async function loadTheme() {
   }
 }
 
+async function loadPromo() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/promo`);
+    state.promo = await res.json();
+  } catch {
+    state.promo = { active: false };
+  }
+}
+
 async function loadConfig() {
   await loadTheme();
+  await loadPromo();
   const res = await fetch(`${API_BASE_URL}/api/config`);
   const cfg = await res.json();
   state.products = cfg.products;

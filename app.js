@@ -80,8 +80,33 @@ async function loadPromo() {
     const res = await fetch(`${API_BASE_URL}/api/promo`);
     state.promo = await res.json();
   } catch {
-    state.promo = { active: false };
+    state.promo = { active: false, enabled: false };
   }
+  updatePromoDisplay();
+}
+
+function formatPromoDate(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+function updatePromoDisplay() {
+  const badge = document.getElementById('promoBadgeText');
+  const desc = document.getElementById('promoHeroText');
+  if (!state.promo || !state.promo.enabled) {
+    if (badge) badge.style.display = 'none';
+    if (desc) desc.style.display = 'none';
+    return;
+  }
+  if (badge) {
+    badge.style.display = '';
+    badge.textContent = `${formatPromoDate(state.promo.startDate)}–${formatPromoDate(state.promo.endDate)} Promotional Event`;
+  }
+  if (desc) {
+    desc.style.display = '';
+    desc.textContent = `Enjoy ${state.promo.standardPercent}% off all perfumes from ${formatPromoDate(state.promo.startDate)}-${formatPromoDate(state.promo.endDate)}, or ${state.promo.bulkPercent}% off orders above ${formatMoney(state.promo.bulkThreshold)}.`;
+  }
+}
   applyPromoCopy();
 }
 
@@ -118,11 +143,16 @@ attachComboFilters();
 }
 
 /* COUNTDOWN TIMER (Sept 21-26 promo) */
+/* COUNTDOWN TIMER (reads live dates from the admin-saved promo, falls back to defaults before it loads) */
 function updateCountdown() {
   const now = new Date();
   const year = now.getFullYear();
-  const saleStart = new Date(year, 8, 21, 0, 0, 0);
-  const saleEnd = new Date(year, 8, 26, 23, 59, 59);
+  let saleStart = new Date(year, 8, 21, 0, 0, 0);
+  let saleEnd = new Date(year, 8, 26, 23, 59, 59);
+  if (state.promo && state.promo.enabled && state.promo.startDate && state.promo.endDate) {
+    saleStart = new Date(state.promo.startDate + 'T00:00:00');
+    saleEnd = new Date(state.promo.endDate + 'T23:59:59');
+  }
   const timerLabel = document.getElementById('timerLabel');
   const display = document.getElementById('countdownDisplay');
   let diff = 0;

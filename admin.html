@@ -115,7 +115,51 @@
         </div>
       </div>
 
-      <div id="productList" class="space-y-3"></div>
+            <div id="productList" class="space-y-3"></div>
+
+      <!-- DELIVERY DESTINATIONS -->
+      <div class="mt-8 rounded-[24px] border border-[#efe3d4] bg-white p-5 shadow-sm">
+        <h2 class="mb-4 font-display text-xl text-[#2A1215]">Delivery Destinations</h2>
+        <div id="destinationRows" class="space-y-2"></div>
+        <button id="addDestinationBtn" class="mt-3 rounded-full bg-[#f5efe7] px-3 py-1.5 text-xs font-semibold text-[#2A1215]">+ Add destination</button>
+        <button id="saveDestinationsBtn" class="mt-4 w-full rounded-full bg-[#2A1215] px-4 py-3 text-sm font-semibold text-white">Save Destinations</button>
+      </div>
+
+      <!-- PROMO SETTINGS -->
+      <div class="mt-8 rounded-[24px] border border-[#efe3d4] bg-white p-5 shadow-sm">
+        <h2 class="mb-4 font-display text-xl text-[#2A1215]">Promo / Sale</h2>
+        <div class="space-y-3">
+          <label class="flex items-center gap-2 text-sm font-medium text-[#2A1215]">
+            <input type="checkbox" id="promo_enabled" class="h-5 w-5" /> Promo enabled
+          </label>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="mb-1 block text-xs text-[#8d7b6d]">Start date</label>
+              <input type="date" id="promo_start" class="w-full rounded-xl border border-[#e7d8c7] px-3 py-2 text-sm" />
+            </div>
+            <div>
+              <label class="mb-1 block text-xs text-[#8d7b6d]">End date</label>
+              <input type="date" id="promo_end" class="w-full rounded-xl border border-[#e7d8c7] px-3 py-2 text-sm" />
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-3">
+            <div>
+              <label class="mb-1 block text-xs text-[#8d7b6d]">Standard %</label>
+              <input type="number" id="promo_standard" class="w-full rounded-xl border border-[#e7d8c7] px-3 py-2 text-sm" />
+            </div>
+            <div>
+              <label class="mb-1 block text-xs text-[#8d7b6d]">Bulk %</label>
+              <input type="number" id="promo_bulk" class="w-full rounded-xl border border-[#e7d8c7] px-3 py-2 text-sm" />
+            </div>
+            <div>
+              <label class="mb-1 block text-xs text-[#8d7b6d]">Bulk over (₦)</label>
+              <input type="number" id="promo_threshold" class="w-full rounded-xl border border-[#e7d8c7] px-3 py-2 text-sm" />
+            </div>
+          </div>
+        </div>
+        <button id="savePromoBtn" class="mt-4 w-full rounded-full bg-[#2A1215] px-4 py-3 text-sm font-semibold text-white">Save Promo</button>
+        <p id="promoSavedMsg" class="hidden mt-2 text-center text-xs font-semibold text-green-700">Saved!</p>
+      </div>
     </div>
 
     <script src="admin-app.js"></script>

@@ -28,7 +28,7 @@ const DEFAULT_THEME = { primary: '#2A1215', accent: '#D4AF37', secondary: '#5A2D
 
 app.get('/api/config', async (req, res) => {
   try {
-    const { rows } = await pool.query('SELECT * FROM products ORDER BY sort_order ASC, id ASC');
+        const { rows } = await pool.query('SELECT * FROM products ORDER BY sort_order ASC, id ASC');
     const products = rows.map(p => ({
       id: p.id,
       name: p.name,
@@ -40,17 +40,14 @@ app.get('/api/config', async (req, res) => {
       variants: p.variants,
       inStock: p.in_stock
     }));
-
-    const themeRow = await pool.query(`SELECT value FROM site_settings WHERE key = 'theme'`);
-    const theme = themeRow.rows[0] ? { ...DEFAULT_THEME, ...themeRow.rows[0].value } : DEFAULT_THEME;
-
+    const { rows: destRows } = await pool.query(`SELECT value FROM site_settings WHERE key = 'destinations'`);
+    const liveDestinations = destRows.length ? destRows[0].value : destinations;
     res.json({
       paystackPublicKey: process.env.PAYSTACK_PUBLIC_KEY || '',
       whatsappNumber: process.env.WHATSAPP_NUMBER || '',
       products,
       comboOptions,
-      destinations,
-      theme
+      destinations: liveDestinations
     });
   } catch (err) {
     console.error(err);

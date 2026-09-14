@@ -203,7 +203,10 @@ function renderProducts() {
             <h3 class="mt-1 font-display text-xs sm:text-lg md:text-2xl leading-tight text-[#2A1215] line-clamp-2">${product.name}</h3>
             ${imgVariants ? `<div id="cardVariantLabel-${product.id}" class="mt-0.5 text-xs font-semibold text-[#5A2D82]">${activeVariant.name}</div>` : ''}
           </div>
-          <div class="text-xs sm:text-base md:text-xl font-bold text-[#2A1215] whitespace-nowrap" id="cardPrice-${product.id}">${formatMoney(displayPrice)}</div>
+                    <div class="flex items-center gap-1.5">
+            <div class="text-xs sm:text-base md:text-xl font-bold text-[var(--color-primary)] whitespace-nowrap" id="cardPrice-${product.id}">${formatMoney(displayPrice)}</div>
+            ${state.promo?.active ? `<span class="rounded-full bg-red-600 px-1.5 py-0.5 text-[9px] font-bold text-white whitespace-nowrap">-${state.promo.standardPercent}%</span>` : ''}
+          </div>
         </div>
         <p class="mb-4 text-sm leading-6 text-[#5f504a] line-clamp-2 overflow-hidden" id="cardDesc-${product.id}">${displayDesc}</p>
         <div class="flex gap-3">
